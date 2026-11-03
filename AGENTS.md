@@ -86,3 +86,18 @@ Do not use static class or static instance for singleton items
 - Register/unregister listener theo vòng đời phù hợp và đối xứng để tránh gọi trùng hoặc gọi object đã bị hủy. Dispatch chỉ gọi các listener đang đăng ký.
 - Class thuần logic không kế thừa MonoBehaviour. Nếu cần được gọi từ nhiều nơi, đăng ký một instance singleton qua ServiceLocator hiện có và resolve để sử dụng; không tạo static Instance riêng cho class đó.
 - Singleton không có nghĩa là tồn tại mãi: xác định rõ owner và vòng đời, unregister/cleanup khi kết thúc scope tương ứng.
+
+## Serialization và dữ liệu bất biến (cập nhật 2026-11-03)
+
+Áp dụng cho mọi lần làm việc sau trong NeonBlocks.
+
+- Mọi serialize/deserialize dùng Newtonsoft.Json (`com.unity.nuget.newtonsoft-json` 3.2.2, khai báo trong `Packages/manifest.json`). Không dùng `JsonUtility` cho dữ liệu mới.
+- Asmdef dùng JSON khai báo DLL qua `precompiledReferences: ["Newtonsoft.Json.dll"]`. Asmdef nào có code JSON, kể cả test, đều phải khai báo như vậy.
+- **Mọi field phải read-only.** Áp dụng cho cả domain type và DTO. Field là `readonly` (hoặc property chỉ có getter với backing field readonly), gán duy nhất trong constructor.
+- DTO nằm trong namespace `*.Dto`, là class sealed với `public readonly` field và một constructor có `[JsonConstructor]`. Tên tham số constructor trùng đúng tên key trong JSON. Không dùng setter, không dùng field mutable để nhận dữ liệu.
+- Domain type validate trong constructor và ném exception đúng loại (`ConfigValidationException` cho dữ liệu sai). Mapping DTO sang domain do một hàm thuần thực hiện, không để DTO đi vào gameplay.
+- Config dùng một file JSON duy nhất cho dữ liệu chung. Key Addressables trùng tên asset (ví dụ `GameConfig`), không chứa tham chiếu asset trực tiếp.
+- Test cần dữ liệu biến thể: đọc JSON thành `JObject`, sửa một trường, rồi parse lại chuỗi. Không sửa DTO hoặc domain object bằng reflection.
+- Test JSON sai cú pháp kỳ vọng `JsonException` (Newtonsoft); test dữ liệu sai kỳ vọng `ConfigValidationException`. Test cấu trúc readonly và không tham chiếu `UnityEngine.Object` nằm trong `GameConfigRulesTests`; chạy lại khi thêm kiểu cấu hình mới.
+- Khi test reflection field, dùng `BindingFlags.DeclaredOnly`. Nếu không, Mono trả cả field private của lớp cha (ví dụ `Exception._message`) và test báo lỗi giả.
+- Test EditMode cho MonoBehaviour không dựa vào `Awake` khi `AddComponent`: Unity không đảm bảo gọi Awake trong Edit Mode. Đưa logic khởi tạo vào method tường minh (ví dụ `TryBeginSession()`), `Awake` chỉ gọi method đó, và test gọi method trực tiếp sau khi tạo GameObject không hoạt động (`SetActive(false)`).

@@ -42,15 +42,19 @@ namespace NeonBlocks.Tests
         }
 
         /// <summary>
-        /// Tạo một GameObject có SessionManager để Awake chạy như trong Entry scene.
+        /// Tạo GameObject không hoạt động rồi gắn SessionManager, sau đó gọi TryBeginSession tường minh.
+        /// Không dựa vào Awake vì Unity không đảm bảo gọi Awake khi AddComponent trong Edit Mode.
         /// </summary>
         /// <param name="name">Tên GameObject, dùng để dễ đọc khi debug.</param>
         /// <returns>Component SessionManager vừa tạo.</returns>
         private SessionManager CreateSession(string name)
         {
             var go = new GameObject(name);
+            go.SetActive(false);
             createdObjects.Add(go);
-            return go.AddComponent<SessionManager>();
+            SessionManager session = go.AddComponent<SessionManager>();
+            session.TryBeginSession();
+            return session;
         }
 
         /// <summary>

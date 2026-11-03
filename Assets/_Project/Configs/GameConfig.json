@@ -1,0 +1,30 @@
+{
+  "nextQueueSize": 5,
+  "startLevel": 1,
+  "linesPerLevel": 10,
+  "board": { "width": 10, "visibleHeight": 20, "hiddenRows": 4 },
+  "spawn": { "x": 3, "y": 20 },
+  "levels": [
+    { "level": 1, "gravitySeconds": 1.0 },
+    { "level": 2, "gravitySeconds": 0.8 },
+    { "level": 3, "gravitySeconds": 0.65 },
+    { "level": 4, "gravitySeconds": 0.5 },
+    { "level": 5, "gravitySeconds": 0.4 },
+    { "level": 6, "gravitySeconds": 0.3 },
+    { "level": 7, "gravitySeconds": 0.25 },
+    { "level": 8, "gravitySeconds": 0.2 },
+    { "level": 9, "gravitySeconds": 0.15 },
+    { "level": 10, "gravitySeconds": 0.1 }
+  ],
+  "scoring": { "lineClear": [100, 300, 500, 800], "softDropPerCell": 1, "hardDropPerCell": 2 },
+  "timing": { "lockDelaySeconds": 0.5, "maxLockResets": 15, "dasSeconds": 0.15, "arrSeconds": 0.05 },
+  "pieces": [
+    { "id": "I", "cells": [ {"x":0,"y":2}, {"x":1,"y":2}, {"x":2,"y":2}, {"x":3,"y":2} ], "rotationCenter": {"x":1.5,"y":1.5} },
+    { "id": "O", "cells": [ {"x":1,"y":2}, {"x":2,"y":2}, {"x":1,"y":3}, {"x":2,"y":3} ], "rotationCenter": {"x":1.5,"y":2.5} },
+    { "id": "T", "cells": [ {"x":0,"y":1}, {"x":1,"y":1}, {"x":2,"y":1}, {"x":1,"y":2} ], "rotationCenter": {"x":1.0,"y":1.0} },
+    { "id": "J", "cells": [ {"x":0,"y":2}, {"x":0,"y":1}, {"x":1,"y":1}, {"x":2,"y":1} ], "rotationCenter": {"x":1.0,"y":1.0} },
+    { "id": "L", "cells": [ {"x":2,"y":2}, {"x":0,"y":1}, {"x":1,"y":1}, {"x":2,"y":1} ], "rotationCenter": {"x":1.0,"y":1.0} },
+    { "id": "S", "cells": [ {"x":1,"y":2}, {"x":2,"y":2}, {"x":0,"y":1}, {"x":1,"y":1} ], "rotationCenter": {"x":1.0,"y":1.0} },
+    { "id": "Z", "cells": [ {"x":0,"y":2}, {"x":1,"y":2}, {"x":1,"y":1}, {"x":2,"y":1} ], "rotationCenter": {"x":1.0,"y":1.0} }
+  ]
+}

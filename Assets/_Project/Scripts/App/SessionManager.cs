@@ -23,21 +23,36 @@ namespace NeonBlocks
         public bool IsOwner => isOwner;
 
         /// <summary>
-        /// Nhận quyền sở hữu session nếu chưa có session nào; đăng ký chính mình, giữ qua đổi scene.
-        /// Nếu đã có session khác đang chạy thì hủy instance mới để không đăng ký trùng.
+        /// Unity gọi khi scene tải; chuyển toàn bộ việc nhận session cho TryBeginSession để có thể gọi tường minh trong test.
         /// </summary>
         private void Awake()
         {
+            TryBeginSession();
+        }
+
+        /// <summary>
+        /// Nhận quyền sở hữu session nếu chưa có session nào: đăng ký chính mình vào ServiceLocator và giữ qua đổi scene.
+        /// Nếu đã có session khác đang chạy thì hủy instance này và trả false. Gọi lại khi đã là owner thì trả true, không đăng ký lại.
+        /// </summary>
+        /// <returns>True nếu instance này là owner của session sau lời gọi.</returns>
+        public bool TryBeginSession()
+        {
+            if (isOwner)
+            {
+                return true;
+            }
+
             if (ServiceLocator.Instance.IsRegistered(typeof(SessionManager)))
             {
                 Debug.LogWarning("SessionManager đã tồn tại; instance mới bị hủy.");
                 Destroy(gameObject);
-                return;
+                return false;
             }
 
             isOwner = true;
             ServiceLocator.Instance.RegisterSingleton(this);
             DontDestroyOnLoad(gameObject);
+            return true;
         }
 
         /// <summary>

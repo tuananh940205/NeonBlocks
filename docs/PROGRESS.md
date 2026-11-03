@@ -9,7 +9,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 | Bài | Nội dung | Trạng thái | Bằng chứng / còn thiếu |
 |---|---|---|---|
 | 1 | Nền tảng dự án và Entry scene | Đã triển khai, chờ xác minh | Code + asmdef + 17 EditMode test đã viết; Core/Runtime biên dịch OK bằng Roslyn của Unity (ngoài Editor). Addressables 2.10.3 đã cài trong project. Còn thiếu: gắn `SessionManager` và Canvas vào `Entry.unity`, chạy Test Runner và Play Mode (xem docs/lessons/BAI_1.md) |
-| 2 | Dữ liệu JSON và cấu hình luật chơi | Chưa bắt đầu | Chưa có |
+| 2 | Dữ liệu JSON và cấu hình luật chơi | Đã triển khai, chờ xác minh | Code + 34 EditMode test đã viết (`GameConfigParserTests` 23, `GameConfigRulesTests` 4, `PieceDefinitionTests` 7); Runtime biên dịch OK bằng Roslyn của Unity. Còn thiếu: chạy Test Runner, đặt Addressables key `GameConfig` (xem docs/lessons/BAI_2.md) |
 | 3 | Addressables và vòng đời scene | Chưa bắt đầu | Chưa có |
 | 4 | BoardModel và khối đang rơi | Chưa bắt đầu | Chưa có |
 | 5 | Xoay khối và wall kick | Chưa bắt đầu | Chưa có |
@@ -56,6 +56,29 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **Hạn chế:** `Signal` chưa có API phát sự kiện (chưa cần ở bài 1). `ServiceLocator.UnregisterSingleton(object)` vẫn khóa theo kiểu; `SessionManager` chỉ đăng ký/hủy singleton do chính nó sở hữu.
 - **Điều kiện đánh dấu hoàn thành:** 17 EditMode test pass trong Unity; Entry chạy không lỗi Console; Play lặp không có `Already registered`; Build Settings chỉ có Entry.
 - **Asset:** bài 1 không cần asset mới, không tạo mục trong `docs/ASSET_HANDOFF.md`.
+
+### Bài 2
+- **Ngày và phạm vi:** 2026-11-03. Cấu hình chung trong một file JSON duy nhất; model bất biến constructor-only; DTO riêng cho Newtonsoft (readonly, constructor `[JsonConstructor]`); validate khi map. Chưa làm gameplay; tải qua Addressables thuộc bài 3.
+- **File đã thêm:**
+  - `Assets/_Project/Configs/GameConfig.json`: toàn bộ dữ liệu chung.
+  - `Assets/_Project/Scripts/Config/`: `ConfigValidationException`, `GridPoint`, `BoardSettings`, `PieceDefinition`, `LevelData`, `ScoringRules`, `TimingRules`, `GameConfig`, `GameConfigParser` (mỗi type một file; `AddressKey = "GameConfig"`).
+  - `Assets/_Project/Scripts/Config/Dto/`: `GameConfigDto`, `BoardDto`, `GridPointDto`, `FloatPointDto`, `PieceDto`, `LevelDto`, `ScoringDto`, `TimingDto`.
+  - `Assets/_Project/Tests/EditMode/`: `GameConfigParserTests.cs`, `GameConfigRulesTests.cs`, `PieceDefinitionTests.cs`, `ConfigTestFiles.cs`.
+  - `docs/lessons/BAI_2.md`.
+- **Quyết định thiết kế:** giá trị luật lấy từ kế hoạch (10×20 + 4 ẩn, spawn (3, 20), Next 5, điểm 100/300/500/800, soft 1, hard 2, lock 0.5s, 15 reset, DAS 0.15s, ARR 0.05s). Tốc độ rơi 1.0 → 0.1 giây/ô qua 10 level là giá trị khởi tạo, chưa đánh giá khi chơi. Shape khối được kiểm tra: đúng 4 ô, trong khung 4×4, không trùng, liền nhau, tâm xoay trong khung.
+- **Không có asset mới:** không tạo mục trong `docs/ASSET_HANDOFF.md`.
+- **Kiểm tra thật đã chạy:**
+  - `NeonBlocks.Core` và `NeonBlocks.Runtime` biên dịch bằng `csc.dll` của Unity 6000.3.25f1 (netstandard 2.1 + `UnityEngine.JSONSerializeModule`): exit 0, không cảnh báo.
+  - Test EditMode: chỉ lỗi CS0012 do reference NUnit trong môi trường này, không có lỗi ngữ nghĩa khác. **Test chưa được chạy trong Unity.**
+- **Chưa xác minh:** Test Runner (34 test); Newtonsoft 3.2.2 tải qua `precompiledReferences` trong asmdef; JSON sai cú pháp (test kỳ vọng `JsonException`); Addressables key `GameConfig`.
+- **Điều kiện đánh dấu hoàn thành:** 34 test pass trong Unity; `GameConfig.json` có key Addressables `GameConfig`.
+
+### Kết quả Test Runner lần đầu (2026-11-03)
+- Nguồn: `TestResults.xml` (lần chạy gần nhất, 1 test, Failed) và Editor.log các lần chạy trước.
+- **Đã xác định và sửa:**
+  - `GameConfigRulesTests.ConfigTypes_HaveOnlyReadonlyInstanceFields` fail: reflection trả thêm field private `_message` của `System.Exception`. Đã thêm `BindingFlags.DeclaredOnly` cho các test reflection.
+  - `SessionManagerTests.DuplicateSession_IsNotOwner_AndDestroyingItKeepsOwner`: log có `Type NeonBlocks.SessionManager not registered` tại dòng resolve, và không có cảnh báo `đã tồn tại` nào. Nguyên nhân: `Awake` không chạy khi `AddComponent` trong Edit Mode. Đã tách logic thành `TryBeginSession()`; test tạo GameObject không hoạt động rồi gọi method này tường minh. Các test SessionManager khác dùng cùng cách; suy luận từ mã, chưa thấy kết quả riêng của từng test.
+- **Chưa xác minh:** chạy lại toàn bộ EditMode sau sửa. Test 1 và 2 của bài 2 (`Newtonsoft` qua `precompiledReferences`) chưa có kết quả.
 
 ## Ghi nhận ban đầu
 Đã đọc AGENTS.md, ProjectVersion.txt, Packages/manifest.json, EditorBuildSettings.asset và danh sách Assets qua MCP neonblocks_filesystem. Chưa chạy Unity, compile, test, profiling hay build. Người dùng đã chọn thể loại xếp gạch rơi kiểu Tetris.

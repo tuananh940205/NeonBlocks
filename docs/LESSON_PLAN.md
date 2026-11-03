@@ -53,7 +53,7 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
 
 - **Prompt:** `Triển khai bài 2`
 - **Phụ thuộc:** 1.
-- **Phạm vi:** Thiết kế GameConfig, LevelData và PieceDefinition immutable, constructor-only; dùng DTO riêng để deserialize JSON rồi validate/map. Một type mỗi file. Cấu hình bảng 10×20 và 4 hàng spawn ẩn, 7 tetromino, tốc độ rơi, điểm, input timings. Tọa độ x sang phải, y lên trên; spawn/rotation pivot ghi rõ. Chưa làm gameplay.
+- **Phạm vi:** Thiết kế GameConfig, LevelData và PieceDefinition immutable, constructor-only; dùng DTO riêng để deserialize JSON rồi validate/map. Một type mỗi file. Cấu hình bảng 10×20 và 4 hàng spawn ẩn, 7 tetromino, tốc độ rơi, điểm, input timings. Tọa độ x sang phải, y lên trên; spawn/rotation pivot ghi rõ. Chưa làm gameplay. Tất cả các game config sẽ được load từ Addressables. general game config sẽ tập trung hết game general data trong 1 file duy nhất.
 - **Nghiệm thu:** Test JSON hợp lệ/sai, cell trùng, shape ngoài biên, giá trị âm; không direct runtime asset reference.
 - **Bàn giao:** code/asset và hướng dẫn Editor cần thiết, kết quả kiểm tra thật, cập nhật tiến độ.
 
