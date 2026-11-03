@@ -36,6 +36,20 @@ public class ServiceLocator {
       }
    }
 
+   /// <summary>
+   /// Kiểm tra đã có singleton đăng ký theo kiểu runtime này hay chưa; không ghi log lỗi khi thiếu.
+   /// </summary>
+   public bool IsRegistered(Type type) {
+      return type != null && singletons.ContainsKey(type);
+   }
+
+   /// <summary>
+   /// Xóa toàn bộ singleton đã đăng ký; dùng khi shutdown hoặc reset test vì Domain Reload tắt có thể giữ static instance.
+   /// </summary>
+   public void UnregisterAll() {
+      singletons.Clear();
+   }
+
    public T Resolve<T>() where T : class {
       if (!singletons.TryGetValue(typeof(T), out object some)) {
          Debug.LogError($"Type {typeof(T)} not registered");

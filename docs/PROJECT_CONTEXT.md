@@ -39,3 +39,9 @@ Mỗi bài phải kèm hướng dẫn Editor cụ thể: đường dẫn asset, 
 
 ## Cập nhật nền tảng — 2026-11-03
 Người dùng đã import ServiceLocator.cs và Signals.cs vào Assets/Scripts/Core. Bài 1 được điều chỉnh để tích hợp và kiểm tra vòng đời bộ này, không viết lại. Chưa triển khai bài 1 hoặc chạy Unity. API đăng ký theo concrete type; Resolve chưa tự tạo signal khi type chưa được đăng ký. Signals hiện chưa có API phát sự kiện. GetPrefabs dùng Resources và không dùng cho runtime asset NeonBlocks.
+
+## Session và singleton — 2026-11-03
+- Entry có một `SessionManager` (DontDestroyOnLoad). Singleton sống xuyên suốt game được đăng ký qua `SessionManager.RegisterSingleton` trong logic khởi động của Entry; không dùng AppLifecycle hay framework lifecycle riêng.
+- `SessionManager` chỉ bị hủy khi Restart Game (`RestartGame()`: kết thúc session → hủy GameObject → tải lại Entry) hoặc khi thoát Play Mode. Instance trùng bị hủy ngay trong Awake và không đụng vào session đang chạy.
+- Singleton gắn với một scene (không phải session) do scene đó sở hữu và phải gỡ khi rời scene.
+- Chi tiết và quy tắc tái sử dụng cho các game khác nằm trong `PuzzlePortfolio/AGENTS.md`, mục "Session và singleton".

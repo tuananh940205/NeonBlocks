@@ -1,6 +1,6 @@
 # NeonBlocks — Tiến độ
 
-Cập nhật: 2026-11-03. Đã lập kế hoạch; chưa triển khai gameplay.
+Cập nhật: 2026-11-03. Bài 1 đã triển khai code, chờ xác minh trong Unity Editor; chưa triển khai gameplay.
 
 ## Trạng thái
 Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn thành / Bị chặn.
@@ -8,7 +8,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 
 | Bài | Nội dung | Trạng thái | Bằng chứng / còn thiếu |
 |---|---|---|---|
-| 1 | Nền tảng dự án và Entry scene | Chưa bắt đầu | Chưa có |
+| 1 | Nền tảng dự án và Entry scene | Đã triển khai, chờ xác minh | Code + asmdef + 17 EditMode test đã viết; Core/Runtime biên dịch OK bằng Roslyn của Unity (ngoài Editor). Addressables 2.10.3 đã cài trong project. Còn thiếu: gắn `SessionManager` và Canvas vào `Entry.unity`, chạy Test Runner và Play Mode (xem docs/lessons/BAI_1.md) |
 | 2 | Dữ liệu JSON và cấu hình luật chơi | Chưa bắt đầu | Chưa có |
 | 3 | Addressables và vòng đời scene | Chưa bắt đầu | Chưa có |
 | 4 | BoardModel và khối đang rơi | Chưa bắt đầu | Chưa có |
@@ -34,6 +34,28 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - Kiểm tra: tên test/thao tác, môi trường và kết quả thực tế.
 - Hạn chế, lỗi còn tồn tại và điều kiện để đánh dấu hoàn thành.
 - Đường dẫn hướng dẫn docs/lessons/BAI_N.md và evidence nếu có.
+
+### Bài 1
+- **Ngày và phạm vi:** 2026-11-03. Nền tảng: asmdef Core/Runtime/Tests, `SessionManager` (owner session, DontDestroyOnLoad, chỉ hủy khi Restart Game hoặc thoát Play Mode), safe area, test EditMode. Addressables chưa cài (người dùng thực hiện).
+- **Thay đổi so với phiên bản đầu:** bỏ `AppLifecycle`/`AppLifecycleState`/`EntryBootstrap` theo yêu cầu; singleton sống xuyên suốt được đăng ký trực tiếp qua `SessionManager.RegisterSingleton` trong logic khởi động. Các script đã xóa: `AppLifecycle.cs`, `AppLifecycleState.cs`, `EntryBootstrap.cs`, `AppLifecycleTests.cs` (kèm .meta).
+- **File đã thêm:**
+  - `Assets/Scripts/Core/NeonBlocks.Core.asmdef` (+ .meta): đưa Core vào assembly riêng tại chỗ, không di chuyển file.
+  - `Assets/_Project/Scripts/NeonBlocks.Runtime.asmdef` (+ .meta): tham chiếu `NeonBlocks.Core`, không tham chiếu Assembly-CSharp.
+  - `Assets/_Project/Scripts/App/SessionManager.cs`.
+  - `Assets/_Project/Scripts/UI/SafeAreaCalculator.cs`, `SafeAreaFitter.cs`.
+  - `Assets/_Project/Tests/EditMode/NeonBlocks.Tests.EditMode.asmdef` (+ .meta), `SessionManagerTests.cs`, `ServiceLocatorTests.cs`, `SafeAreaCalculatorTests.cs`, `ProbeService.cs`.
+  - Thư mục `Assets/_Project/{Scenes,Configs,Prefabs,Art,Audio}` (có `.gitkeep`).
+  - `docs/lessons/BAI_1.md`.
+- **File đã sửa:** `Assets/Scripts/Core/ServiceLocator.cs` — thêm `IsRegistered(Type)` và `UnregisterAll()`. Lý do: `ServiceLocator.Instance` là static, Domain Reload tắt sẽ giữ đăng ký cũ giữa các lần Play. Không đổi hành vi API cũ.
+- **Phiên bản Addressables:** 2.10.3, đã cài trong NeonBlocks (manifest + lock; `unity: 6000.0`). Registry công khai có 4.1.x mới hơn nhưng PM của Editor chỉ hiện 2.10.3; chưa thử cài 4.x nên chưa xác minh.
+- **Thiết lập Unity:** người dùng làm theo `docs/lessons/BAI_1.md`: cài Addressables, Player Settings portrait, hoàn thiện Entry scene (SessionManager, Canvas, SafeAreaRoot), Build Settings chỉ còn Entry.
+- **Kiểm tra thật đã chạy:**
+  - Biên dịch `NeonBlocks.Core` và `NeonBlocks.Runtime` bằng `csc.dll` của Unity 6000.3.25f1 với bộ reference netstandard 2.1: exit 0, không có cảnh báo (kiểm tra lại sau khi đổi sang SessionManager).
+  - Biên dịch `NeonBlocks.Tests.EditMode`: chỉ lỗi CS0012 do reference NUnit (bản net40) không tương thích với bộ netstandard trong môi trường này; không có lỗi ngữ nghĩa nào khác. **Test chưa được chạy.**
+- **Chưa xác minh:** Test Runner (17 test EditMode), Play Mode Entry, Play lặp/Domain Reload tắt, Restart Game (chưa có nút UI, gắn ở bài 12), Device Simulator safe area, Build Android. Unity Editor đang mở project nên không chạy batch mode trên `Library/`.
+- **Hạn chế:** `Signal` chưa có API phát sự kiện (chưa cần ở bài 1). `ServiceLocator.UnregisterSingleton(object)` vẫn khóa theo kiểu; `SessionManager` chỉ đăng ký/hủy singleton do chính nó sở hữu.
+- **Điều kiện đánh dấu hoàn thành:** 17 EditMode test pass trong Unity; Entry chạy không lỗi Console; Play lặp không có `Already registered`; Build Settings chỉ có Entry.
+- **Asset:** bài 1 không cần asset mới, không tạo mục trong `docs/ASSET_HANDOFF.md`.
 
 ## Ghi nhận ban đầu
 Đã đọc AGENTS.md, ProjectVersion.txt, Packages/manifest.json, EditorBuildSettings.asset và danh sách Assets qua MCP neonblocks_filesystem. Chưa chạy Unity, compile, test, profiling hay build. Người dùng đã chọn thể loại xếp gạch rơi kiểu Tetris.
