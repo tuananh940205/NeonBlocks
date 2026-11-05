@@ -15,7 +15,7 @@ Trạng thái: code và test đã viết; chưa chạy Test Runner trong Unity E
 2. Mở **Window → Asset Management → Addressables → Groups**. Nếu chưa có Addressables Settings, bấm **Create Addressables Settings** (cấu hình chi tiết thuộc bài 3).
 3. Kéo `GameConfig.json` vào group mặc định (hoặc group bạn chọn). Trong Inspector của entry, đặt **Address** = `GameConfig`.
    - Key phải trùng tên asset `GameConfig` để tuân theo quy tắc key của dự án; hằng số `GameConfigParser.AddressKey` cũng là `"GameConfig"`.
-   - Bài 2 chưa tải file này khi chạy game; việc tải qua `AddressableService` thuộc bài 3.
+   - Bài 2 chưa tải file này khi chạy game; việc tải qua `AddressableManager` thuộc bài 3.
 4. Không cần tạo prefab, scene hay asset ảnh mới cho bài này.
 
 ## 3. Kiểm tra
@@ -31,3 +31,7 @@ Trạng thái: code và test đã viết; chưa chạy Test Runner trong Unity E
 - Tốc độ rơi mặc định (1.0 → 0.1 giây/ô qua 10 level) là giá trị khởi tạo để điều chỉnh khi chơi thử ở các bài sau.
 - Các luật điểm, lock delay, DAS/ARR lấy từ kế hoạch; nếu đổi, sửa `GameConfig.json` và chạy lại test.
 - Không có asset mới cho bài 2; không tạo mục trong `docs/ASSET_HANDOFF.md`.
+
+## Tích hợp ở bài 3
+ConfigManager là class thuần C# singleton xuyên suốt game, dùng AddressableManager tải GameConfig rồi gọi GameConfigParser hiện có. Không đổi GameConfigParser/DTO/domain thành Manager; config chung và handle cần giữ thuộc scope session, không giải phóng theo scene.
+- Scene keys: GameConfig.json có mục `scenes` (entry, mainMenu, gameplay). Mục này được map qua DTO `SceneKeysDto` sang `SceneKeys`; không hằng số tên scene nào nằm trong class.

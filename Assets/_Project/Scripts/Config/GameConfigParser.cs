@@ -50,6 +50,7 @@ namespace NeonBlocks.Config
         {
             BoardDto boardDto = Require(dto.board, "board");
             GridPointDto spawnDto = Require(dto.spawn, "spawn");
+            SceneKeysDto sceneDto = Require(dto.scenes, "scenes");
             ScoringDto scoringDto = Require(dto.scoring, "scoring");
             TimingDto timingDto = Require(dto.timing, "timing");
 
@@ -67,6 +68,7 @@ namespace NeonBlocks.Config
                 dto.nextQueueSize,
                 dto.startLevel,
                 dto.linesPerLevel,
+                new SceneKeys(sceneDto.entry, sceneDto.mainMenu, sceneDto.gameplay),
                 levels,
                 scoring,
                 timing,

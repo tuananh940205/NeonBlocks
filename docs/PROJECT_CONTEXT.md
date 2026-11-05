@@ -26,9 +26,9 @@ Ngoài thể loại được xác nhận, các lựa chọn dưới đây là m�
 ## Kiến trúc cần giữ
 BoardModel và gameplay thuần C#, Unity views xử lý render/input. Config JSON TextAsset tải qua Addressables key; deserialize DTO rồi map sang data readonly/constructor-only, không yêu cầu Unity serializer tự gán readonly field. Một type mỗi file.
 
-Tái sử dụng bộ ServiceLocator và Signal người dùng đã import tại Assets/Scripts/Core. Locator hiện là class với static Instance, không phải static class; đây là ngoại lệ đã được người dùng chọn so với quy tắc static class cũ. Không tạo locator/signal thứ hai. Các service được quản lý là class thường, không có static singleton riêng. Typed Signal cho sự kiện, callback/action cho yêu cầu view; không serialized reference giữa các view để gọi nhau. UI button dùng AddListener/RemoveListener. Mọi method tạo/sửa trong Assets có XML comment tiếng Việt, đặt trước attribute.
+Tái sử dụng bộ ServiceLocator và Signal người dùng đã import tại Assets/Scripts/Core. Locator hiện là class với static Instance, không phải static class; đây là ngoại lệ đã được người dùng chọn so với quy tắc static class cũ. Không tạo locator/signal thứ hai. Các service được quản lý là class thường, không có static singleton riêng. Typed Signal register/dispatch cho giao tiếp giữa các MonoBehaviour; không serialized reference giữa các view để gọi nhau. UI button dùng AddListener/RemoveListener. Mọi method tạo/sửa trong Assets có XML comment tiếng Việt, đặt trước attribute.
 
-Chỉ Entry nằm trong Build Settings. Scene khác và popup/panel tải Addressables. Key bằng tên asset hoặc root GameObject. LevelData giữ key thay cho prefab/sprite reference. Chỉ AddressableService/SceneAssetScope release handle, kể cả release instance thông qua owner. Khi thoát: dừng input/job → dispose native data nếu có → hủy pool instances active/inactive → release scope. Chưa được release template khi pool còn instance.
+Chỉ Entry nằm trong Build Settings. Scene khác và popup/panel tải Addressables. Key bằng tên asset hoặc root GameObject. LevelData giữ key thay cho prefab/sprite reference. Chỉ AddressableManager/SceneAssetScope release handle, kể cả release instance thông qua owner. Khi thoát: dừng input/job → dispose native data nếu có → hủy pool instances active/inactive → release scope. Chưa được release template khi pool còn instance.
 
 Tuân thủ các giới hạn try-catch trong AGENTS.md; không nuốt lỗi. Không sửa Library, Temp hoặc file Unity sinh tự động. Chỉ dùng Jobs/Burst nếu có baseline và benchmark phù hợp.
 
@@ -45,3 +45,13 @@ Người dùng đã import ServiceLocator.cs và Signals.cs vào Assets/Scripts/
 - `SessionManager` chỉ bị hủy khi Restart Game (`RestartGame()`: kết thúc session → hủy GameObject → tải lại Entry) hoặc khi thoát Play Mode. Instance trùng bị hủy ngay trong Awake và không đụng vào session đang chạy.
 - Singleton gắn với một scene (không phải session) do scene đó sở hữu và phải gỡ khi rời scene.
 - Chi tiết và quy tắc tái sử dụng cho các game khác nằm trong `PuzzlePortfolio/AGENTS.md`, mục "Session và singleton".
+
+## Manager logic xuyên suốt game — cập nhật theo yêu cầu người dùng
+
+- Class quản lý/điều phối logic cho một chức năng đặt tên `{Function}Manager`: AddressableManager, SceneFlowManager, ConfigManager; PoolManager được triển khai ở bài 9. Đây là class thuần C#, không kế thừa MonoBehaviour, không static Instance riêng.
+- Đăng ký một instance qua SessionManager.RegisterSingleton tại Entry và resolve qua ServiceLocator hiện có. Manager sống xuyên suốt game/session, giữ cùng instance khi đổi scene; cleanup/unregister khi Restart Game hoặc kết thúc game/Play Mode.
+- SessionManager hiện có là ngoại lệ làm cầu nối MonoBehaviour sở hữu session. Không buộc Manager logic vào component, serialized field hoặc lifecycle của MonoBehaviour scene.
+- Manager tồn tại lâu không đồng nghĩa giữ tài nguyên scene mãi: dọn listener/view/pool instances và handle của scene khi rời scene. Không dispose chính Manager khi đổi scene. Config dùng chung thuộc scope session; SceneAssetScope thuộc từng scene.
+- Model, data, DTO, parser, signal và scope không phải class điều phối chức năng nên giữ tên theo trách nhiệm (BoardModel, GameConfigParser, SceneAssetScope...), không đổi tất cả thành Manager hoặc singleton.
+- Tên chuẩn mới là AddressableManager thay AddressableService, PoolManager thay PoolService. Các quy tắc cũ về ownership/release vẫn giữ nguyên ý nghĩa với tên mới. Chỉ AddressableManager và SceneAssetScope release Addressables handle.
+- Quy tắc này ưu tiên khi tài liệu cũ dùng tên Service hoặc mô tả singleton của Manager gắn với scene; object scene và scope vẫn được cleanup theo vòng đời riêng.

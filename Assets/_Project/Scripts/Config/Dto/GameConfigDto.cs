@@ -17,6 +17,9 @@ namespace NeonBlocks.Config.Dto
         /// <summary>Số hàng để tăng một level.</summary>
         public readonly int linesPerLevel;
 
+        /// <summary>Tên scene dùng trong game.</summary>
+        public readonly SceneKeysDto scenes;
+
         /// <summary>Kích thước bảng.</summary>
         public readonly BoardDto board;
 
@@ -41,6 +44,7 @@ namespace NeonBlocks.Config.Dto
         /// <param name="nextQueueSize">Số khối trong hàng đợi Next.</param>
         /// <param name="startLevel">Level bắt đầu.</param>
         /// <param name="linesPerLevel">Số hàng để tăng level.</param>
+        /// <param name="scenes">Tên scene.</param>
         /// <param name="board">Kích thước bảng.</param>
         /// <param name="spawn">Góc đáy trái khung spawn.</param>
         /// <param name="levels">Bảng level.</param>
@@ -52,6 +56,7 @@ namespace NeonBlocks.Config.Dto
             int nextQueueSize,
             int startLevel,
             int linesPerLevel,
+            SceneKeysDto scenes,
             BoardDto board,
             GridPointDto spawn,
             LevelDto[] levels,
@@ -62,6 +67,7 @@ namespace NeonBlocks.Config.Dto
             this.nextQueueSize = nextQueueSize;
             this.startLevel = startLevel;
             this.linesPerLevel = linesPerLevel;
+            this.scenes = scenes;
             this.board = board;
             this.spawn = spawn;
             this.levels = levels;

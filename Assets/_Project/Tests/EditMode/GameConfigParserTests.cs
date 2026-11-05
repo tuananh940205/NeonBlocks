@@ -23,6 +23,9 @@ namespace NeonBlocks.Tests
             Assert.AreEqual(20, config.Board.VisibleHeight);
             Assert.AreEqual(4, config.Board.HiddenRows);
             Assert.AreEqual(24, config.Board.TotalHeight);
+            Assert.AreEqual("Entry", config.Scenes.EntryScene);
+            Assert.AreEqual("MainMenu", config.Scenes.MainMenu);
+            Assert.AreEqual("Gameplay", config.Scenes.Gameplay);
             Assert.AreEqual(new GridPoint(3, 20), config.SpawnOrigin);
             Assert.AreEqual(5, config.NextQueueSize);
             Assert.AreEqual(1, config.StartLevel);
@@ -293,6 +296,30 @@ namespace NeonBlocks.Tests
         {
             JObject root = ConfigTestFiles.LoadValidJson();
             root["linesPerLevel"] = new JValue(0);
+
+            Assert.Throws<ConfigValidationException>(() => GameConfigParser.Parse(root.ToString()));
+        }
+
+        /// <summary>
+        /// Kiểm tra tên scene rỗng bị từ chối bằng ConfigValidationException.
+        /// </summary>
+        [Test]
+        public void Parse_EmptySceneKey_Throws()
+        {
+            JObject root = ConfigTestFiles.LoadValidJson();
+            root["scenes"]["mainMenu"] = new JValue("");
+
+            Assert.Throws<ConfigValidationException>(() => GameConfigParser.Parse(root.ToString()));
+        }
+
+        /// <summary>
+        /// Kiểm tra hai tên scene trùng nhau bị từ chối bằng ConfigValidationException.
+        /// </summary>
+        [Test]
+        public void Parse_DuplicateSceneKeys_Throws()
+        {
+            JObject root = ConfigTestFiles.LoadValidJson();
+            root["scenes"]["gameplay"] = new JValue("MainMenu");
 
             Assert.Throws<ConfigValidationException>(() => GameConfigParser.Parse(root.ToString()));
         }

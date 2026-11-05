@@ -2,6 +2,7 @@
   "nextQueueSize": 5,
   "startLevel": 1,
   "linesPerLevel": 10,
+  "scenes": { "entry": "Entry", "mainMenu": "MainMenu", "gameplay": "Gameplay" },
   "board": { "width": 10, "visibleHeight": 20, "hiddenRows": 4 },
   "spawn": { "x": 3, "y": 20 },
   "levels": [

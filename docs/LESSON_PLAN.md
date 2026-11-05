@@ -17,7 +17,7 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
 ## Tổng quan
 1. Nền tảng dự án và Entry scene
 2. Dữ liệu JSON và cấu hình luật chơi
-3. Addressables và vòng đời scene
+3. Manager xuyên suốt game, Addressables và vòng đời scene
 4. BoardModel và khối đang rơi
 5. Xoay khối và wall kick
 6. Nguồn khối và preview
@@ -43,7 +43,7 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
   3. Tạo Entry bootstrap với thứ tự khởi tạo/đăng ký rõ ràng và cleanup theo ownership. API hiện đăng ký theo concrete runtime type: resolve đúng type đã đăng ký, không giả định hỗ trợ interface registration hoặc tự tạo signal. Không tạo service singleton static riêng.
   4. Kiểm tra lifecycle khi Entry khởi tạo lại, chuyển scene và Play Mode bật/tắt Domain Reload: không đăng ký trùng, giữ reference đã dispose hoặc tích lũy listener. Chỉ bổ sung API reset/cleanup tối thiểu vào bộ Core nếu kiểm tra cho thấy cần, giữ tương thích API hiện có và giải thích thay đổi.
   5. Thiết lập assembly runtime/test phù hợp bộ Core. Không để asmdef runtime phụ thuộc Assembly-CSharp: chọn cấu trúc assembly cho Core tại chỗ nếu cần, không tự di chuyển thư viện. Thêm XML comment tiếng Việt cho method thực sự tạo/sửa; không refactor toàn bộ Signals.cs chỉ để đổi cấu trúc file trong bài này.
-  6. Cài Addressables qua Package Manager, xác minh phiên bản tương thích trong Editor đang dùng; không tự đoán version. Việc tải asset đi qua AddressableService ở bài 3.
+  6. Cài Addressables qua Package Manager, xác minh phiên bản tương thích trong Editor đang dùng; không tự đoán version. Việc tải asset đi qua AddressableManager ở bài 3.
   7. Chuẩn bị Android portrait, URP 2D, safe area và Entry scene. Chưa triển khai gameplay hoặc hệ thống scene loader thuộc bài 3.
 - **Lưu ý Signal:** Tái sử dụng các lớp đã import. Signals.cs hiện có AddListener/RemoveListener/RemoveAllListeners nhưng chưa có API phát sự kiện; ghi nhận điểm này trong bàn giao, bổ sung tối thiểu khi bài cần phát signal, không tạo hệ Signal song song.
 - **Nghiệm thu:** Entry compile/chạy không lỗi; đăng ký → resolve đúng cùng instance → unregister được xác minh; chạy lại Entry/Play Mode không có lỗi đăng ký trùng hay service cũ còn tồn tại. Kiểm tra trường hợp Domain Reload tắt nếu môi trường cho phép. Ghi phiên bản package thực tế, cấu trúc assembly, API Core đã dùng và hướng dẫn Editor; đánh dấu chờ xác minh nếu chưa chạy được Unity.
@@ -57,13 +57,21 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
 - **Nghiệm thu:** Test JSON hợp lệ/sai, cell trùng, shape ngoài biên, giá trị âm; không direct runtime asset reference.
 - **Bàn giao:** code/asset và hướng dẫn Editor cần thiết, kết quả kiểm tra thật, cập nhật tiến độ.
 
-## Bài 3 — Addressables và vòng đời scene
+## Bài 3 — Manager xuyên suốt game, Addressables và vòng đời scene
 
 - **Prompt:** `Triển khai bài 3`
-- **Phụ thuộc:** 1, 2.
-- **Phạm vi:** Tạo AddressableService, SceneAssetScope, scene loader và config loader; chỉ Entry trong Build Settings, MainMenu và Gameplay là Addressable. Key bằng tên asset/root GameObject, duy nhất. Theo dõi ownership handle, load failure và hủy khi đang load; phân biệt ReleaseInstance/Release theo cách instantiate. Service Task bọc lỗi đúng exception type như AGENTS.
-- **Nghiệm thu:** PlayMode: Entry→Menu→Gameplay→Menu; thất bại load báo rõ, không double release. Panel tạo động, chưa đặt sẵn trong scene.
-- **Bàn giao:** code/asset và hướng dẫn Editor cần thiết, kết quả kiểm tra thật, cập nhật tiến độ.
+- **Phụ thuộc:** 1, 2; đọc kết quả thực tế và các bước Unity còn chờ xác minh.
+- **Quy tắc kiến trúc:** Class điều phối logic cho từng chức năng đặt tên `{Function}Manager`, là class thuần C#, không kế thừa MonoBehaviour, không có static Instance riêng. Khởi tạo và đăng ký một instance qua `SessionManager.RegisterSingleton(...)` tại Entry; resolve bằng ServiceLocator hiện có. Manager sống xuyên suốt game, không tạo lại hoặc dispose khi đổi scene. Kết thúc session khi Restart Game/thoát game hoặc Play Mode mới cleanup và unregister.
+- **Phạm vi:**
+  1. Tạo `AddressableManager` quản lý load/instantiate và ownership handle; `SceneFlowManager` điều phối chuyển scene; `ConfigManager` tải GameConfig JSON qua Addressables rồi dùng GameConfigParser hiện có để parse/validate. Khởi tạo theo thứ tự dependency rõ ràng và chỉ bắt đầu tải scene khi config đã sẵn sàng.
+  2. Manager không phụ thuộc serialized field, GameObject host hoặc vòng đời Awake/OnEnable/OnDestroy của scene. Truyền dependency rõ ràng khi khởi tạo. SessionManager hiện có là cầu nối MonoBehaviour sở hữu session, không biến các Manager logic thành component.
+  3. Giữ `SceneAssetScope` là object thuần C# quản lý ownership tài nguyên của từng scene, không phải Manager singleton. Khi rời scene, dừng input/job → dispose native data nếu có → hủy pool instances active/inactive → release scope. Manager vẫn tồn tại, chỉ bỏ state/reference thuộc scene cũ; config dùng chung giữ trong scope session.
+  4. Chỉ Entry trong Build Settings; MainMenu và Gameplay tải Addressables với key bằng tên asset/root GameObject, duy nhất. Tạo scene/view tối thiểu để xác minh luồng; giao diện đầy đủ thuộc bài sau. Popup/panel tạo động qua Addressables, không đặt sẵn trong scene.
+  5. Chỉ AddressableManager và SceneAssetScope thực hiện release handle. Theo dõi owner, load failure, hủy khi đang tải, kết quả tải về sau khi scene/session đã kết thúc; phân biệt ReleaseInstance/Release theo cách instantiate, release đúng một lần. Không release prefab template khi pool còn instance.
+  6. MonoBehaviour giao tiếp với MonoBehaviour khác qua class Signal riêng để register/dispatch; không serialized cross-reference hoặc gọi callback trực tiếp giữa hai component. Manager chỉ có logic; nếu cần sự kiện thì dùng Signal hiện có, hủy listener/reference của view khi rời scene.
+  7. Các method Manager trả Task tuân thủ quy tắc exception trong AGENTS.md, bọc failure đồng bộ/bất đồng bộ bằng loại exception đã tài liệu hóa. Không tạo framework lifecycle, ServiceLocator hay Signal thứ hai.
+- **Nghiệm thu:** Kiểm tra đăng ký/resolve cùng instance của từng Manager qua Entry→Menu→Gameplay→Menu; đổi scene không tạo Manager mới. Config tải và validate thành công trước gameplay; tải thất bại có kết quả rõ ràng. Kiểm tra hủy tải/chuyển scene liên tiếp, không double release, không giữ listener/view scene cũ. Restart Game kết thúc session cũ, cleanup theo dependency và tạo bộ Manager mới; chạy lại Play Mode không đăng ký trùng. Ghi rõ các kiểm tra chưa chạy được.
+- **Bàn giao:** Code, test phù hợp và hướng dẫn Unity tại docs/lessons/BAI_3.md khi triển khai; bảng Manager/dependency/owner/lifetime, key Addressables, ownership tài nguyên session/scene và kết quả kiểm tra thật. Cập nhật PROGRESS.md; không đánh dấu đã triển khai chỉ vì đã sửa kế hoạch.
 
 ## Bài 4 — BoardModel và khối đang rơi
 
@@ -109,7 +117,7 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
 
 - **Prompt:** `Triển khai bài 9`
 - **Phụ thuộc:** 3, 8.
-- **Phạm vi:** Dựng render bảng, settled/active/ghost/next bằng placeholder đơn giản; PoolService quản lý cell visual, template Addressable giữ sống trong khi có instance. Ghost là kết quả chiếu xuống từ model, không sửa model. View không chứa luật chơi.
+- **Phạm vi:** Dựng render bảng, settled/active/ghost/next bằng placeholder đơn giản; PoolManager là class thuần C# singleton xuyên suốt game, đăng ký qua SessionManager; quản lý cell visual theo scope scene, template Addressable giữ sống trong khi có instance. Ghost là kết quả chiếu xuống từ model, không sửa model. View không chứa luật chơi.
 - **Nghiệm thu:** Chơi vòng cơ bản bằng driver tạm hoặc test harness; mapping ô chính xác, ghost trùng hard drop; trả pool khi thoát.
 - **Bàn giao:** code/asset và hướng dẫn Editor cần thiết, kết quả kiểm tra thật, cập nhật tiến độ.
 
@@ -125,7 +133,7 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
 
 - **Prompt:** `Triển khai bài 11`
 - **Phụ thuộc:** 10.
-- **Phạm vi:** Hold một lần mỗi lượt khối, reset quyền hold sau lock/spawn; swap về spawn orientation/position, spawn fail kết thúc. HUD score/level/lines/next/hold, Signal typed cho model→UI, action/callback cho yêu cầu giữa views; không serialized cross-view.
+- **Phạm vi:** Hold một lần mỗi lượt khối, reset quyền hold sau lock/spawn; swap về spawn orientation/position, spawn fail kết thúc. HUD score/level/lines/next/hold, Signal typed cho model→UI, Signal riêng register/dispatch cho yêu cầu giữa các MonoBehaviour views; không serialized cross-view.
 - **Nghiệm thu:** Test hold lần đầu/đổi khối/chặn hold lần hai/reset lượt/top-out; HUD đồng bộ khi restart.
 - **Bàn giao:** code/asset và hướng dẫn Editor cần thiết, kết quả kiểm tra thật, cập nhật tiến độ.
 

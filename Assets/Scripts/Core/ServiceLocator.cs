@@ -30,6 +30,14 @@ public class ServiceLocator {
       // singletons[obj.GetType()] = obj;
    }
 
+   public void RegisterSingleton(Type type, object obj) {
+      if (singletons.TryAdd(type, obj)) {
+         return;
+      }
+
+      Debug.LogError($"Already registered {obj.GetType()}");
+   }
+
    public void UnregisterSingleton(object obj) {
       if (singletons.ContainsKey(obj.GetType())) {
          singletons.Remove(obj.GetType());
@@ -50,23 +58,24 @@ public class ServiceLocator {
       singletons.Clear();
    }
 
+   /// <summary>
+   /// Lấy singleton theo kiểu runtime. Lớp kế thừa BaseSignal được tạo lazy ở lần Resolve đầu tiên và đăng ký tự động,
+   /// nên luôn trả về instance. Các kiểu khác phải đã được đăng ký ở đầu session; thiếu đăng ký thì ghi log lỗi và trả null.
+   /// </summary>
+   /// <typeparam name="T">Kiểu singleton cần lấy.</typeparam>
+   /// <returns>Instance đã đăng ký hoặc vừa tạo; null nếu kiểu không phải signal và chưa đăng ký.</returns>
    public T Resolve<T>() where T : class {
-      if (!singletons.TryGetValue(typeof(T), out object some)) {
-         Debug.LogError($"Type {typeof(T)} not registered");
-         return default(T);
-      }
+      if (singletons.TryGetValue(typeof(T), out object registered) && registered is T result1)
+         return result1;
 
-      if (some is T value)
-         return value;
-
-      // Register callback listener
-      if (typeof(T).IsSubclassOf(typeof(BaseSignal)))
-      {
+      if (typeof(BaseSignal).IsAssignableFrom(typeof(T))) {
          var signal = Activator.CreateInstance<T>();
-         RegisterSingleton(signal);
+         singletons[typeof(T)] = signal;
+         RegisterSingleton(typeof(T), signal);
          return signal;
       }
 
-      return default;
+      Debug.LogError($"Type {typeof(T)} not registered");
+      return default(T);
    }
 }

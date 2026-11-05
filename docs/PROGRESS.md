@@ -10,7 +10,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 |---|---|---|---|
 | 1 | Nền tảng dự án và Entry scene | Đã triển khai, chờ xác minh | Code + asmdef + 17 EditMode test đã viết; Core/Runtime biên dịch OK bằng Roslyn của Unity (ngoài Editor). Addressables 2.10.3 đã cài trong project. Còn thiếu: gắn `SessionManager` và Canvas vào `Entry.unity`, chạy Test Runner và Play Mode (xem docs/lessons/BAI_1.md) |
 | 2 | Dữ liệu JSON và cấu hình luật chơi | Đã triển khai, chờ xác minh | Code + 34 EditMode test đã viết (`GameConfigParserTests` 23, `GameConfigRulesTests` 4, `PieceDefinitionTests` 7); Runtime biên dịch OK bằng Roslyn của Unity. Còn thiếu: chạy Test Runner, đặt Addressables key `GameConfig` (xem docs/lessons/BAI_2.md) |
-| 3 | Addressables và vòng đời scene | Chưa bắt đầu | Chưa có |
+| 3 | Manager xuyên suốt game, Addressables và vòng đời scene | Đã triển khai, chờ xác minh | Code + 22 EditMode test mới (tổng 73). Runtime và test biên dịch OK bằng Roslyn của Unity; Addressables biên dịch từ source 2.10.3. Còn thiếu: Test Runner, Play Mode Entry→MainMenu→Gameplay→MainMenu, tạo MainMenu/Gameplay scene và Addressables Settings (xem docs/lessons/BAI_3.md) |
 | 4 | BoardModel và khối đang rơi | Chưa bắt đầu | Chưa có |
 | 5 | Xoay khối và wall kick | Chưa bắt đầu | Chưa có |
 | 6 | Nguồn khối và preview | Chưa bắt đầu | Chưa có |
@@ -80,5 +80,39 @@ Khi triển khai, thêm mục “Bài N” gồm:
   - `SessionManagerTests.DuplicateSession_IsNotOwner_AndDestroyingItKeepsOwner`: log có `Type NeonBlocks.SessionManager not registered` tại dòng resolve, và không có cảnh báo `đã tồn tại` nào. Nguyên nhân: `Awake` không chạy khi `AddComponent` trong Edit Mode. Đã tách logic thành `TryBeginSession()`; test tạo GameObject không hoạt động rồi gọi method này tường minh. Các test SessionManager khác dùng cùng cách; suy luận từ mã, chưa thấy kết quả riêng của từng test.
 - **Chưa xác minh:** chạy lại toàn bộ EditMode sau sửa. Test 1 và 2 của bài 2 (`Newtonsoft` qua `precompiledReferences`) chưa có kết quả.
 
+### Bài 3
+- **Ngày và phạm vi:** 2026-11-03. Manager thuần C# (`AddressableManager`, `ConfigManager`, `SceneFlowManager`) đăng ký qua `SessionManager`; `SceneAssetScope` theo từng scene; luồng Entry→MainMenu→Gameplay→MainMenu; Signal `Dispatch` tối thiểu.
+- **File đã thêm:**
+  - `Scripts/Assets/`: `AssetOwnerToken`, `AddressableLoadException`, `AddressableResult`, `IAddressableBackend`, `UnityAddressableBackend`, `AddressableManager`, `TrackedKind`, `TrackedAsset`, `LoadedScene`, `SceneAssetScope`.
+  - `Scripts/Scene/`: `SceneFlowManager`, `SceneStopSignal`, `SceneDisposeSignal`, `SceneRequestSignal`.
+  - `Scripts/Config/ConfigManager.cs`; `Scripts/App/EntryLauncher.cs`; `Scripts/Views/MainMenuCanvas.cs`, `GameplayCanvas.cs` (script gắn trên Canvas, giữ nút làm serialized field; đổi tên từ `MainMenuView`/`GameplayView` và giữ GUID để scene không đứt tham chiếu).
+  - `Tests/EditMode/`: `FakeAddressableBackend`, `AddressableManagerTests` (12), `SceneFlowManagerTests` (5), `ConfigManagerTests` (5).
+  - `docs/lessons/BAI_3.md`.
+- **File đã sửa:** `Scripts/Core/Signals.cs` (thêm `Dispatch()` và `Dispatch(T)`); `Scripts/NeonBlocks.Runtime.asmdef` (thêm `Unity.Addressables`, `Unity.ResourceManager`, `Unity.UI`).
+- **Quyết định thiết kế:**
+  - Chỉ `AddressableManager` gọi Addressables release, qua `UnityAddressableBackend` là phần hạ tầng của nó. `SceneAssetScope` chỉ gọi `AddressableManager`.
+  - Scene tải Additive; Entry giữ session và `BootVisuals` (camera/canvas khởi động) bị tắt sau khi MainMenu tải.
+  - Rời scene: dispatch stop, dispatch dispose, rồi giải phóng scope; load scene đích sau đó. Hệ quả: có một khoảng không có scene khi chuyển; nếu tải scene đích lỗi, không có scene hoạt động cho đến lần chuyển thành công tiếp theo.
+  - `ConfigManager.LoadAsync` không bọc lỗi parse; `JsonException` và `ConfigValidationException` là loại được tài liệu hóa, khác với quy tắc "bọc mọi lỗi" trong AGENTS. Cần xác nhận hoặc đổi.
+- **Kiểm tra thật đã chạy (ngoài Editor):**
+  - `Addressables` (2.10.3, từ source trong Library) biên dịch sạch bằng `csc.dll` của Unity, cùng `UnityEngine.UI.dll` và module UnityWebRequest.
+  - `NeonBlocks.Core`, `NeonBlocks.Runtime` biên dịch sạch.
+  - Test EditMode biên dịch sạch với NUnit netstandard 3.14.0 (từ NuGet, chỉ dùng cho kiểm tra biên dịch; project vẫn dùng NUnit của Unity). **Test chưa được chạy**, vì các test dùng GameObject/TextAsset cần Unity runtime.
+- **Chưa xác minh:** Test Runner (73 test tổng cộng); Play Mode toàn luồng; cancel và unload trong Editor thật; Addressables Settings và các scene mới; Restart Game (chưa có UI).
+- **Điều kiện đánh dấu hoàn thành:** 73 EditMode test pass; Entry→MainMenu→Gameplay→MainMenu chạy không lỗi; Play lặp không đăng ký trùng; load lỗi báo rõ trên Console.
+
+- **Sửa 2026-11-05 (theo yêu cầu người dùng):** BootVisuals không còn được tham chiếu qua `[SerializeField]`. Thêm `BootVisualsHideSignal` (Signal kế thừa, `Scripts/App/`) và `BootVisualsView` gắn trên gốc `BootVisuals`: view resolve signal trong Start và tự tắt khi nhận lệnh. `EntryLauncher` đăng ký signal trước mọi `await`, có `DefaultExecutionOrder(-100)` để Start chạy trước view, và phát signal sau khi scene đầu đã tải. Đã biên dịch lại Runtime và test (không đổi số test). Chưa chạy Unity.
+- **Sửa 2026-11-05 (nút):** nút Start/Back và listener của chúng chuyển sang script gắn trên Canvas (`MainMenuCanvas`, `GameplayCanvas`), giữ `Button` làm serialized field trên chính Canvas. View khác không chạm tới nút; muốn tác động tới nút phải gửi Signal tới script trên Canvas.
+- **Hệ quả cho Editor:** `BootVisuals` cần Add Component `BootVisualsView`; `Session` không còn field Boot Visuals. Xem `docs/lessons/BAI_3.md` mục 5.
+
 ## Ghi nhận ban đầu
 Đã đọc AGENTS.md, ProjectVersion.txt, Packages/manifest.json, EditorBuildSettings.asset và danh sách Assets qua MCP neonblocks_filesystem. Chưa chạy Unity, compile, test, profiling hay build. Người dùng đã chọn thể loại xếp gạch rơi kiểu Tetris.
+
+## Cập nhật kế hoạch Manager
+- Theo yêu cầu người dùng: bài 3 dùng AddressableManager, SceneFlowManager và ConfigManager thuần C#, singleton sống xuyên suốt game do SessionManager đăng ký/sở hữu. Đổi scene chỉ cleanup tài nguyên scene; không hủy Manager.
+- Bài 9 dùng tên PoolManager; SceneAssetScope vẫn là scope theo scene. Đã đồng bộ LESSON_PLAN.md, PROJECT_CONTEXT.md, AGENTS.md và ghi chú hướng dẫn bài 1/2.
+- Đây là thay đổi tài liệu; bài 3 vẫn chưa bắt đầu. Không sửa code hoặc chạy thêm test/build trong lần cập nhật này; giữ nguyên các kết quả kiểm tra trước đó.
+- **Sửa 2026-11-05 (signal):** không class nào giữ tham chiếu tới Signal. Signal được resolve tại thời điểm dùng. Bộ Core: `ServiceLocator.Resolve<T>()` tạo lazy lớp signal ở lần đầu (trước đây nhánh này là code chết); đã bỏ `TryResolve`. `EntryLauncher` không đăng ký signal thủ công. Đã biên dịch lại Runtime và test.
+- **Sửa 2026-11-05 (scene keys):** tên scene (`Entry`, `MainMenu`, `Gameplay`) chuyển khỏi hằng số trong class vào mục `scenes` của GameConfig, qua `SceneKeysDto` và `SceneKeys`. `EntryLauncher`, `MainMenuCanvas`, `GameplayCanvas`, `SessionManager.RestartGame` đọc từ `ConfigManager.Config.Scenes`. `RestartGame` đọc tên Entry trước `ResetSession`. Hằng số `GameConfigParser.AddressKey` được giữ vì cần trước khi config tải. Thêm 2 test parser (scene rỗng, scene trùng). Đã biên dịch lại Runtime và test.
+- **Sửa 2026-11-05 (gọi signal trực tiếp):** bỏ kiểm tra null cho signal (luôn có instance nhờ lazy `Resolve`) trong `MainMenuCanvas`, `GameplayCanvas`, `BootVisualsView` và constructor `SceneFlowManager`; gọi `Resolve<T>().AddListener/RemoveListener/Dispatch` trực tiếp. Chỉ giữ kiểm tra null cho nút Inspector. Đã biên dịch lại Runtime và test.
+- **Sửa 2026-11-05 (EntryLauncher/SessionManager):** `EntryLauncher` bỏ `RequireComponent` và `GetComponent`, lấy session qua `ServiceLocator.Resolve<SessionManager>()`; chỉ chạy khi `gameObject.scene.buildIndex == 0` và cùng GameObject với session đang sở hữu. Đã biên dịch lại Runtime và test.

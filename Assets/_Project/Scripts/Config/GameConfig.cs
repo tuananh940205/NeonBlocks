@@ -29,6 +29,9 @@ namespace NeonBlocks.Config
         /// <summary>Số hàng cần xóa để tăng một level.</summary>
         public int LinesPerLevel { get; }
 
+        /// <summary>Tên scene Entry, MainMenu và Gameplay.</summary>
+        public SceneKeys Scenes { get; }
+
         /// <summary>Bảng tốc độ rơi theo level, liên tiếp từ StartLevel; chỉ đọc.</summary>
         public IReadOnlyList<LevelData> Levels { get; }
 
@@ -49,6 +52,7 @@ namespace NeonBlocks.Config
         /// <param name="nextQueueSize">Số khối trong hàng đợi Next, phải &gt; 0.</param>
         /// <param name="startLevel">Level bắt đầu, phải ≥ 1.</param>
         /// <param name="linesPerLevel">Số hàng để tăng level, phải &gt; 0.</param>
+        /// <param name="scenes">Tên scene, không được null.</param>
         /// <param name="levels">Bảng level, phải bắt đầu đúng từ startLevel và liên tiếp.</param>
         /// <param name="scoring">Luật điểm.</param>
         /// <param name="timing">Luật thời gian.</param>
@@ -59,6 +63,7 @@ namespace NeonBlocks.Config
             int nextQueueSize,
             int startLevel,
             int linesPerLevel,
+            SceneKeys scenes,
             IEnumerable<LevelData> levels,
             ScoringRules scoring,
             TimingRules timing,
@@ -134,6 +139,7 @@ namespace NeonBlocks.Config
             NextQueueSize = nextQueueSize;
             StartLevel = startLevel;
             LinesPerLevel = linesPerLevel;
+            Scenes = scenes ?? throw new ConfigValidationException("scenes bị thiếu.");
             Levels = Array.AsReadOnly(levelList.ToArray());
             Pieces = Array.AsReadOnly(pieceList.ToArray());
         }

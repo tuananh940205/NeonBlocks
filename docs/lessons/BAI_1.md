@@ -71,3 +71,6 @@ Scene `Assets/_Project/Scenes/Entry.unity` đã tồn tại (Main Camera, Global
 - Singleton sống xuyên suốt game đăng ký qua `SessionManager.RegisterSingleton(...)` trong logic khởi động; xem mục "Session và singleton" trong `PuzzlePortfolio/AGENTS.md`.
 - Signal hiện chưa có API phát sự kiện (chưa cần ở bài 1).
 - Không có asset mới cho bài 1; không tạo mục trong `docs/ASSET_HANDOFF.md`.
+
+## Quy ước cho bài 3 và các bài sau
+Các class điều phối logic dùng tên {Function}Manager, thuần C#, đăng ký qua SessionManager.RegisterSingleton và sống xuyên suốt session. SessionManager hiện có vẫn làm cầu nối MonoBehaviour; không thêm component cho Manager logic. Xem bài 3 trong LESSON_PLAN.md để phân biệt lifetime Manager với tài nguyên scene.

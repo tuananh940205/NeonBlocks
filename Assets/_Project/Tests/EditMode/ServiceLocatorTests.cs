@@ -1,12 +1,13 @@
 using System.Text.RegularExpressions;
 using NUnit.Framework;
+using NeonBlocks.Scene;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace NeonBlocks.Tests
 {
     /// <summary>
-    /// Kiểm thử vòng đời đăng ký/resolve/unregister của ServiceLocator đang dùng trong dự án.
+    /// Kiểm thử vòng đời đăng ký/resolve/unregister của ServiceLocator và cơ chế lazy của Signal.
     /// </summary>
     public class ServiceLocatorTests
     {
@@ -43,7 +44,7 @@ namespace NeonBlocks.Tests
         }
 
         /// <summary>
-        /// Kiểm tra unregister gỡ đúng đăng ký và không còn resolve được sau đó.
+        /// Kiểm tra unregister gỡ đúng đăng ký và không còn kiểu đó sau khi gỡ.
         /// </summary>
         [Test]
         public void UnregisterSingleton_RemovesRegistration()
@@ -83,6 +84,31 @@ namespace NeonBlocks.Tests
             ServiceLocator.Instance.UnregisterAll();
 
             Assert.IsFalse(ServiceLocator.Instance.IsRegistered(typeof(ProbeService)));
+        }
+
+        /// <summary>
+        /// Kiểm tra signal được tạo lazy ở lần Resolve đầu tiên và các lần sau trả về cùng instance.
+        /// </summary>
+        [Test]
+        public void Resolve_SignalType_CreatesInstanceLazilyAndReturnsSameInstance()
+        {
+            SceneStopSignal first = ServiceLocator.Instance.Resolve<SceneStopSignal>();
+            SceneStopSignal second = ServiceLocator.Instance.Resolve<SceneStopSignal>();
+
+            Assert.IsNotNull(first);
+            Assert.AreSame(first, second);
+            Assert.IsTrue(ServiceLocator.Instance.IsRegistered(typeof(SceneStopSignal)));
+        }
+
+        /// <summary>
+        /// Kiểm tra Resolve kiểu không phải signal khi chưa đăng ký: ghi log lỗi và trả null.
+        /// </summary>
+        [Test]
+        public void Resolve_UnregisteredNonSignal_LogsErrorAndReturnsNull()
+        {
+            LogAssert.Expect(LogType.Error, new Regex("not registered"));
+
+            Assert.IsNull(ServiceLocator.Instance.Resolve<ProbeService>());
         }
     }
 }

@@ -13,9 +13,6 @@ namespace NeonBlocks
     [DisallowMultipleComponent]
     public class SessionManager : MonoBehaviour
     {
-        /// <summary>Tên scene Entry trong Build Settings; Restart Game tải lại scene này.</summary>
-        private const string EntrySceneName = "Entry";
-
         private readonly List<IDisposable> ownedDisposables = new List<IDisposable>();
         private bool isOwner;
 
@@ -115,12 +112,14 @@ namespace NeonBlocks
         /// <summary>
         /// Restart Game: kết thúc session, hủy SessionManager và tải lại Entry để tạo session mới.
         /// Đây là cách duy nhất hủy SessionManager trong lúc game đang chạy.
+        /// Tên scene Entry được đọc từ GameConfig trước khi ResetSession gỡ đăng ký ConfigManager; nên chỉ restart khi cấu hình đã sẵn sàng.
         /// </summary>
         public void RestartGame()
         {
+            string entryScene = ServiceLocator.Instance.Resolve<Config.ConfigManager>().Config.Scenes.EntryScene;
             ResetSession();
             Destroy(gameObject);
-            SceneManager.LoadScene(EntrySceneName);
+            SceneManager.LoadScene(entryScene);
         }
 
         /// <summary>
