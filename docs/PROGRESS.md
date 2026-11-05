@@ -1,6 +1,6 @@
 # NeonBlocks — Tiến độ
 
-Cập nhật: 2026-11-05. Bài 1–6 đã triển khai code; Bài 4 đã có bằng chứng Test Runner, Bài 5–6 chờ xác minh Unity.
+Cập nhật: 2026-11-05. Bài 1–7 đã triển khai code; Bài 4 đã có bằng chứng Test Runner, Bài 5–7 chờ xác minh Unity.
 
 ## Trạng thái
 Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn thành / Bị chặn.
@@ -14,7 +14,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 | 4 | BoardModel và khối đang rơi | Hoàn thành | `BoardModelTests` (7/7) pass trong Unity EditMode Test Runner; build test assembly thành công. |
 | 5 | Xoay khối và wall kick | Đã triển khai, chờ xác minh | SRS CW/CCW, bảng kick JLSTZ/I, O giữ state và 6 EditMode tests; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công (0 lỗi). Còn thiếu: chạy `SrsRotationTests` trong Unity Test Runner (xem docs/lessons/BAI_5.md). |
 | 6 | Nguồn khối và preview | Đã triển khai, chờ xác minh | 7-bag có seed, RNG injection, preview 5 và 4 EditMode tests; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công (0 lỗi). Còn thiếu: chạy `SevenBagPieceSourceTests` trong Unity Test Runner (xem docs/lessons/BAI_6.md). |
-| 7 | Game loop và gravity | Chưa bắt đầu | Chưa có |
+| 7 | Game loop và gravity | Đã triển khai, chờ xác minh | State/tick/gravity/drop/lock delay/reset cap và 4 EditMode tests; build thành công (0 lỗi). Còn thiếu: chạy `GameLoopTests` trong Unity Test Runner (xem docs/lessons/BAI_7.md). |
 | 8 | Xóa hàng, tính điểm và kết thúc | Chưa bắt đầu | Chưa có |
 | 9 | BoardView, pool và ghost piece | Chưa bắt đầu | Chưa có |
 | 10 | Điều khiển bàn phím và cảm ứng | Chưa bắt đầu | Chưa có |
@@ -145,4 +145,9 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **Kiểm tra thật đã chạy:** `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 lỗi; có 10 warning conflict `System.Memory/System.Buffers` từ reference Unity hiện có.
 - **Chưa xác minh:** 4 test `SevenBagPieceSourceTests` trong Unity EditMode Test Runner. Không cần setup Unity Editor, component, asset hay Addressables trong bài này.
 - **Điều kiện đánh dấu hoàn thành:** toàn bộ `SevenBagPieceSourceTests` pass trong Unity EditMode Test Runner.
+
+### Bài 7
+- **Ngày và phạm vi:** 2026-11-05. Thêm `GameLoop` thuần C# với Ready/Playing/Paused/GameOver, tick deterministic, gravity, soft/hard drop, lock delay và cap reset. Lock để state Ready chờ quy trình clear/spawn ở Bài 8.
+- **File:** `Scripts/Gameplay/GameSessionState.cs`, `GameLoop.cs`; `Tests/EditMode/GameLoopTests.cs` (4); `docs/lessons/BAI_7.md`.
+- **Chưa xác minh:** chạy `GameLoopTests` trong Unity EditMode Test Runner.
 - **Sửa 2026-11-05 (EntryLauncher/SessionManager):** `EntryLauncher` bỏ `RequireComponent` và `GetComponent`, lấy session qua `ServiceLocator.Resolve<SessionManager>()`; chỉ chạy khi `gameObject.scene.buildIndex == 0` và cùng GameObject với session đang sở hữu. Đã biên dịch lại Runtime và test.
