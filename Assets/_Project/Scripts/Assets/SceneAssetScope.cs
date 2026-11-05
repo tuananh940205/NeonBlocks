@@ -95,6 +95,14 @@ namespace NeonBlocks.Assets
             return assets.InstantiateAsync(key, parent, Owner, ct);
         }
 
+        /// <summary>Giải phóng một instance do scope này tạo trước khi scope release template và handle Addressables.</summary>
+        /// <param name="instance">Instance cần giải phóng.</param>
+        /// <returns>True nếu instance còn do AddressableManager quản lý.</returns>
+        public bool ReleaseInstance(GameObject instance)
+        {
+            return assets.ReleaseInstance(instance);
+        }
+
         /// <summary>
         /// Kết thúc phạm vi: giải phóng asset và instance, unload scene. Gọi nhiều lần an toàn.
         /// </summary>

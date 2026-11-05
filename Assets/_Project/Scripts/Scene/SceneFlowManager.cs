@@ -98,6 +98,7 @@ namespace NeonBlocks.Scene
 
             ServiceLocator.Instance.Resolve<SceneStopSignal>().Dispatch(previous.SceneKey);
             ServiceLocator.Instance.Resolve<SceneDisposeSignal>().Dispatch(previous.SceneKey);
+            ReleasePoolsBeforeScope(previous);
             await previous.ReleaseAsync();
         }
 
@@ -109,7 +110,6 @@ namespace NeonBlocks.Scene
         {
             GoToAsync(sceneKey, CancellationToken.None).ContinueWith(t =>
             {
-                Debug.LogError($"Chuyển sang scene '{sceneKey}' thất bại: {t.Exception?.GetBaseException().Message}");
             }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
@@ -136,7 +136,18 @@ namespace NeonBlocks.Scene
                 currentScope = null;
                 ServiceLocator.Instance.Resolve<SceneStopSignal>().Dispatch(previous.SceneKey);
                 ServiceLocator.Instance.Resolve<SceneDisposeSignal>().Dispatch(previous.SceneKey);
+                ReleasePoolsBeforeScope(previous);
                 _ = previous.ReleaseAsync();
+            }
+        }
+
+        /// <summary>Yêu cầu PoolManager dọn active/inactive instance trước khi SceneAssetScope release template Addressables.</summary>
+        /// <param name="scope">Scope scene sắp được giải phóng.</param>
+        private static void ReleasePoolsBeforeScope(SceneAssetScope scope)
+        {
+            if (ServiceLocator.Instance.IsRegistered(typeof(PoolManager)))
+            {
+                ServiceLocator.Instance.Resolve<PoolManager>().ReleaseScope(scope);
             }
         }
     }

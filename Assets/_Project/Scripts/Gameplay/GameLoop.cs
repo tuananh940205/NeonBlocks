@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NeonBlocks.Config;
 
 namespace NeonBlocks.Gameplay
@@ -25,6 +26,8 @@ namespace NeonBlocks.Gameplay
         public int LockResetCount => lockResetCount;
         /// <summary>Điểm, số hàng và level của lượt chơi hiện tại.</summary>
         public GameScore Score => score;
+        /// <summary>Snapshot chỉ đọc của hàng đợi các khối sẽ xuất hiện tiếp theo.</summary>
+        public IReadOnlyList<PieceDefinition> NextPieces => source.NextPieces;
 
         /// <summary>Tạo game loop với dependency thuần C# và timing của level hiện tại.</summary>
         public GameLoop(BoardModel board, SevenBagPieceSource source, GameScore score, GridPoint spawnOrigin, float gravitySeconds, float lockDelaySeconds, int maxLockResets)

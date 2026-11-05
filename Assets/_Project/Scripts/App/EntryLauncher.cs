@@ -51,10 +51,12 @@ namespace NeonBlocks
                 var assets = new AddressableManager(new UnityAddressableBackend());
                 var config = new ConfigManager(assets);
                 var sceneFlow = new SceneFlowManager(assets);
+                var pools = new PoolManager();
 
                 session.RegisterSingleton(assets);
                 session.RegisterSingleton(config);
                 session.RegisterSingleton(sceneFlow);
+                session.RegisterSingleton(pools);
 
                 await config.LoadAsync(lifetime.Token);
                 await sceneFlow.GoToAsync(config.Config.Scenes.MainMenu, lifetime.Token);

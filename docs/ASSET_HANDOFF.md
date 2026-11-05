@@ -31,6 +31,16 @@ Asset được tạo hoặc nhận phải nằm tại `art-source/` cho đến k
 - **Import đề xuất:** Texture Type `Sprite (2D and UI)`; Sprite Mode `Single`; Mesh Type `Full Rect`; Filter Mode `Bilinear`; Compression `Normal Quality`; cấu hình Border trong Sprite Editor sau khi duyệt.
 - **Trạng thái:** Chờ duyệt; chưa thay Button mặc định trong MainMenu/Gameplay.
 
+## NB-UI-003 - Board frame
+
+- **Mục đích:** khung và lưới nền cho playfield 10 cột x 20 hàng của `BoardView` ở bài 9. Chỉ là dependency hình ảnh của Gameplay scene, không tạo Addressable riêng.
+- **Nguồn:** `art-source/NeonBlocks/NB-UI-003-BoardFrame-v1.png`
+- **Đích sau duyệt:** `Assets/_Project/Art/UI/Gameplay/NB-UI-003-BoardFrame.png`
+- **Kích thước / alpha:** 864 x 1728 px, RGBA trong suốt bên ngoài khung; tỷ lệ portrait 1:2.
+- **Yêu cầu trước tích hợp:** xác nhận viền glow trên/dưới được chấp nhận. Sprite có lưới 10 x 20 sẵn trong nền, vì vậy ô gameplay đặt phía trên phải canh đúng với lưới, không hiển thị lưới thứ hai.
+- **Import đề xuất:** Texture Type `Sprite (2D and UI)`; Sprite Mode `Single`; Mesh Type `Full Rect`; Filter Mode `Bilinear`; Wrap Mode `Clamp`; Compression `Normal Quality`; sRGB bật. Canvas Image bật `Preserve Aspect`; kéo giãn theo tỷ lệ nguyên bản.
+- **Trạng thái:** Đã được dùng tạm trong Gameplay để kiểm tra layout. Cần bản `v2` trước khi chốt tích hợp: lưới bên trong phải là **đúng 10 cột x 20 hàng**, ô vuông cùng kích thước, không có dòng/cột thừa, và bounds playfield phải được bàn giao theo pixel. Bản v1 có lưới raster không khớp hoàn toàn board logic nên BoardView đang căn tile theo đáy bằng placeholder calibration.
+
 ## Asset chưa cần tạo
 
 - **Logo/wordmark NeonBlocks:** dùng TextMeshPro trong giai đoạn placeholder để tên game luôn chính xác và dễ đổi kiểu chữ. Chỉ tạo raster logo khi đã chốt typography/branding ở bài 13.

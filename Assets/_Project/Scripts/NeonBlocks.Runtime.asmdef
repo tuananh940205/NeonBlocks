@@ -5,7 +5,8 @@
         "NeonBlocks.Core",
         "Unity.Addressables",
         "Unity.ResourceManager",
-        "Unity.UI"
+        "Unity.UI",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

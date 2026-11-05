@@ -172,3 +172,20 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - Nguyên nhân button: `SceneFlowManager` tải scene đích trước, khiến `GameplayCanvas` đã đăng ký `SceneStopSignal`; signal không tham số sau đó khóa cả button của scene mới lẫn scene cũ.
 - Đã đổi `SceneStopSignal` và `SceneDisposeSignal` thành signal có `sceneKey`; SceneFlowManager phát key scope cũ, MainMenuCanvas/GameplayCanvas chỉ khóa button khi `gameObject.scene.name` trùng key. Cập nhật test SceneFlowManager để xác nhận `stop:MainMenu` → `dispose:MainMenu`; bỏ `Debug.LogError` giả trong `GameplayCanvas.OnBackClicked`.
 - Chưa chạy Unity Test Runner/Play Mode sau sửa. Cảnh báo EventSystem/AudioListener được phát trong thời điểm hai scene Additive cùng tồn tại; sau khi MainMenu unload, Hierarchy phải chỉ còn Gameplay và một EventSystem/AudioListener hoạt động. Nếu vẫn còn hai sau một frame, kiểm tra MainMenu chưa được unload hoặc Entry chưa unload.
+
+### Bài 9
+- **Ngày và phạm vi:** 2026-11-05. Hoàn thành code playtest placeholder desktop: `GameplayPresenter`, snapshot Signal, `BoardView`, Input System keyboard và `PoolManager` theo SceneAssetScope.
+- **Asset trước code:** tạo `art-source/NeonBlocks/NB-UI-003-BoardFrame-v1.png`, trạng thái chờ duyệt; đã ghi yêu cầu nhập tại `docs/ASSET_HANDOFF.md`. Code hiện dùng RawImage placeholder, không dùng asset chưa duyệt.
+- **File chính:** `Views/GameplayPresenter.cs`, `GameplayKeyboardInput.cs`, `BoardView.cs`; `Gameplay/GameplaySnapshot*`, `GameplayCommand*`; `Assets/PoolManager.cs`, `PoolBucket.cs`; `docs/lessons/BAI_9.md`.
+- **Lifecycle:** `EntryLauncher` đăng ký PoolManager vào SessionManager. `SceneFlowManager` gọi PoolManager dọn mọi active/inactive instance của scope sau SceneStop/SceneDispose và trước `SceneAssetScope.ReleaseAsync`; chỉ AddressableManager vẫn release handle.
+- **Kiểm tra thật đã chạy:** `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 error; còn 12 warning reference conflict Unity hiện hữu.
+- **Cần người dùng xác minh trong Unity:** thực hiện setup component theo `docs/lessons/BAI_9.md`, rồi Play từ Entry và kiểm tra input, ghost khớp hard drop, pause, restart GameOver, Back và Hierarchy sau chuyển scene. Unity Test Runner/Play Mode chưa được chạy trong lần này.
+
+### Tái cấu trúc hướng dẫn agent — 2026-11-05
+- Theo ủy quyền của người dùng, nội dung `AGENTS.md` cũ đã được chuyển thành các module ở `docs/agent-rules/`: `CORE`, `ADDRESSABLES_AND_LIFECYCLE`, `ASSETS_AND_EDITOR`, `DATA_AND_TESTING`, `UNITY_EDITOR`, `QUALITY`.
+- `AGENTS.md` nay là router ngắn, có bảng chọn module theo loại công việc và theo Bài. Mục tiêu là agent chỉ nạp rule trực tiếp liên quan thay vì luôn đọc toàn bộ hướng dẫn.
+
+### Sửa BoardView — tile khớp playfield (2026-11-05)
+- `BoardView` không còn chia tile theo toàn bộ `BoardRoot` (bao gồm transparent margin và viền của khung PNG). Tile được tính vuông từ phần playfield ngang bên trong, sau đó căn giữa theo chiều dọc.
+- Inspector có `Horizontal Inset Fraction` (mặc định `0.115`) và `Cell Gap Pixels` (mặc định `2`); giá trị mặc định khớp `NB-UI-003-BoardFrame-v1`.
+- Sửa tiếp: BoardView dùng `Vertical Bottom Inset Fraction = 0.07` để hàng logic `y=0` bám hàng lưới dưới thay vì căn giữa. Handoff đã yêu cầu `NB-UI-003 v2` có lưới 10x20 pixel-perfect; cần thay asset này để bỏ calibration khi chốt art.

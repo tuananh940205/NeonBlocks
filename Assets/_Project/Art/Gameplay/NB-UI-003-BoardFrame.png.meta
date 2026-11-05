@@ -1,0 +1,364 @@
+fileFormatVersion: 2
+guid: 4f7882f2634247344a1606e04498b0dc
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3021444417083931830
+    second: NB-UI-003-BoardFrame-v1_0
+  - first:
+      213: 7317909403488335951
+    second: NB-UI-003-BoardFrame-v1_1
+  - first:
+      213: -3109521756341752668
+    second: NB-UI-003-BoardFrame-v1_2
+  - first:
+      213: 7230484285070851335
+    second: NB-UI-003-BoardFrame-v1_3
+  - first:
+      213: -783847982435829842
+    second: NB-UI-003-BoardFrame-v1_4
+  - first:
+      213: -8410861592443243310
+    second: NB-UI-003-BoardFrame-v1_5
+  - first:
+      213: -7513668968056810740
+    second: NB-UI-003-BoardFrame-v1_6
+  - first:
+      213: 8751416435639756455
+    second: NB-UI-003-BoardFrame-v1_7
+  - first:
+      213: 36126153729425081
+    second: NB-UI-003-BoardFrame-v1_8
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: NB-UI-003-BoardFrame-v1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 861
+        height: 1721
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bcffd460b35ee920800000000000000
+      internalID: 3021444417083931830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NB-UI-003-BoardFrame-v1_1
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 1682
+        width: 19
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f48b96d94df6e8560800000000000000
+      internalID: 7317909403488335951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NB-UI-003-BoardFrame-v1_2
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 1692
+        width: 17
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4aca6e30072c8d4d0800000000000000
+      internalID: -3109521756341752668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NB-UI-003-BoardFrame-v1_3
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 1665
+        width: 20
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70d31b50627d75460800000000000000
+      internalID: 7230484285070851335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NB-UI-003-BoardFrame-v1_4
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 34
+        width: 19
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea77109b9663f15f0800000000000000
+      internalID: -783847982435829842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NB-UI-003-BoardFrame-v1_5
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 49
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d4b17fb1fd964b80800000000000000
+      internalID: -8410861592443243310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NB-UI-003-BoardFrame-v1_6
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 21
+        width: 54
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c031917f1e51ab790800000000000000
+      internalID: -7513668968056810740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NB-UI-003-BoardFrame-v1_7
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 20
+        width: 56
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a6a2d791e6437970800000000000000
+      internalID: 8751416435639756455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NB-UI-003-BoardFrame-v1_8
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 35
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9beb420ab88508000800000000000000
+      internalID: 36126153729425081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      NB-UI-003-BoardFrame-v1_0: 3021444417083931830
+      NB-UI-003-BoardFrame-v1_1: 7317909403488335951
+      NB-UI-003-BoardFrame-v1_2: -3109521756341752668
+      NB-UI-003-BoardFrame-v1_3: 7230484285070851335
+      NB-UI-003-BoardFrame-v1_4: -783847982435829842
+      NB-UI-003-BoardFrame-v1_5: -8410861592443243310
+      NB-UI-003-BoardFrame-v1_6: -7513668968056810740
+      NB-UI-003-BoardFrame-v1_7: 8751416435639756455
+      NB-UI-003-BoardFrame-v1_8: 36126153729425081
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
