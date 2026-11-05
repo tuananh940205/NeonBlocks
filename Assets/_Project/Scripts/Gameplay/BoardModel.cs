@@ -188,6 +188,32 @@ namespace NeonBlocks.Gameplay
             return cells.AsReadOnly();
         }
 
+        /// <summary>Xóa đồng thời mọi hàng đầy rồi compact các hàng còn lại xuống đáy.</summary>
+        /// <returns>Số hàng đã xóa.</returns>
+        public int ClearFullRows()
+        {
+            int writeY = 0;
+            int cleared = 0;
+            for (int readY = 0; readY < Settings.TotalHeight; readY++)
+            {
+                bool full = true;
+                for (int x = 0; x < Settings.Width; x++) if (!settledCells[x, readY]) { full = false; break; }
+                if (full) { cleared++; continue; }
+                if (writeY != readY) for (int x = 0; x < Settings.Width; x++) settledCells[x, writeY] = settledCells[x, readY];
+                writeY++;
+            }
+            for (int y = writeY; y < Settings.TotalHeight; y++) for (int x = 0; x < Settings.Width; x++) settledCells[x, y] = false;
+            return cleared;
+        }
+
+        /// <summary>Kiểm tra sau clear còn ô đã khóa nào nằm trong vùng hàng ẩn hay không.</summary>
+        /// <returns>True nếu còn ô settled trong vùng ẩn.</returns>
+        public bool HasSettledCellsInHiddenRows()
+        {
+            for (int y = Settings.VisibleHeight; y < Settings.TotalHeight; y++) for (int x = 0; x < Settings.Width; x++) if (settledCells[x, y]) return true;
+            return false;
+        }
+
         /// <summary>
         /// Thử dịch active piece theo vector nguyên; chỉ commit khi candidate fit hoàn toàn.
         /// </summary>

@@ -36,8 +36,31 @@ namespace NeonBlocks.Assets
         /// <returns>Kết quả chứa SceneInstance dạng boxed và handle scene.</returns>
         public Task<AddressableResult> LoadSceneAsync(string key, CancellationToken ct)
         {
-            AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(key, LoadSceneMode.Additive, true);
+            AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(key, LoadSceneMode.Single, true);
             return ToResultTask(handle, key, scene => scene);
+        }
+
+        /// <summary>
+        /// Đặt SceneInstance Addressables đã tải làm active scene của Unity.
+        /// </summary>
+        /// <param name="sceneValue">SceneInstance boxed từ LoadSceneAsync.</param>
+        /// <param name="ct">Token hủy.</param>
+        /// <returns>Task đã hoàn tất khi Unity nhận scene active mới.</returns>
+        public Task SetActiveSceneAsync(object sceneValue, CancellationToken ct)
+        {
+            ct.ThrowIfCancellationRequested();
+
+            if (!(sceneValue is SceneInstance sceneInstance) || !sceneInstance.Scene.IsValid())
+            {
+                return Task.FromException(new AddressableLoadException("Scene Addressables không hợp lệ để đặt active."));
+            }
+
+            if (!SceneManager.SetActiveScene(sceneInstance.Scene))
+            {
+                return Task.FromException(new AddressableLoadException($"Không thể đặt scene '{sceneInstance.Scene.name}' làm active."));
+            }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

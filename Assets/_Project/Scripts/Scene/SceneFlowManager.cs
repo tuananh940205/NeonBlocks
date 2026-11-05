@@ -7,8 +7,9 @@ using UnityEngine;
 namespace NeonBlocks.Scene
 {
     /// <summary>
-    /// Manager điều phối chuyển scene xuyên suốt session: rời scene cũ theo đúng thứ tự (stop → dispose → release scope)
-    /// rồi tải scene mới bằng Addressables. Không kế thừa MonoBehaviour. Không giữ tham chiếu tới Signal:
+    /// Manager điều phối chuyển scene xuyên suốt session: tải và đặt active scene mới trước,
+    /// sau đó rời scene cũ theo đúng thứ tự (stop → dispose → release scope), tương đương LoadSceneMode.Single.
+    /// Không kế thừa MonoBehaviour. Không giữ tham chiếu tới Signal:
     /// mỗi lần cần phát hoặc gỡ listener thì resolve từ ServiceLocator.
     /// Yêu cầu đổi scene từ view đến qua SceneRequestSignal; cùng lúc chỉ có một chuyển scene đang chạy, yêu cầu mới hủy yêu cầu cũ.
     /// </summary>
@@ -36,8 +37,8 @@ namespace NeonBlocks.Scene
         }
 
         /// <summary>
-        /// Chuyển sang scene mới: rời scene hiện tại rồi tải scene đích bằng Addressables (Additive).
-        /// Nếu tải lỗi, ném AddressableLoadException và không có scene nào hoạt động cho đến lần chuyển thành công tiếp theo.
+        /// Chuyển sang scene mới: tải Addressables theo Additive, đặt scene đích active, rồi mới dừng và unload scene cũ.
+        /// Nếu tải hoặc kích hoạt lỗi, scene hiện tại vẫn được giữ nguyên.
         /// Nếu yêu cầu bị hủy bởi yêu cầu mới, ném OperationCanceledException.
         /// </summary>
         /// <param name="sceneKey">Address key của scene đích, trùng tên asset scene.</param>
@@ -63,21 +64,20 @@ namespace NeonBlocks.Scene
             {
                 CancellationToken ct = linked.Token;
 
-                await ExitCurrentSceneAsync();
-
                 var scope = new SceneAssetScope(sceneKey, assets);
 
                 try
                 {
                     await scope.LoadSceneAsync(ct);
+                    await scope.SetActiveSceneAsync(ct);
+                    await ExitCurrentSceneAsync();
+                    currentScope = scope;
                 }
                 catch
                 {
                     await scope.ReleaseAsync();
                     throw;
                 }
-
-                currentScope = scope;
             }
         }
 
@@ -96,8 +96,8 @@ namespace NeonBlocks.Scene
             SceneAssetScope previous = currentScope;
             currentScope = null;
 
-            ServiceLocator.Instance.Resolve<SceneStopSignal>().Dispatch();
-            ServiceLocator.Instance.Resolve<SceneDisposeSignal>().Dispatch();
+            ServiceLocator.Instance.Resolve<SceneStopSignal>().Dispatch(previous.SceneKey);
+            ServiceLocator.Instance.Resolve<SceneDisposeSignal>().Dispatch(previous.SceneKey);
             await previous.ReleaseAsync();
         }
 
@@ -134,8 +134,8 @@ namespace NeonBlocks.Scene
             {
                 SceneAssetScope previous = currentScope;
                 currentScope = null;
-                ServiceLocator.Instance.Resolve<SceneStopSignal>().Dispatch();
-                ServiceLocator.Instance.Resolve<SceneDisposeSignal>().Dispatch();
+                ServiceLocator.Instance.Resolve<SceneStopSignal>().Dispatch(previous.SceneKey);
+                ServiceLocator.Instance.Resolve<SceneDisposeSignal>().Dispatch(previous.SceneKey);
                 _ = previous.ReleaseAsync();
             }
         }

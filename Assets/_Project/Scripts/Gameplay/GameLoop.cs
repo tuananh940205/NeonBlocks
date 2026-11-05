@@ -12,6 +12,7 @@ namespace NeonBlocks.Gameplay
         private readonly float gravitySeconds;
         private readonly float lockDelaySeconds;
         private readonly int maxLockResets;
+        private readonly GameScore score;
         private float gravityElapsed;
         private float lockElapsed;
         private int lockResetCount;
@@ -22,12 +23,15 @@ namespace NeonBlocks.Gameplay
         public BoardModel Board => board;
         /// <summary>Số lần reset lock delay hợp lệ của piece đang rơi.</summary>
         public int LockResetCount => lockResetCount;
+        /// <summary>Điểm, số hàng và level của lượt chơi hiện tại.</summary>
+        public GameScore Score => score;
 
         /// <summary>Tạo game loop với dependency thuần C# và timing của level hiện tại.</summary>
-        public GameLoop(BoardModel board, SevenBagPieceSource source, GridPoint spawnOrigin, float gravitySeconds, float lockDelaySeconds, int maxLockResets)
+        public GameLoop(BoardModel board, SevenBagPieceSource source, GameScore score, GridPoint spawnOrigin, float gravitySeconds, float lockDelaySeconds, int maxLockResets)
         {
             this.board = board ?? throw new ArgumentNullException(nameof(board));
             this.source = source ?? throw new ArgumentNullException(nameof(source));
+            this.score = score ?? throw new ArgumentNullException(nameof(score));
             if (gravitySeconds <= 0f) throw new ArgumentOutOfRangeException(nameof(gravitySeconds));
             if (lockDelaySeconds < 0f) throw new ArgumentOutOfRangeException(nameof(lockDelaySeconds));
             if (maxLockResets < 0) throw new ArgumentOutOfRangeException(nameof(maxLockResets));
@@ -77,13 +81,33 @@ namespace NeonBlocks.Gameplay
         public bool TryRotateClockwise() { return TryGroundedAction(board.TryRotateClockwise); }
         /// <summary>Thử xoay CCW và reset lock delay nếu đây là thao tác hợp lệ khi đang chạm đất.</summary>
         public bool TryRotateCounterClockwise() { return TryGroundedAction(board.TryRotateCounterClockwise); }
-        /// <summary>Soft drop một ô nếu có thể; không khóa ngay khi chạm đáy.</summary>
-        public bool SoftDrop() { return State == GameSessionState.Playing && board.TryFallOneCell(); }
-        /// <summary>Hard drop đến ô thấp nhất rồi khóa đúng một lần, không spawn piece kế tiếp.</summary>
+        /// <summary>Soft drop một ô nếu có thể; cộng điểm chỉ khi khối thực sự rơi.</summary>
+        public bool SoftDrop()
+        {
+            if (State != GameSessionState.Playing || !board.TryFallOneCell())
+            {
+                return false;
+            }
+
+            score.AddSoftDrop(1);
+            return true;
+        }
+
+        /// <summary>Hard drop đến ô thấp nhất, cộng điểm theo quãng rơi, rồi khóa và spawn khối kế tiếp.</summary>
         public bool HardDrop()
         {
-            if (State != GameSessionState.Playing) return false;
-            while (board.TryFallOneCell()) { }
+            if (State != GameSessionState.Playing)
+            {
+                return false;
+            }
+
+            int cells = 0;
+            while (board.TryFallOneCell())
+            {
+                cells++;
+            }
+
+            score.AddHardDrop(cells);
             return LockCurrentPiece();
         }
 
@@ -98,11 +122,29 @@ namespace NeonBlocks.Gameplay
             if (wasGrounded && lockResetCount < maxLockResets) { lockElapsed = 0f; lockResetCount++; }
             return true;
         }
-        /// <summary>Khóa active piece đúng một lần và để state Ready cho quy trình clear/spawn của Bài 8.</summary>
+        /// <summary>Khóa active piece, clear hàng, tính điểm, kiểm tra top-out rồi spawn khối tiếp theo theo đúng thứ tự luật.</summary>
         private bool LockCurrentPiece()
         {
-            if (State != GameSessionState.Playing || !board.TryLockActivePiece()) return false;
-            gravityElapsed = 0f; lockElapsed = 0f; State = GameSessionState.Ready; return true;
+            if (State != GameSessionState.Playing || !board.TryLockActivePiece())
+            {
+                return false;
+            }
+
+            int cleared = board.ClearFullRows();
+            score.ApplyLineClear(cleared);
+            gravityElapsed = 0f;
+            lockElapsed = 0f;
+            lockResetCount = 0;
+
+            if (board.HasSettledCellsInHiddenRows())
+            {
+                State = GameSessionState.GameOver;
+                return true;
+            }
+
+            State = GameSessionState.Ready;
+            BeginNextPiece();
+            return true;
         }
     }
 }

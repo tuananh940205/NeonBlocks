@@ -11,15 +11,20 @@ namespace NeonBlocks.Assets
         /// <summary>Handle scene do backend cấp; AddressableManager dùng để tìm và unload.</summary>
         public object Handle { get; }
 
+        /// <summary>Giá trị scene do backend trả về, dùng nội bộ để đặt active scene.</summary>
+        public object Value { get; }
+
         /// <summary>
         /// Tạo tham chiếu scene đã tải.
         /// </summary>
         /// <param name="key">Address key của scene.</param>
         /// <param name="handle">Handle scene từ backend.</param>
-        public LoadedScene(string key, object handle)
+        /// <param name="value">Giá trị scene từ backend.</param>
+        public LoadedScene(string key, object handle, object value)
         {
             Key = key;
             Handle = handle;
+            Value = value;
         }
     }
 }

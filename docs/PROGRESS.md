@@ -115,6 +115,7 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **Sửa 2026-11-05 (signal):** không class nào giữ tham chiếu tới Signal. Signal được resolve tại thời điểm dùng. Bộ Core: `ServiceLocator.Resolve<T>()` tạo lazy lớp signal ở lần đầu (trước đây nhánh này là code chết); đã bỏ `TryResolve`. `EntryLauncher` không đăng ký signal thủ công. Đã biên dịch lại Runtime và test.
 - **Sửa 2026-11-05 (scene keys):** tên scene (`Entry`, `MainMenu`, `Gameplay`) chuyển khỏi hằng số trong class vào mục `scenes` của GameConfig, qua `SceneKeysDto` và `SceneKeys`. `EntryLauncher`, `MainMenuCanvas`, `GameplayCanvas`, `SessionManager.RestartGame` đọc từ `ConfigManager.Config.Scenes`. `RestartGame` đọc tên Entry trước `ResetSession`. Hằng số `GameConfigParser.AddressKey` được giữ vì cần trước khi config tải. Thêm 2 test parser (scene rỗng, scene trùng). Đã biên dịch lại Runtime và test.
 - **Sửa 2026-11-05 (gọi signal trực tiếp):** bỏ kiểm tra null cho signal (luôn có instance nhờ lazy `Resolve`) trong `MainMenuCanvas`, `GameplayCanvas`, `BootVisualsView` và constructor `SceneFlowManager`; gọi `Resolve<T>().AddListener/RemoveListener/Dispatch` trực tiếp. Chỉ giữ kiểm tra null cho nút Inspector. Đã biên dịch lại Runtime và test.
+- **Sửa 2026-11-05 (Entry unload):** `EntryLauncher` unload native scene Entry sau khi MainMenu Addressables tải và active thành công. Scene Entry không thuộc `SceneAssetScope`, nên cần dọn bằng `SceneManager.UnloadSceneAsync`; SessionManager nằm riêng ở DontDestroyOnLoad nên còn sống. Mục tiêu là dọn EventSystem/AudioListener bootstrap để không bị trùng ở MainMenu.
 
 ### Bài 4
 - **Ngày và phạm vi:** 2026-11-05. Thêm gameplay thuần C# gồm `BoardModel` và `ActivePiece`; không thêm view, input, xoay, random bag, gravity, clear hàng hay scoring thuộc bài sau.
@@ -152,7 +153,22 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **Chưa xác minh:** chạy `GameLoopTests` trong Unity EditMode Test Runner.
 - **Sửa 2026-11-05 (EntryLauncher/SessionManager):** `EntryLauncher` bỏ `RequireComponent` và `GetComponent`, lấy session qua `ServiceLocator.Resolve<SessionManager>()`; chỉ chạy khi `gameObject.scene.buildIndex == 0` và cùng GameObject với session đang sở hữu. Đã biên dịch lại Runtime và test.
 
+### Bài 8
+- **Trạng thái:** logic core đã nối `lock → clear → score → top-out → spawn`; có `BoardModel.ClearFullRows()`, `BoardModel.HasSettledCellsInHiddenRows()`, `GameScore` và `GameplayPlaytestController` (IMGUI placeholder). Tài liệu ở `docs/lessons/BAI_8.md`.
+- **Playtest sớm:** controller cần được gắn thủ công vào root object mới trong `Gameplay.unity`; automation đã mở Unity Test Runner nhưng không thể thao tác tiếp các control Editor do accessibility state của Unity không ổn định. Hướng dẫn thao tác tay và phím chơi ghi trong BAI_8.md.
+- **Chưa xác minh:** EditMode tests riêng của clear/scoring/top-out chưa được thêm; Unity Test Runner/Play Mode chưa chạy thành công. Do đó không đánh dấu Bài 8 hoàn thành.
+
 ### Điều chỉnh lộ trình playtest — 2026-11-05
 - Theo yêu cầu người dùng sau khi hoàn thành bài 8: đưa renderer placeholder, bridge gameplay và điều khiển bàn phím vào bài 9 để playtest desktop bắt đầu ngay sau bài này. Bài 10 chuyển trọng tâm sang cảm ứng Android/Device Simulator và polish input; keyboard bài 9 vẫn là regression bắt buộc.
 - Entry đổi thành bootstrap tạm. Sau khi config và MainMenu tải thành công, MainMenu được active rồi Entry unload; SessionManager/manager session đã DontDestroyOnLoad sống tiếp. Nếu tải đầu tiên lỗi thì Entry không unload. Tài liệu đã đồng bộ ở LESSON_PLAN, PROJECT_CONTEXT, BAI_3 và AGENTS.
 - Đây là thay đổi lộ trình/tài liệu; chưa sửa runtime hiện có để unload Entry và chưa có kết quả Play Mode mới.
+
+### Rà soát asset scene và bản nháp — 2026-11-05
+- Đã rà Entry, MainMenu và Gameplay: chưa có artwork dự án trong `Assets/_Project/Art`; MainMenu chỉ có StartButton mặc định, Gameplay chỉ có BackButton mặc định, Entry là bootstrap.
+- Đã tạo ba bản nháp tại `art-source/NeonBlocks/`: nền portrait `NB-UI-001`, sprite cell `NB-GAME-001` và button plate `NB-UI-002`. Chúng chưa được đưa vào Assets hoặc gắn vào scene; xem `docs/ASSET_HANDOFF.md` để duyệt/crop/import.
+
+### Sửa chuyển scene Gameplay — 2026-11-05
+- Từ ảnh Play Mode: Console báo hai EventSystem/hai AudioListener trong lúc chuyển Additive và BackButton `MENU` không nhận click.
+- Nguyên nhân button: `SceneFlowManager` tải scene đích trước, khiến `GameplayCanvas` đã đăng ký `SceneStopSignal`; signal không tham số sau đó khóa cả button của scene mới lẫn scene cũ.
+- Đã đổi `SceneStopSignal` và `SceneDisposeSignal` thành signal có `sceneKey`; SceneFlowManager phát key scope cũ, MainMenuCanvas/GameplayCanvas chỉ khóa button khi `gameObject.scene.name` trùng key. Cập nhật test SceneFlowManager để xác nhận `stop:MainMenu` → `dispose:MainMenu`; bỏ `Debug.LogError` giả trong `GameplayCanvas.OnBackClicked`.
+- Chưa chạy Unity Test Runner/Play Mode sau sửa. Cảnh báo EventSystem/AudioListener được phát trong thời điểm hai scene Additive cùng tồn tại; sau khi MainMenu unload, Hierarchy phải chỉ còn Gameplay và một EventSystem/AudioListener hoạt động. Nếu vẫn còn hai sau một frame, kiểm tra MainMenu chưa được unload hoặc Entry chưa unload.

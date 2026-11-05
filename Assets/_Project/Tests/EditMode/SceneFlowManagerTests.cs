@@ -29,8 +29,8 @@ namespace NeonBlocks.Tests
             ServiceLocator.Instance.UnregisterAll();
             log = new List<string>();
 
-            ServiceLocator.Instance.Resolve<SceneStopSignal>().AddListener(() => log.Add("stop"));
-            ServiceLocator.Instance.Resolve<SceneDisposeSignal>().AddListener(() => log.Add("dispose"));
+            ServiceLocator.Instance.Resolve<SceneStopSignal>().AddListener(sceneKey => log.Add($"stop:{sceneKey}"));
+            ServiceLocator.Instance.Resolve<SceneDisposeSignal>().AddListener(sceneKey => log.Add($"dispose:{sceneKey}"));
 
             backend = new FakeAddressableBackend();
             assets = new AddressableManager(backend);
@@ -50,7 +50,7 @@ namespace NeonBlocks.Tests
         }
 
         /// <summary>
-        /// Kiểm tra chuyển scene đầu tiên tải scene và đặt làm scene hiện tại; không có stop/dispose vì chưa có scene cũ.
+        /// Kiểm tra chuyển scene đầu tiên tải rồi đặt scene active; không có stop/dispose vì chưa có scene cũ.
         /// </summary>
         [Test, Timeout(5000)]
         public async Task GoTo_FirstScene_LoadsAndBecomesCurrent()
@@ -58,12 +58,12 @@ namespace NeonBlocks.Tests
             await flow.GoToAsync("MainMenu", CancellationToken.None);
 
             Assert.AreEqual("MainMenu", flow.CurrentSceneKey);
-            CollectionAssert.AreEqual(new[] { "load:MainMenu" }, backend.SceneLog);
+            CollectionAssert.AreEqual(new[] { "load:MainMenu", "active:MainMenu" }, backend.SceneLog);
             CollectionAssert.IsEmpty(log);
         }
 
         /// <summary>
-        /// Kiểm tra chuyển scene thứ hai rời scene cũ đúng thứ tự: stop, dispose, unload scene cũ, rồi mới load scene mới.
+        /// Kiểm tra chuyển scene thứ hai tải và active scene mới trước khi rời scene cũ, như LoadSceneMode.Single.
         /// </summary>
         [Test, Timeout(5000)]
         public async Task GoTo_NextScene_ExitsPreviousInRequiredOrder()
@@ -71,13 +71,13 @@ namespace NeonBlocks.Tests
             await flow.GoToAsync("MainMenu", CancellationToken.None);
             await flow.GoToAsync("Gameplay", CancellationToken.None);
 
-            CollectionAssert.AreEqual(new[] { "load:MainMenu", "unload:MainMenu", "load:Gameplay" }, backend.SceneLog);
-            CollectionAssert.AreEqual(new[] { "stop", "dispose" }, log);
+            CollectionAssert.AreEqual(new[] { "load:MainMenu", "active:MainMenu", "load:Gameplay", "active:Gameplay", "unload:MainMenu" }, backend.SceneLog);
+            CollectionAssert.AreEqual(new[] { "stop:MainMenu", "dispose:MainMenu" }, log);
             Assert.AreEqual("Gameplay", flow.CurrentSceneKey);
         }
 
         /// <summary>
-        /// Kiểm tra scene đích tải lỗi: ném AddressableLoadException và không còn scene hiện tại.
+        /// Kiểm tra scene đích tải lỗi: ném AddressableLoadException và giữ scene hiện tại.
         /// </summary>
         [Test, Timeout(5000)]
         public async Task GoTo_LoadFails_ThrowsAndLeavesNoCurrentScene()
@@ -96,8 +96,8 @@ namespace NeonBlocks.Tests
             }
 
             Assert.IsTrue(thrown);
-            Assert.IsNull(flow.CurrentSceneKey);
-            CollectionAssert.Contains(backend.SceneLog, "unload:MainMenu");
+            Assert.AreEqual("MainMenu", flow.CurrentSceneKey);
+            CollectionAssert.DoesNotContain(backend.SceneLog, "unload:MainMenu");
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace NeonBlocks.Tests
 
             flow.Dispose();
 
-            CollectionAssert.AreEqual(new[] { "stop", "dispose" }, log);
+            CollectionAssert.AreEqual(new[] { "stop:MainMenu", "dispose:MainMenu" }, log);
             CollectionAssert.Contains(backend.SceneLog, "unload:MainMenu");
             Assert.IsNull(flow.CurrentSceneKey);
         }

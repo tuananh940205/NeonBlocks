@@ -29,6 +29,15 @@ namespace NeonBlocks.Assets
         Task<AddressableResult> LoadSceneAsync(string key, CancellationToken ct);
 
         /// <summary>
+        /// Đặt scene vừa tải làm active scene. Thao tác này tương đương scene đích của
+        /// <c>LoadSceneMode.Single</c> trước khi scene cũ được unload.
+        /// </summary>
+        /// <param name="sceneValue">Giá trị scene nhận từ LoadSceneAsync.</param>
+        /// <param name="ct">Token hủy.</param>
+        /// <returns>Task hoàn tất khi scene đã trở thành active scene.</returns>
+        Task SetActiveSceneAsync(object sceneValue, CancellationToken ct);
+
+        /// <summary>
         /// Giải phóng handle của asset đã tải bằng LoadAssetAsync.
         /// </summary>
         /// <param name="handle">Handle nhận từ LoadAssetAsync.</param>

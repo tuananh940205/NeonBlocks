@@ -103,3 +103,4 @@ InitTestScene*.unity*
 .gitkeep
 .local_prompts
 .prompt_resources
+/art-source

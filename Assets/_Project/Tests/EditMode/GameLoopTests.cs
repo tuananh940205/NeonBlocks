@@ -28,13 +28,13 @@ namespace NeonBlocks.Tests
             Assert.IsTrue(loop.Resume()); loop.Tick(0.1f); Assert.AreEqual(startY - 1, loop.Board.ActivePiece.Origin.Y);
         }
 
-        /// <summary>Kiểm tra HardDrop khóa một lần và đưa loop về Ready, không spawn tự động.</summary>
+        /// <summary>Kiểm tra HardDrop khóa một lần rồi spawn ngay khối tiếp theo.</summary>
         [Test]
-        public void HardDrop_LocksOnceAndReturnsReady()
+        public void HardDrop_LocksOnceAndSpawnsNextPiece()
         {
             GameLoop loop = CreateLoop(1f, 1f, 15); loop.BeginNextPiece();
-            Assert.IsTrue(loop.HardDrop()); Assert.AreEqual(GameSessionState.Ready, loop.State);
-            Assert.IsFalse(loop.HardDrop()); Assert.IsFalse(loop.Board.HasActivePiece);
+            Assert.IsTrue(loop.HardDrop()); Assert.AreEqual(GameSessionState.Playing, loop.State);
+            Assert.IsTrue(loop.Board.HasActivePiece);
         }
 
         /// <summary>Kiểm tra move hợp lệ khi chạm đất chỉ reset lock delay đến giới hạn cấu hình.</summary>
@@ -50,7 +50,7 @@ namespace NeonBlocks.Tests
         private static GameLoop CreateLoop(float gravity, float delay, int cap)
         {
             GameConfig config = GameConfigParser.Parse(ConfigTestFiles.ReadGameConfigJson());
-            return new GameLoop(new BoardModel(config.Board), new SevenBagPieceSource(config.Pieces, 1, config.NextQueueSize), config.SpawnOrigin, gravity, delay, cap);
+            return new GameLoop(new BoardModel(config.Board), new SevenBagPieceSource(config.Pieces, 1, config.NextQueueSize), new GameScore(config.Scoring, config.StartLevel, config.LinesPerLevel), config.SpawnOrigin, gravity, delay, cap);
         }
 
     }

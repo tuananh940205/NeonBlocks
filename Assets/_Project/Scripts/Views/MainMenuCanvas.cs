@@ -46,8 +46,14 @@ namespace NeonBlocks.Views
         /// <summary>
         /// Khi scene sắp rời, khóa nút Start để không gửi thêm yêu cầu trong lúc chuyển scene.
         /// </summary>
-        private void OnSceneStopping()
+        /// <param name="stoppingSceneKey">Address key của scene đang rời.</param>
+        private void OnSceneStopping(string stoppingSceneKey)
         {
+            if (gameObject.scene.name != stoppingSceneKey)
+            {
+                return;
+            }
+
             startButton.interactable = false;
         }
 

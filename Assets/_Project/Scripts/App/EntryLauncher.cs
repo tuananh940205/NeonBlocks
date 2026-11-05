@@ -5,12 +5,13 @@ using NeonBlocks.App;
 using NeonBlocks.Config;
 using NeonBlocks.Scene;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NeonBlocks
 {
     /// <summary>
     /// Điểm khởi động của Entry scene: tạo các Manager theo thứ tự phụ thuộc, đăng ký vào SessionManager (lấy qua ServiceLocator),
-    /// tải cấu hình, rồi chuyển sang MainMenu và phát BootVisualsHideSignal để ẩn BootVisuals.
+    /// tải cấu hình, chuyển sang MainMenu, rồi unload native Entry để không còn EventSystem/AudioListener trùng.
     /// Chỉ chạy trong scene Entry (scene đầu tiên trong Build Settings). SessionManager sống trên GameObject DontDestroyOnLoad riêng.
     /// DefaultExecutionOrder thấp để Start chạy trước BootVisualsView.
     /// </summary>
@@ -43,6 +44,7 @@ namespace NeonBlocks
             }
 
             lifetime = new CancellationTokenSource();
+            UnityEngine.SceneManagement.Scene entryScene = gameObject.scene;
 
             try
             {
@@ -58,6 +60,7 @@ namespace NeonBlocks
                 await sceneFlow.GoToAsync(config.Config.Scenes.MainMenu, lifetime.Token);
 
                 ServiceLocator.Instance.Resolve<BootVisualsHideSignal>().Dispatch();
+                await UnloadEntrySceneAsync(entryScene, lifetime.Token);
             }
             catch (OperationCanceledException)
             {
@@ -66,6 +69,36 @@ namespace NeonBlocks
             catch (Exception ex)
             {
                 Debug.LogError($"Khởi động Entry thất bại: {ex.GetType().Name}: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Unload scene Entry native sau khi scene Addressables đầu tiên đã active thành công.
+        /// SessionManager đã ở DontDestroyOnLoad riêng nên không bị hủy; các object bootstrap như EventSystem,
+        /// AudioListener và BootVisuals của Entry sẽ bị dọn, bảo đảm chỉ scene đích còn được tải cho gameplay.
+        /// </summary>
+        /// <param name="entryScene">Scene Entry cần unload.</param>
+        /// <param name="ct">Token hủy vòng đời Entry.</param>
+        /// <returns>Task hoàn tất khi Unity unload xong scene Entry.</returns>
+        private static async System.Threading.Tasks.Task UnloadEntrySceneAsync(UnityEngine.SceneManagement.Scene entryScene, CancellationToken ct)
+        {
+            ct.ThrowIfCancellationRequested();
+
+            if (!entryScene.IsValid() || !entryScene.isLoaded)
+            {
+                return;
+            }
+
+            AsyncOperation unload = SceneManager.UnloadSceneAsync(entryScene);
+            if (unload == null)
+            {
+                throw new InvalidOperationException("Không thể unload scene Entry sau khi MainMenu đã active.");
+            }
+
+            while (!unload.isDone)
+            {
+                ct.ThrowIfCancellationRequested();
+                await System.Threading.Tasks.Task.Yield();
             }
         }
 

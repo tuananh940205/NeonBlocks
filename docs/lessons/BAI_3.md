@@ -15,9 +15,9 @@ Trạng thái: code và test đã viết và đã biên dịch kiểm tra cú ph
 
 Thứ tự đăng ký tại `EntryLauncher.Start`: `AddressableManager` → `ConfigManager` → `SceneFlowManager` (Signal không đăng ký thủ công; được tạo lazy khi resolve). Khi session kết thúc, `SessionManager` dispose theo thứ tự ngược: `SceneFlowManager` → `ConfigManager` → `AddressableManager`.
 
-Thứ tự khởi động hiện tại: tải `GameConfig` và parse xong mới chuyển sang `MainMenu`. Từ bài 9, sau khi MainMenu đã tải thành công và được đặt active, Entry được unload; chỉ SessionManager/manager session đã DontDestroyOnLoad còn sống.
+Thứ tự khởi động hiện tại: tải `GameConfig` và parse xong mới chuyển sang `MainMenu`. Sau khi MainMenu đã tải thành công và được đặt active, `EntryLauncher` unload native scene Entry; chỉ GameObject SessionManager/manager session đã DontDestroyOnLoad còn sống.
 
-Thứ tự rời scene (do `SceneFlowManager` điều phối): `SceneStopSignal` → `SceneDisposeSignal` → giải phóng `SceneAssetScope` (unload scene và handle). Bước pool sẽ thêm ở bài 9.
+Thứ tự rời scene (do `SceneFlowManager` điều phối): `SceneStopSignal(sceneKey cũ)` → `SceneDisposeSignal(sceneKey cũ)` → giải phóng `SceneAssetScope` (unload scene và handle). View phải so sánh `gameObject.scene.name` với key trước khi tự khóa input; nếu không, scene mới tải Additive có thể tự khóa nút của chính nó. Bước pool sẽ thêm ở bài 9.
 
 ## 2. Key Addressables
 | Key | Asset | Ghi chú |
@@ -55,14 +55,14 @@ Nếu scene đã có object `MainMenuView` (từ phiên bản trước): chuyể
 
 Nếu scene đã có object `GameplayView` (từ phiên bản trước): chuyển component sang Canvas, nối lại **Back Button**, rồi xóa object `GameplayView`.
 
-Không đặt sẵn gameplay trong scene; bài 9 trở đi mới có nội dung thật.
+Không đặt sẵn gameplay trong scene; playtest placeholder được thêm theo Bài 8.
 
 ## 5. Cấu hình Entry.unity
-Scene `Entry.unity` có `BootVisuals` (camera, light, canvas khởi động), `Session` và `EntryLauncher`. Sau khi tải scene đầu thành công, bài 9 sẽ unload toàn bộ Entry; không coi việc chỉ ẩn BootVisuals là trạng thái cuối.
+Scene `Entry.unity` có `BootVisuals` (camera, light, canvas khởi động), `Session` và `EntryLauncher`. Sau khi tải scene đầu thành công và active, `EntryLauncher` sẽ unload toàn bộ Entry; không coi việc chỉ ẩn BootVisuals là trạng thái cuối.
 
 1. Chọn object **Session**: chỉ giữ **SessionManager**; không thêm component nào khác và không đặt nó dưới BootVisuals.
 2. Tạo object root riêng **EntryLauncher**, add component **EntryLauncher** (`NeonBlocks.EntryLauncher`). Không cần gán field nào.
-3. Chọn object **BootVisuals** (gốc chứa Main Camera, Global Light 2D, Canvas và EventSystem nếu có). `BootVisualsView` chỉ là tương thích tạm với bản bài 3; bài 9 sẽ bỏ/không dùng nó vì unload Entry sẽ tự hủy toàn bộ object này.
+3. Chọn object **BootVisuals** (gốc chứa Main Camera, Global Light 2D, Canvas và EventSystem nếu có). `BootVisualsView` chỉ là tương thích tạm; unload Entry sẽ tự hủy toàn bộ object này sau khi MainMenu active.
 4. Không đặt MainMenu hay Gameplay vào Entry; hai scene đó tải bằng Addressables.
 
 Thứ tự khởi động: `SessionManager.Awake` nhận owner trước, sau đó `EntryLauncher.Start` đăng ký manager và tải config/scene đầu. Bài 9 thêm bước đặt MainMenu active rồi unload Entry đúng một lần.
@@ -83,7 +83,7 @@ Số lượng này đếm từ mã nguồn; chưa chạy trong Unity.
 
 ### 7.2 Play Mode
 1. Mở `Entry.unity`, bấm **Play**.
-2. Trước bài 9: BootVisuals có thể chỉ bị tắt theo implementation hiện có. Sau bài 9: Hierarchy không còn scene `Entry` sau khi MainMenu tải; chỉ GameObject DontDestroyOnLoad chứa SessionManager còn sống, Console không có lỗi đỏ.
+2. Sau khi MainMenu tải: Hierarchy không còn scene `Entry`; chỉ GameObject DontDestroyOnLoad chứa SessionManager còn sống, Console không có lỗi đỏ `There are 2 EventSystems` hoặc `2 Audio Listeners`.
 3. Bấm **Start** trong MainMenu → Gameplay hiện lên, MainMenu biến mất.
 4. Bấm **Back** trong Gameplay → MainMenu hiện lại.
 5. Bấm **Stop**, rồi **Play** lần hai: không có `Already registered`, `not registered` hoặc `SessionManager đã tồn tại`.

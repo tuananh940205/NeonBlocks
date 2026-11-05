@@ -33,7 +33,7 @@ namespace NeonBlocks.Tests
         /// <summary>Instance đã được giải phóng.</summary>
         public List<GameObject> ReleasedInstances { get; } = new List<GameObject>();
 
-        /// <summary>Nhật ký thao tác scene theo thứ tự: "load:Key" và "unload:Key".</summary>
+        /// <summary>Nhật ký thao tác scene theo thứ tự: "load:Key", "active:Key" và "unload:Key".</summary>
         public List<string> SceneLog { get; } = new List<string>();
 
         /// <summary>Số yêu cầu tải đang được giữ.</summary>
@@ -97,6 +97,19 @@ namespace NeonBlocks.Tests
             sceneKeyByHandle[handle] = key;
             SceneLog.Add($"load:{key}");
             return Deliver(new AddressableResult(key, handle));
+        }
+
+        /// <summary>
+        /// Ghi nhận scene active cho test flow chuyển scene.
+        /// </summary>
+        /// <param name="sceneValue">Key scene giả nhận từ LoadSceneAsync.</param>
+        /// <param name="ct">Token hủy.</param>
+        /// <returns>Task đã hoàn tất.</returns>
+        public Task SetActiveSceneAsync(object sceneValue, CancellationToken ct)
+        {
+            ct.ThrowIfCancellationRequested();
+            SceneLog.Add($"active:{sceneValue}");
+            return Task.CompletedTask;
         }
 
         /// <summary>

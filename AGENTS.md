@@ -181,3 +181,9 @@ Do not use static class or static instance for singleton items
 - Chỉ GameObject riêng chứa SessionManager được DontDestroyOnLoad. Manager session đã đăng ký sống tiếp; EntryLauncher, BootVisuals, camera/canvas bootstrap và mọi object khác của Entry bị hủy khi unload. Không dùng việc chỉ tắt BootVisuals làm trạng thái cuối.
 - Không unload Entry nếu config hoặc scene đầu tải thất bại; giữ nó để lỗi được log/báo rõ. Unload native Entry không phải Addressables release và không giải phóng handle của scene Addressable.
 - Bài 9 là mốc playtest desktop đầu tiên: phải có renderer placeholder, bridge mỏng tới toàn bộ logic 4–8 và bàn phím. Không đẩy input bàn phím thiết yếu sang bài 10; bài 10 chỉ bổ sung cảm ứng và polish input.
+
+## Signal vòng đời scene có mục tiêu (cập nhật 2026-11-05)
+
+- `SceneStopSignal` và `SceneDisposeSignal` mang `sceneKey` của scope sắp rời. SceneFlowManager phát key của scene cũ, sau khi scene đích đã tải/active.
+- View nhận signal vòng đời phải so sánh `gameObject.scene.name` với key nhận được trước khi dừng input, khóa nút hoặc dispose state. Scene đích đã load Additive không được xử lý signal của scene cũ.
+- Test SceneFlowManager phải xác minh đúng key được phát, ví dụ `stop:MainMenu` rồi `dispose:MainMenu`, không chỉ kiểm tra thứ tự signal.

@@ -130,7 +130,55 @@ namespace NeonBlocks.Assets
             AddressableResult result = await AwaitOwnedAsync(load, owner, TrackedKind.Scene, ct);
 
             Track(owner, new TrackedAsset(TrackedKind.Scene, key, result.Handle, null));
-            return new LoadedScene(key, result.Handle);
+            return new LoadedScene(key, result.Handle, result.Value);
+        }
+
+        /// <summary>
+        /// Đặt scene đang được manager quản lý làm active scene. Chỉ scene đã được tải
+        /// và chưa giải phóng mới hợp lệ; lỗi backend được chuẩn hóa thành AddressableLoadException.
+        /// </summary>
+        /// <param name="scene">Scene cần đặt active.</param>
+        /// <param name="ct">Token hủy.</param>
+        /// <returns>Task hoàn tất khi scene đã active.</returns>
+        public async Task SetActiveSceneAsync(LoadedScene scene, CancellationToken ct)
+        {
+            if (scene == null)
+            {
+                throw new ArgumentNullException(nameof(scene));
+            }
+
+            bool isTracked = false;
+            foreach (List<TrackedAsset> trackedAssets in ownedAssets.Values)
+            {
+                if (trackedAssets.Exists(tracked => tracked.Kind == TrackedKind.Scene && ReferenceEquals(tracked.Handle, scene.Handle)))
+                {
+                    isTracked = true;
+                    break;
+                }
+            }
+
+            if (!isTracked || isDisposed)
+            {
+                throw new InvalidOperationException("Scene không còn được AddressableManager quản lý.");
+            }
+
+            try
+            {
+                ct.ThrowIfCancellationRequested();
+                await backend.SetActiveSceneAsync(scene.Value, ct);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (AddressableLoadException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new AddressableLoadException($"Không thể đặt scene '{scene.Key}' làm active.", exception);
+            }
         }
 
         /// <summary>

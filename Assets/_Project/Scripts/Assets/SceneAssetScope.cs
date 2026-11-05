@@ -56,6 +56,22 @@ namespace NeonBlocks.Assets
         }
 
         /// <summary>
+        /// Đặt scene của phạm vi này làm active scene sau khi tải xong. Scene cũ chỉ được
+        /// giải phóng sau bước này để không tạo khoảng trống không có scene hoạt động.
+        /// </summary>
+        /// <param name="ct">Token hủy.</param>
+        /// <returns>Task hoàn tất khi scene đã active.</returns>
+        public Task SetActiveSceneAsync(CancellationToken ct)
+        {
+            if (loadedScene == null)
+            {
+                throw new System.InvalidOperationException($"Scene '{SceneKey}' chưa được tải.");
+            }
+
+            return assets.SetActiveSceneAsync(loadedScene, ct);
+        }
+
+        /// <summary>
         /// Tải asset cho scene này; asset được giải phóng cùng phạm vi.
         /// </summary>
         /// <typeparam name="T">Kiểu asset.</typeparam>
