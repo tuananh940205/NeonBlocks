@@ -22,9 +22,9 @@ namespace NeonBlocks.Views
         /// <summary>Tạo các binding keyboard một lần trước khi component nhận input.</summary>
         private void Awake()
         {
-            moveLeft = CreateAction("MoveLeft", GameplayCommand.MoveLeft, "<Keyboard>/leftArrow", "<Keyboard>/a");
-            moveRight = CreateAction("MoveRight", GameplayCommand.MoveRight, "<Keyboard>/rightArrow", "<Keyboard>/d");
-            softDrop = CreateAction("SoftDrop", GameplayCommand.SoftDrop, "<Keyboard>/downArrow", "<Keyboard>/s");
+            moveLeft = CreateHeldAction("MoveLeft", GameplayHeldCommand.MoveLeft, "<Keyboard>/leftArrow", "<Keyboard>/a");
+            moveRight = CreateHeldAction("MoveRight", GameplayHeldCommand.MoveRight, "<Keyboard>/rightArrow", "<Keyboard>/d");
+            softDrop = CreateHeldAction("SoftDrop", GameplayHeldCommand.SoftDrop, "<Keyboard>/downArrow", "<Keyboard>/s");
             rotateClockwise = CreateAction("RotateClockwise", GameplayCommand.RotateClockwise, "<Keyboard>/upArrow", "<Keyboard>/x");
             rotateCounterClockwise = CreateAction("RotateCounterClockwise", GameplayCommand.RotateCounterClockwise, "<Keyboard>/z");
             hardDrop = CreateAction("HardDrop", GameplayCommand.HardDrop, "<Keyboard>/space");
@@ -42,6 +42,7 @@ namespace NeonBlocks.Views
         /// <summary>Tắt action và gỡ listener để không gửi lệnh từ scene đã rời.</summary>
         private void OnDisable()
         {
+            ReleaseHeldActions();
             SetActionsEnabled(false);
             ServiceLocator.Instance.Resolve<SceneStopSignal>().RemoveListener(OnSceneStopping);
         }
@@ -77,6 +78,16 @@ namespace NeonBlocks.Views
             return action;
         }
 
+        /// <summary>Tạo action giữ có press/release rõ ràng để presenter áp dụng DAS và ARR chung với touch input.</summary>
+        private InputAction CreateHeldAction(string actionName, GameplayHeldCommand command, string primaryBinding, string secondaryBinding = null)
+        {
+            var action = new InputAction(actionName, InputActionType.Button, primaryBinding);
+            if (!string.IsNullOrWhiteSpace(secondaryBinding)) action.AddBinding(secondaryBinding);
+            action.started += _ => DispatchHeld(command, true);
+            action.canceled += _ => DispatchHeld(command, false);
+            return action;
+        }
+
         /// <summary>Phát lệnh khi scene còn hoạt động; presenter quyết định lệnh nào hợp lệ theo state.</summary>
         private void Dispatch(GameplayCommand command)
         {
@@ -84,6 +95,20 @@ namespace NeonBlocks.Views
             {
                 ServiceLocator.Instance.Resolve<GameplayCommandSignal>().Dispatch(command);
             }
+        }
+
+        /// <summary>Phát thay đổi trạng thái giữ cho presenter khi scene còn hoạt động.</summary>
+        private void DispatchHeld(GameplayHeldCommand command, bool isPressed)
+        {
+            if (!isStopping) ServiceLocator.Instance.Resolve<GameplayHeldCommandSignal>().Dispatch(new GameplayHeldInput(command, isPressed));
+        }
+
+        /// <summary>Phát release cho mọi action giữ trước khi input bị disable để không giữ state qua pause hoặc scene khác.</summary>
+        private void ReleaseHeldActions()
+        {
+            DispatchHeld(GameplayHeldCommand.MoveLeft, false);
+            DispatchHeld(GameplayHeldCommand.MoveRight, false);
+            DispatchHeld(GameplayHeldCommand.SoftDrop, false);
         }
 
         /// <summary>Bật hoặc tắt toàn bộ action đã tạo; Awake có thể chưa chạy trong một số EditMode test.</summary>

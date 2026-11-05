@@ -3,6 +3,7 @@
 ## Asset workflow
 
 - Tạo/chỉnh raster thuộc chat Asset; coding agent phụ trách code và tích hợp Unity, không tự duyệt asset thay người dùng.
+- Tối thiểu các phần transparent bên ngoài phần ảnh trước khi xuất ra png
 - Asset đang tạo/chờ duyệt nằm ở `art-source/` ngoài `Assets/`; chỉ ảnh đã duyệt được đưa vào `Assets/_Project/Art/`.
 - Mọi yêu cầu/bàn giao nằm trong `docs/ASSET_HANDOFF.md`: mã, mục đích, source/destination, kích thước, alpha, sprite sheet, import đề xuất, trạng thái duyệt.
 - Khi cần asset mới, ghi yêu cầu cụ thể vào handoff và dùng placeholder để tiếp tục code; ghi rõ phần còn chờ asset.

@@ -11,12 +11,15 @@ namespace NeonBlocks.Views
     public sealed class GameplayPresenter : MonoBehaviour
     {
         private GameLoop loop;
+        private GameplayRepeatInput repeatInput;
+        private readonly List<GameplayCommand> repeatedCommands = new List<GameplayCommand>();
         private bool isStopping;
 
         /// <summary>Đăng ký nhận lệnh input và thông báo dừng scene để chặn tick trước khi scope được giải phóng.</summary>
         private void OnEnable()
         {
             ServiceLocator.Instance.Resolve<GameplayCommandSignal>().AddListener(OnCommand);
+            ServiceLocator.Instance.Resolve<GameplayHeldCommandSignal>().AddListener(OnHeldInput);
             ServiceLocator.Instance.Resolve<SceneStopSignal>().AddListener(OnSceneStopping);
         }
 
@@ -24,6 +27,7 @@ namespace NeonBlocks.Views
         private void OnDisable()
         {
             ServiceLocator.Instance.Resolve<GameplayCommandSignal>().RemoveListener(OnCommand);
+            ServiceLocator.Instance.Resolve<GameplayHeldCommandSignal>().RemoveListener(OnHeldInput);
             ServiceLocator.Instance.Resolve<SceneStopSignal>().RemoveListener(OnSceneStopping);
         }
 
@@ -42,6 +46,16 @@ namespace NeonBlocks.Views
             }
 
             loop.Tick(Time.deltaTime);
+            if (loop.State == GameSessionState.Playing)
+            {
+                repeatedCommands.Clear();
+                repeatInput.CollectRepeats(Time.deltaTime, repeatedCommands);
+                foreach (GameplayCommand command in repeatedCommands) ExecutePlayingCommand(command);
+            }
+            else
+            {
+                repeatInput.Clear();
+            }
             PublishSnapshot();
         }
 
@@ -52,6 +66,7 @@ namespace NeonBlocks.Views
             if (gameObject.scene.name == stoppingSceneKey)
             {
                 isStopping = true;
+                repeatInput?.Clear();
             }
         }
 
@@ -77,6 +92,7 @@ namespace NeonBlocks.Views
             if (command == GameplayCommand.TogglePause)
             {
                 TogglePause();
+                repeatInput.Clear();
                 PublishSnapshot();
                 return;
             }
@@ -86,6 +102,30 @@ namespace NeonBlocks.Views
                 return;
             }
 
+            ExecutePlayingCommand(command);
+
+            PublishSnapshot();
+        }
+
+        /// <summary>Nhận press/release của lệnh giữ; chỉ lệnh press ở Playing mới thực hiện hành động tức thời.</summary>
+        /// <param name="input">Sự kiện giữ từ keyboard hoặc touch button.</param>
+        private void OnHeldInput(GameplayHeldInput input)
+        {
+            if (loop == null || repeatInput == null || isStopping || input == null) return;
+            if (!input.IsPressed)
+            {
+                repeatInput.End(input.Command);
+                return;
+            }
+
+            if (loop.State != GameSessionState.Playing || !repeatInput.Begin(input.Command)) return;
+            ExecutePlayingCommand(ToGameplayCommand(input.Command));
+            PublishSnapshot();
+        }
+
+        /// <summary>Thực hiện một lệnh đã được lọc ở trạng thái Playing.</summary>
+        private void ExecutePlayingCommand(GameplayCommand command)
+        {
             switch (command)
             {
                 case GameplayCommand.MoveLeft: loop.TryMoveLeft(); break;
@@ -95,14 +135,25 @@ namespace NeonBlocks.Views
                 case GameplayCommand.RotateCounterClockwise: loop.TryRotateCounterClockwise(); break;
                 case GameplayCommand.HardDrop: loop.HardDrop(); break;
             }
+        }
 
-            PublishSnapshot();
+        /// <summary>Chuyển enum lệnh giữ sang enum gameplay dùng chung.</summary>
+        private static GameplayCommand ToGameplayCommand(GameplayHeldCommand command)
+        {
+            return command switch
+            {
+                GameplayHeldCommand.MoveLeft => GameplayCommand.MoveLeft,
+                GameplayHeldCommand.MoveRight => GameplayCommand.MoveRight,
+                GameplayHeldCommand.SoftDrop => GameplayCommand.SoftDrop,
+                _ => throw new System.ArgumentOutOfRangeException(nameof(command))
+            };
         }
 
         /// <summary>Tạo loop mới bằng config session và spawn piece đầu tiên.</summary>
         private void StartNewGame()
         {
             GameConfig config = ServiceLocator.Instance.Resolve<ConfigManager>().Config;
+            repeatInput = new GameplayRepeatInput(config.Timing.DasSeconds, config.Timing.ArrSeconds);
             loop = new GameLoop(new BoardModel(config.Board), new SevenBagPieceSource(config.Pieces, 1, config.NextQueueSize), new GameScore(config.Scoring, config.StartLevel, config.LinesPerLevel), config.SpawnOrigin, config.GetLevel(config.StartLevel).GravitySeconds, config.Timing.LockDelaySeconds, config.Timing.MaxLockResets);
             loop.BeginNextPiece();
             PublishSnapshot();

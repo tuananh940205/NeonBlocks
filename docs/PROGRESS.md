@@ -17,7 +17,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 | 7 | Game loop và gravity | Đã triển khai, chờ xác minh | State/tick/gravity/drop/lock delay/reset cap và 4 EditMode tests; build thành công (0 lỗi). Còn thiếu: chạy `GameLoopTests` trong Unity Test Runner (xem docs/lessons/BAI_7.md). |
 | 8 | Xóa hàng, tính điểm và kết thúc | Đã triển khai, chờ xác minh | Người dùng xác nhận đã hoàn thành phần triển khai; chưa có playtest. Mốc playtest placeholder desktop được chuyển lên bài 9; còn cần ghi kết quả Test Runner/Play Mode thực tế. |
 | 9 | BoardView, pool và ghost piece | Chưa bắt đầu | Chưa có |
-| 10 | Điều khiển bàn phím và cảm ứng | Chưa bắt đầu | Chưa có |
+| 10 | Điều khiển bàn phím và cảm ứng | Đã triển khai, chờ xác minh | Touch button/Signal, DAS/ARR, 4 EditMode tests và asset handoff đã có; còn Unity Test Runner, Play Mode và Android device. |
 | 11 | Hold và hoàn thiện HUD | Chưa bắt đầu | Chưa có |
 | 12 | Menu, popup và lưu dữ liệu | Chưa bắt đầu | Chưa có |
 | 13 | Mỹ thuật neon và âm thanh | Chưa bắt đầu | Chưa có |
@@ -189,3 +189,10 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - `BoardView` không còn chia tile theo toàn bộ `BoardRoot` (bao gồm transparent margin và viền của khung PNG). Tile được tính vuông từ phần playfield ngang bên trong, sau đó căn giữa theo chiều dọc.
 - Inspector có `Horizontal Inset Fraction` (mặc định `0.115`) và `Cell Gap Pixels` (mặc định `2`); giá trị mặc định khớp `NB-UI-003-BoardFrame-v1`.
 - Sửa tiếp: BoardView dùng `Vertical Bottom Inset Fraction = 0.07` để hàng logic `y=0` bám hàng lưới dưới thay vì căn giữa. Handoff đã yêu cầu `NB-UI-003 v2` có lưới 10x20 pixel-perfect; cần thay asset này để bỏ calibration khi chốt art.
+
+### Bài 10
+- **Ngày và phạm vi:** 2026-11-05. Bổ sung touch input và hoàn thiện input giữ, không thay đổi binding keyboard Bài 9.
+- **Asset trước code:** tạo `NB-UI-004-TouchDirectional-v1.png` và `NB-UI-005-TouchActions-v1.png` tại `art-source/NeonBlocks/`; đã ghi handoff, trạng thái chờ duyệt. Code tiếp tục dùng Image placeholder.
+- **Code:** thêm `GameplayRepeatInput` (DAS/ARR), `GameplayHeldInput`/Signal và `GameplayTouchButton`; `GameplayKeyboardInput` phát press/release cho input giữ, Presenter áp dụng repeat khi Playing và clear khi pause/game over/scene stop.
+- **Test:** thêm 4 `GameplayRepeatInputTests`; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 error, 12 warning dependency Unity hiện hữu.
+- **Cần người dùng xác minh:** setup `TouchControls` theo `docs/lessons/BAI_10.md`; chạy Unity Test Runner và Play Mode desktop/touch hoặc Android device. Chưa có kết quả device Android.

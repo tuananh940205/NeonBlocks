@@ -13,6 +13,7 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
 4. Ghi hướng dẫn Editor tại docs/lessons/BAI_N.md khi triển khai, gồm object, component, Inspector, giá trị và cách test; thư mục/file này được tạo trong bài tương ứng.
 5. Cập nhật PROGRESS.md: file thay đổi, kết quả thật, việc chưa xác minh và bước thủ công.
 6. Tóm tắt kết quả trực tiếp liên quan trò chơi. Không tự commit, publish hoặc thêm tính năng ngoài bài.
+7. Vẽ sơ đồ workflow cho từng flow được tạo ra/thay đổi trong lần triển khai
 
 ## Tổng quan
 1. Nền tảng dự án và Entry scene
