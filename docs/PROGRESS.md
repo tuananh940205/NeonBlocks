@@ -1,6 +1,6 @@
 # NeonBlocks — Tiến độ
 
-Cập nhật: 2026-11-05. Bài 1–5 đã triển khai code; Bài 4 đã có bằng chứng Test Runner, Bài 5 chờ xác minh Unity.
+Cập nhật: 2026-11-05. Bài 1–6 đã triển khai code; Bài 4 đã có bằng chứng Test Runner, Bài 5–6 chờ xác minh Unity.
 
 ## Trạng thái
 Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn thành / Bị chặn.
@@ -13,7 +13,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 | 3 | Manager xuyên suốt game, Addressables và vòng đời scene | Đã triển khai, chờ xác minh | Code + 22 EditMode test mới (tổng 73). Runtime và test biên dịch OK bằng Roslyn của Unity; Addressables biên dịch từ source 2.10.3. Còn thiếu: Test Runner, Play Mode Entry→MainMenu→Gameplay→MainMenu, tạo MainMenu/Gameplay scene và Addressables Settings (xem docs/lessons/BAI_3.md) |
 | 4 | BoardModel và khối đang rơi | Hoàn thành | `BoardModelTests` (7/7) pass trong Unity EditMode Test Runner; build test assembly thành công. |
 | 5 | Xoay khối và wall kick | Đã triển khai, chờ xác minh | SRS CW/CCW, bảng kick JLSTZ/I, O giữ state và 6 EditMode tests; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công (0 lỗi). Còn thiếu: chạy `SrsRotationTests` trong Unity Test Runner (xem docs/lessons/BAI_5.md). |
-| 6 | Nguồn khối và preview | Chưa bắt đầu | Chưa có |
+| 6 | Nguồn khối và preview | Đã triển khai, chờ xác minh | 7-bag có seed, RNG injection, preview 5 và 4 EditMode tests; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công (0 lỗi). Còn thiếu: chạy `SevenBagPieceSourceTests` trong Unity Test Runner (xem docs/lessons/BAI_6.md). |
 | 7 | Game loop và gravity | Chưa bắt đầu | Chưa có |
 | 8 | Xóa hàng, tính điểm và kết thúc | Chưa bắt đầu | Chưa có |
 | 9 | BoardView, pool và ghost piece | Chưa bắt đầu | Chưa có |
@@ -137,4 +137,12 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **Kiểm tra thật đã chạy:** `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 lỗi; có 10 warning conflict `System.Memory/System.Buffers` từ reference Unity hiện có.
 - **Chưa xác minh:** 6 test `SrsRotationTests` trong Unity EditMode Test Runner. Không cần setup Unity Editor, component, asset hay Addressables trong bài này.
 - **Điều kiện đánh dấu hoàn thành:** toàn bộ `SrsRotationTests` pass trong Unity EditMode Test Runner.
+
+### Bài 6
+- **Ngày và phạm vi:** 2026-11-05. Thêm nguồn tetromino 7-bag có seed và hàng đợi Next; không thêm game loop, gravity, input, hold, scoring, clear hàng hay view.
+- **File đã thêm:** `Assets/_Project/Scripts/Gameplay/IPieceRandom.cs`, `SeededPieceRandom.cs`, `SevenBagPieceSource.cs`; `Assets/_Project/Tests/EditMode/FixedPieceRandom.cs`, `SevenBagPieceSourceTests.cs` (4 test); `docs/lessons/BAI_6.md`.
+- **Quyết định thiết kế:** nguồn trả `PieceDefinition` từ GameConfig. Bag đầy đủ được giữ nội bộ; preview chỉ chứa đúng `NextQueueSize` (MVP là 5) và được bù ngay sau `TakeNext`. `IPieceRandom` cho phép test không phụ thuộc Unity Random.
+- **Kiểm tra thật đã chạy:** `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 lỗi; có 10 warning conflict `System.Memory/System.Buffers` từ reference Unity hiện có.
+- **Chưa xác minh:** 4 test `SevenBagPieceSourceTests` trong Unity EditMode Test Runner. Không cần setup Unity Editor, component, asset hay Addressables trong bài này.
+- **Điều kiện đánh dấu hoàn thành:** toàn bộ `SevenBagPieceSourceTests` pass trong Unity EditMode Test Runner.
 - **Sửa 2026-11-05 (EntryLauncher/SessionManager):** `EntryLauncher` bỏ `RequireComponent` và `GetComponent`, lấy session qua `ServiceLocator.Resolve<SessionManager>()`; chỉ chạy khi `gameObject.scene.buildIndex == 0` và cùng GameObject với session đang sở hữu. Đã biên dịch lại Runtime và test.
