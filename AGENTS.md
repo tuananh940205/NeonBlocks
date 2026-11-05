@@ -11,6 +11,7 @@ AI Agents do not remove anything in this file
 5. Không nói bài đã pass nếu chưa chạy được validation khả dụng; nêu rõ phần nào cần người dùng kiểm tra trong Unity Editor.
 6. Tóm tắt những thay đổi có liên quan trực tiếp đến trò chơi sau khi công việc hoàn tất
 7. Nếu cần asset mới, ghi yêu cầu cụ thể vào docs/ASSET_HANDOFF.md; dùng placeholder để tiếp tục phần code.
+8. Hãy viết code sao cho bài sau hạn chế sửa code bài trước ít nhất có thể mà vẫn đảm bảo đúng mạch logic
 
 ## Khi người dùng nói "Tích hợp các asset đã sẵn sàng trong docs/ASSET_HANDOFF.md, kiểm tra và cập nhật tiến độ."
 

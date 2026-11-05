@@ -1,6 +1,6 @@
 # NeonBlocks — Tiến độ
 
-Cập nhật: 2026-11-05. Bài 1–4 đã triển khai code, đều còn chờ xác minh trong Unity Editor.
+Cập nhật: 2026-11-05. Bài 1–5 đã triển khai code; Bài 4 đã có bằng chứng Test Runner, Bài 5 chờ xác minh Unity.
 
 ## Trạng thái
 Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn thành / Bị chặn.
@@ -11,8 +11,8 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 | 1 | Nền tảng dự án và Entry scene | Đã triển khai, chờ xác minh | Code + asmdef + 17 EditMode test đã viết; Core/Runtime biên dịch OK bằng Roslyn của Unity (ngoài Editor). Addressables 2.10.3 đã cài trong project. Còn thiếu: gắn `SessionManager` và Canvas vào `Entry.unity`, chạy Test Runner và Play Mode (xem docs/lessons/BAI_1.md) |
 | 2 | Dữ liệu JSON và cấu hình luật chơi | Đã triển khai, chờ xác minh | Code + 34 EditMode test đã viết (`GameConfigParserTests` 23, `GameConfigRulesTests` 4, `PieceDefinitionTests` 7); Runtime biên dịch OK bằng Roslyn của Unity. Còn thiếu: chạy Test Runner, đặt Addressables key `GameConfig` (xem docs/lessons/BAI_2.md) |
 | 3 | Manager xuyên suốt game, Addressables và vòng đời scene | Đã triển khai, chờ xác minh | Code + 22 EditMode test mới (tổng 73). Runtime và test biên dịch OK bằng Roslyn của Unity; Addressables biên dịch từ source 2.10.3. Còn thiếu: Test Runner, Play Mode Entry→MainMenu→Gameplay→MainMenu, tạo MainMenu/Gameplay scene và Addressables Settings (xem docs/lessons/BAI_3.md) |
-| 4 | BoardModel và khối đang rơi | Đã triển khai, chờ xác minh | `BoardModel`/`ActivePiece` thuần C# và 7 EditMode tests; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công (0 lỗi). Còn thiếu: chạy `BoardModelTests` trong Unity Test Runner (xem docs/lessons/BAI_4.md). |
-| 5 | Xoay khối và wall kick | Chưa bắt đầu | Chưa có |
+| 4 | BoardModel và khối đang rơi | Hoàn thành | `BoardModelTests` (7/7) pass trong Unity EditMode Test Runner; build test assembly thành công. |
+| 5 | Xoay khối và wall kick | Đã triển khai, chờ xác minh | SRS CW/CCW, bảng kick JLSTZ/I, O giữ state và 6 EditMode tests; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công (0 lỗi). Còn thiếu: chạy `SrsRotationTests` trong Unity Test Runner (xem docs/lessons/BAI_5.md). |
 | 6 | Nguồn khối và preview | Chưa bắt đầu | Chưa có |
 | 7 | Game loop và gravity | Chưa bắt đầu | Chưa có |
 | 8 | Xóa hàng, tính điểm và kết thúc | Chưa bắt đầu | Chưa có |
@@ -128,4 +128,13 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **Bằng chứng nhận được:** Unity EditMode Test Runner có 15 test fail: `GameConfigRulesTests` (1), `SceneFlowManagerTests` (5), `ServiceLocatorTests` (1) và `SessionManagerTests` (8). `AddressableManagerTests`, `BoardModelTests`, `ConfigManagerTests`, `GameConfigParserTests`, `PieceDefinitionTests` và `SafeAreaCalculatorTests` hiển thị pass.
 - **Đã sửa:** `SessionManager.TryBeginSession()` chỉ gọi `DontDestroyOnLoad` khi đang Play Mode, tránh `InvalidOperationException` trong EditMode; `ServiceLocator.Resolve<T>()` chỉ đăng ký lazy Signal một lần, tránh log `Already registered`; `GameConfigRulesTests` loại các lớp hậu tố `Manager` có state runtime khỏi kiểm tra readonly của data/domain/DTO.
 - **Kiểm tra sau sửa:** `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 lỗi; chưa chạy lại Unity Test Runner nên không xác nhận các test này đã pass.
+
+### Bài 5
+- **Ngày và phạm vi:** 2026-11-05. Thêm xoay SRS CW/CCW cho gameplay thuần C#, gồm orientation, bảng wall kick riêng I/JLSTZ và O giữ nguyên state. Không thêm 180°, game loop, input, random bag, hold, clear hàng hay view.
+- **File đã thêm:** `Assets/_Project/Scripts/Gameplay/PieceOrientation.cs`, `SrsKickTable.cs`; `Assets/_Project/Tests/EditMode/SrsRotationTests.cs` (6 test); `docs/lessons/BAI_5.md`.
+- **File đã sửa:** `ActivePiece.cs` tính cell theo orientation quanh pivot config; `BoardModel.cs` thêm `TryRotateClockwise` và `TryRotateCounterClockwise`.
+- **Quy ước:** nguồn bảng kick là TetrisWiki SRS; X sang phải/Y hướng lên nên giữ nguyên dấu offset SRS. Candidate được thử theo đúng thứ tự năm offset, chỉ commit candidate `CanFit` đầu tiên.
+- **Kiểm tra thật đã chạy:** `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 lỗi; có 10 warning conflict `System.Memory/System.Buffers` từ reference Unity hiện có.
+- **Chưa xác minh:** 6 test `SrsRotationTests` trong Unity EditMode Test Runner. Không cần setup Unity Editor, component, asset hay Addressables trong bài này.
+- **Điều kiện đánh dấu hoàn thành:** toàn bộ `SrsRotationTests` pass trong Unity EditMode Test Runner.
 - **Sửa 2026-11-05 (EntryLauncher/SessionManager):** `EntryLauncher` bỏ `RequireComponent` và `GetComponent`, lấy session qua `ServiceLocator.Resolve<SessionManager>()`; chỉ chạy khi `gameObject.scene.buildIndex == 0` và cùng GameObject với session đang sở hữu. Đã biên dịch lại Runtime và test.

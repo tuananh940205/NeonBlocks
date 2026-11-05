@@ -88,6 +88,26 @@ namespace NeonBlocks.Gameplay
         }
 
         /// <summary>
+        /// Thử xoay active piece 90 độ theo chiều kim đồng hồ bằng SRS; chỉ commit orientation và kick khi candidate fit.
+        /// Khối O luôn trả true nhưng giữ nguyên state vì hình không đổi.
+        /// </summary>
+        /// <returns>True nếu phép xoay hợp lệ hoặc active piece là O.</returns>
+        public bool TryRotateClockwise()
+        {
+            return TryRotate(true);
+        }
+
+        /// <summary>
+        /// Thử xoay active piece 90 độ ngược chiều kim đồng hồ bằng SRS; chỉ commit orientation và kick khi candidate fit.
+        /// Khối O luôn trả true nhưng giữ nguyên state vì hình không đổi.
+        /// </summary>
+        /// <returns>True nếu phép xoay hợp lệ hoặc active piece là O.</returns>
+        public bool TryRotateCounterClockwise()
+        {
+            return TryRotate(false);
+        }
+
+        /// <summary>
         /// Khóa active piece vào lưới settled khi nó còn fit. Không có active piece hoặc trạng thái không hợp lệ thì trả false và không mutate.
         /// </summary>
         /// <returns>True nếu đã ghi cả bốn ô vào lưới và xóa active piece.</returns>
@@ -189,6 +209,39 @@ namespace NeonBlocks.Gameplay
 
             activePiece = candidate;
             return true;
+        }
+
+        /// <summary>
+        /// Tạo candidate quay theo chiều yêu cầu và thử từng offset SRS cho đến khi tìm được candidate fit.
+        /// </summary>
+        /// <param name="clockwise">True cho CW, false cho CCW.</param>
+        /// <returns>True nếu phép xoay được commit.</returns>
+        private bool TryRotate(bool clockwise)
+        {
+            if (activePiece == null)
+            {
+                return false;
+            }
+
+            if (activePiece.Definition.Id == "O")
+            {
+                return true;
+            }
+
+            ActivePiece rotated = clockwise ? activePiece.RotateClockwise() : activePiece.RotateCounterClockwise();
+            IReadOnlyList<GridPoint> kicks = SrsKickTable.GetKicks(activePiece.Definition.Id, activePiece.Orientation, rotated.Orientation);
+
+            foreach (GridPoint kick in kicks)
+            {
+                ActivePiece candidate = rotated.Translate(kick.X, kick.Y);
+                if (CanFit(candidate))
+                {
+                    activePiece = candidate;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

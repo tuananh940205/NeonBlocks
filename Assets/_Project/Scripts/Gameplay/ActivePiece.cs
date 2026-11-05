@@ -15,15 +15,30 @@ namespace NeonBlocks.Gameplay
         /// <summary>Góc đáy trái của khung piece 4×4 trong tọa độ bảng.</summary>
         public GridPoint Origin { get; }
 
+        /// <summary>Orientation SRS hiện tại của piece.</summary>
+        public PieceOrientation Orientation { get; }
+
         /// <summary>
         /// Tạo khối đang rơi tại một origin xác định.
         /// </summary>
         /// <param name="definition">Định nghĩa piece, không được null.</param>
         /// <param name="origin">Góc đáy trái của khung piece.</param>
         public ActivePiece(PieceDefinition definition, GridPoint origin)
+            : this(definition, origin, PieceOrientation.Spawn)
+        {
+        }
+
+        /// <summary>
+        /// Tạo khối đang rơi tại origin và orientation xác định.
+        /// </summary>
+        /// <param name="definition">Định nghĩa piece, không được null.</param>
+        /// <param name="origin">Góc đáy trái của khung piece.</param>
+        /// <param name="orientation">Orientation SRS của piece.</param>
+        public ActivePiece(PieceDefinition definition, GridPoint origin, PieceOrientation orientation)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             Origin = origin;
+            Orientation = orientation;
         }
 
         /// <summary>
@@ -38,7 +53,7 @@ namespace NeonBlocks.Gameplay
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            GridPoint cell = Definition.Cells[index];
+            GridPoint cell = RotateCell(Definition.Cells[index]);
             return new GridPoint(Origin.X + cell.X, Origin.Y + cell.Y);
         }
 
@@ -50,7 +65,56 @@ namespace NeonBlocks.Gameplay
         /// <returns>Piece mới ở vị trí đã dịch.</returns>
         public ActivePiece Translate(int deltaX, int deltaY)
         {
-            return new ActivePiece(Definition, new GridPoint(Origin.X + deltaX, Origin.Y + deltaY));
+            return new ActivePiece(Definition, new GridPoint(Origin.X + deltaX, Origin.Y + deltaY), Orientation);
+        }
+
+        /// <summary>
+        /// Tạo candidate quay 90 độ theo chiều kim đồng hồ quanh tâm xoay của định nghĩa.
+        /// </summary>
+        /// <returns>Piece mới có orientation kế tiếp.</returns>
+        public ActivePiece RotateClockwise()
+        {
+            return new ActivePiece(Definition, Origin, (PieceOrientation)(((int)Orientation + 1) % 4));
+        }
+
+        /// <summary>
+        /// Tạo candidate quay 90 độ ngược chiều kim đồng hồ quanh tâm xoay của định nghĩa.
+        /// </summary>
+        /// <returns>Piece mới có orientation trước đó.</returns>
+        public ActivePiece RotateCounterClockwise()
+        {
+            return new ActivePiece(Definition, Origin, (PieceOrientation)(((int)Orientation + 3) % 4));
+        }
+
+        /// <summary>
+        /// Xoay một ô tương đối từ orientation spawn theo orientation hiện tại quanh tâm SRS của định nghĩa.
+        /// </summary>
+        /// <param name="cell">Ô ở orientation spawn.</param>
+        /// <returns>Ô đã xoay, vẫn là tọa độ nguyên.</returns>
+        private GridPoint RotateCell(GridPoint cell)
+        {
+            float relativeX = cell.X - Definition.RotationCenterX;
+            float relativeY = cell.Y - Definition.RotationCenterY;
+            float rotatedX = cell.X;
+            float rotatedY = cell.Y;
+
+            switch (Orientation)
+            {
+                case PieceOrientation.Right:
+                    rotatedX = Definition.RotationCenterX + relativeY;
+                    rotatedY = Definition.RotationCenterY - relativeX;
+                    break;
+                case PieceOrientation.Reverse:
+                    rotatedX = Definition.RotationCenterX - relativeX;
+                    rotatedY = Definition.RotationCenterY - relativeY;
+                    break;
+                case PieceOrientation.Left:
+                    rotatedX = Definition.RotationCenterX - relativeY;
+                    rotatedY = Definition.RotationCenterY + relativeX;
+                    break;
+            }
+
+            return new GridPoint((int)Math.Round(rotatedX), (int)Math.Round(rotatedY));
         }
     }
 }
