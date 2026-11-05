@@ -174,3 +174,10 @@ Do not use static class or static instance for singleton items
 - Prefab được tải qua cache asset nói trên; view tạo bản sao bằng `UnityEngine.Object.Instantiate` thuần túy. Không dùng `Addressables.InstantiateAsync` cho prefab đã có cached success handle trong scope.
 - Khi `SceneAssetScope` kết thúc, `AddressableManager` giải phóng đúng một cached handle của từng asset thuộc scope, sau khi toàn bộ instance thuần túy do scope tạo đã bị destroy. Cache phải tách theo scope/owner, không chia sẻ handle scene này sang scene khác.
 - Nếu load thất bại hoặc bị hủy thì không cache kết quả. Các yêu cầu đồng thời cho cùng key/kiểu trong cùng scope phải cùng chờ một request; chỉ cache sau khi request thành công và owner còn hiệu lực.
+
+## Entry bootstrap tạm thời và mốc playtest (cập nhật 2026-11-05)
+
+- Entry chỉ là bootstrap trong Build Settings, không phải scene tồn tại suốt game. Sau khi ConfigManager tải/validate config, SceneFlowManager tải scene đầu tiên thành công và scene đó đã active, EntryLauncher unload native Entry đúng một lần.
+- Chỉ GameObject riêng chứa SessionManager được DontDestroyOnLoad. Manager session đã đăng ký sống tiếp; EntryLauncher, BootVisuals, camera/canvas bootstrap và mọi object khác của Entry bị hủy khi unload. Không dùng việc chỉ tắt BootVisuals làm trạng thái cuối.
+- Không unload Entry nếu config hoặc scene đầu tải thất bại; giữ nó để lỗi được log/báo rõ. Unload native Entry không phải Addressables release và không giải phóng handle của scene Addressable.
+- Bài 9 là mốc playtest desktop đầu tiên: phải có renderer placeholder, bridge mỏng tới toàn bộ logic 4–8 và bàn phím. Không đẩy input bàn phím thiết yếu sang bài 10; bài 10 chỉ bổ sung cảm ứng và polish input.

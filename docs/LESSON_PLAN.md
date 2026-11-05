@@ -23,8 +23,8 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
 6. Nguồn khối và preview
 7. Game loop và gravity
 8. Xóa hàng, tính điểm và kết thúc
-9. BoardView, pool và ghost piece
-10. Điều khiển bàn phím và cảm ứng
+9. Playtest placeholder: BoardView, pool, ghost và bàn phím
+10. Điều khiển cảm ứng và hoàn thiện input
 11. Hold và hoàn thiện HUD
 12. Menu, popup và lưu dữ liệu
 13. Mỹ thuật neon và âm thanh
@@ -113,20 +113,27 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
 - **Nghiệm thu:** Test 1–4 hàng, hàng không liền nhau, scoring/level boundary, lock→clear→top-out→spawn đúng thứ tự.
 - **Bàn giao:** code/asset và hướng dẫn Editor cần thiết, kết quả kiểm tra thật, cập nhật tiến độ.
 
-## Bài 9 — BoardView, pool và ghost piece
+## Bài 9 — Playtest placeholder: BoardView, pool, ghost và bàn phím
 
 - **Prompt:** `Triển khai bài 9`
 - **Phụ thuộc:** 3, 8.
-- **Phạm vi:** Dựng render bảng, settled/active/ghost/next bằng placeholder đơn giản; PoolManager là class thuần C# singleton xuyên suốt game, đăng ký qua SessionManager; quản lý cell visual theo scope scene, template Addressable giữ sống trong khi có instance. Ghost là kết quả chiếu xuống từ model, không sửa model. View không chứa luật chơi.
-- **Nghiệm thu:** Chơi vòng cơ bản bằng driver tạm hoặc test harness; mapping ô chính xác, ghost trùng hard drop; trả pool khi thoát.
+- **Mục tiêu mới:** Đây là mốc **playtest desktop đầu tiên**. Sau bài này phải chơi được một ván placeholder bằng bàn phím, dùng toàn bộ luật đã có đến bài 8; không chờ bài 10.
+- **Phạm vi:**
+  1. Dựng `GameplayPresenter`/driver MonoBehaviour mỏng cho scene Gameplay: tạo model từ `ConfigManager.Config`, nối `GameLoop`/logic bài 4–8 với `Update` chỉ để truyền delta time, và chuyển snapshot model sang view. Không đưa luật vào view.
+  2. Dựng BoardView cho settled/active/ghost/next bằng placeholder đơn giản, có thể dùng Image/UI hoặc SpriteRenderer hình vuông màu lập trình; **không cần asset mới**. Mapping ô phải dùng cùng quy ước x sang phải, y lên. Ghost là kết quả chiếu xuống từ model, không sửa model.
+  3. Tạo `PoolManager` là class thuần C# xuyên suốt session, đăng ký qua SessionManager. Pool sở hữu instance theo `SceneAssetScope`; template Addressable giữ sống trong khi còn instance, và scope hủy active/inactive instance trước khi release template/handle.
+  4. Đưa bộ điều khiển bàn phím tối thiểu vào bài này bằng Input System: Left/A, Right/D, Down/S, Z (CCW), X/Up (CW), Space (hard drop), P/Escape (pause). Bind/unbind theo lifecycle scene; input bị chặn khi Pause/GameOver. Bài 10 không được dời mốc playtest này.
+  5. Gameplay scene tự bắt đầu một ván sau khi MainMenu gửi Start; có text placeholder tối thiểu cho state/score/lines/level và phím Restart `R` khi GameOver. Không làm menu/popup hoàn chỉnh thuộc bài 12.
+  6. Thay hành vi bootstrap tạm thời: sau khi `GameConfig` và MainMenu đã tải thành công, MainMenu được đặt active rồi **unload Entry scene**. `SessionManager` và manager session đã DontDestroyOnLoad vẫn sống; EntryLauncher, BootVisuals và BootVisualsView bị hủy theo Entry. Chỉ unload sau thành công; nếu tải lỗi thì giữ Entry để log/báo lỗi. Việc unload native Entry không phải release Addressables handle.
+- **Nghiệm thu:** Play Mode desktop từ Entry → MainMenu → Gameplay; chơi được một ván placeholder bằng các phím đã nêu, gravity/rotate/drop/lock/clear/score/level/top-out hoạt động; mapping ô chính xác; ghost trùng vị trí hard drop; Pause chặn tick/input; GameOver cho phép Restart; Hierarchy không còn scene Entry sau khi MainMenu tải; trả pool trước khi scope release khi thoát Gameplay.
 - **Bàn giao:** code/asset và hướng dẫn Editor cần thiết, kết quả kiểm tra thật, cập nhật tiến độ.
 
-## Bài 10 — Điều khiển bàn phím và cảm ứng
+## Bài 10 — Điều khiển cảm ứng và hoàn thiện input
 
 - **Prompt:** `Triển khai bài 10`
 - **Phụ thuộc:** 9.
-- **Phạm vi:** Input System: trái/phải, xoay CW/CCW, soft/hard drop, pause. Android dùng nút cảm ứng rõ ràng; DAS 0.15s, ARR 0.05s cấu hình JSON. Bind/unbind listener theo lifecycle; chặn input khi pause/popup và thao tác nhiều ngón không tạo lệnh thừa.
-- **Nghiệm thu:** Test giữ phím/nút, tap xoay, hủy chạm, mất focus, pause; kiểm tra trên thiết bị nếu có, ghi rõ nếu chưa.
+- **Phạm vi:** Giữ nguyên và regression-test keyboard của bài 9; bổ sung Android bằng nút cảm ứng rõ ràng hoặc gesture đã tài liệu hóa cho trái/phải, xoay CW/CCW, soft/hard drop và pause. Áp dụng DAS 0.15s, ARR 0.05s từ JSON; bind/unbind theo lifecycle, chặn input khi pause/popup và thao tác nhiều ngón không tạo lệnh thừa.
+- **Nghiệm thu:** Playtest desktop vẫn chạy với bộ phím bài 9; test giữ phím/nút, tap xoay, hủy chạm, mất focus, pause; kiểm tra trên thiết bị nếu có, ghi rõ nếu chưa.
 - **Bàn giao:** code/asset và hướng dẫn Editor cần thiết, kết quả kiểm tra thật, cập nhật tiến độ.
 
 ## Bài 11 — Hold và hoàn thiện HUD
@@ -187,7 +194,8 @@ Thực hiện tuần tự. Không cần dán lại nội dung từng bài. Khôn
 
 ## Mốc chơi được
 - Sau bài 8: luật gameplay kiểm tra độc lập.
-- Sau bài 10: chơi được với hình placeholder.
+- Sau bài 9: chơi được trên desktop với hình placeholder và bàn phím.
+- Sau bài 10: playtest cảm ứng trên Android/Device Simulator, nếu môi trường sẵn sàng.
 - Sau bài 12: vòng chơi/menu/save đầy đủ.
 - Sau bài 15: ứng viên bản Android, phụ thuộc SDK và thiết bị thực có.
 - Sau bài 17: portfolio và bàn giao.

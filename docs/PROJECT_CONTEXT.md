@@ -28,7 +28,7 @@ BoardModel và gameplay thuần C#, Unity views xử lý render/input. Config JS
 
 Tái sử dụng bộ ServiceLocator và Signal người dùng đã import tại Assets/Scripts/Core. Locator hiện là class với static Instance, không phải static class; đây là ngoại lệ đã được người dùng chọn so với quy tắc static class cũ. Không tạo locator/signal thứ hai. Các service được quản lý là class thường, không có static singleton riêng. Typed Signal register/dispatch cho giao tiếp giữa các MonoBehaviour; không serialized reference giữa các view để gọi nhau. UI button dùng AddListener/RemoveListener. Mọi method tạo/sửa trong Assets có XML comment tiếng Việt, đặt trước attribute.
 
-Chỉ Entry nằm trong Build Settings. Scene khác và popup/panel tải Addressables. Key bằng tên asset hoặc root GameObject. LevelData giữ key thay cho prefab/sprite reference. Chỉ AddressableManager/SceneAssetScope release handle, kể cả release instance thông qua owner. Khi thoát: dừng input/job → dispose native data nếu có → hủy pool instances active/inactive → release scope. Chưa được release template khi pool còn instance.
+Chỉ Entry nằm trong Build Settings. Entry là bootstrap tạm: sau khi GameConfig và scene đầu tiên đã tải thành công, scene đích được đặt active rồi Entry được unload. Chỉ GameObject riêng chứa SessionManager (DontDestroyOnLoad) và manager session sống tiếp; BootVisuals/EntryLauncher không được DontDestroyOnLoad. Nếu tải đầu tiên lỗi, giữ Entry để log/báo lỗi. Scene khác và popup/panel tải Addressables. Key bằng tên asset hoặc root GameObject. LevelData giữ key thay cho prefab/sprite reference. Chỉ AddressableManager/SceneAssetScope release handle, kể cả release instance thông qua owner. Khi thoát: dừng input/job → dispose native data nếu có → hủy pool instances active/inactive → release scope. Chưa được release template khi pool còn instance. Unload native Entry không phải release Addressables handle.
 
 Tuân thủ các giới hạn try-catch trong AGENTS.md; không nuốt lỗi. Không sửa Library, Temp hoặc file Unity sinh tự động. Chỉ dùng Jobs/Burst nếu có baseline và benchmark phù hợp.
 
@@ -43,6 +43,7 @@ Người dùng đã import ServiceLocator.cs và Signals.cs vào Assets/Scripts/
 ## Session và singleton — 2026-11-03
 - Entry có một `SessionManager` (DontDestroyOnLoad). Singleton sống xuyên suốt game được đăng ký qua `SessionManager.RegisterSingleton` trong logic khởi động của Entry; không dùng AppLifecycle hay framework lifecycle riêng.
 - `SessionManager` chỉ bị hủy khi Restart Game (`RestartGame()`: kết thúc session → hủy GameObject → tải lại Entry) hoặc khi thoát Play Mode. Instance trùng bị hủy ngay trong Awake và không đụng vào session đang chạy.
+- Sau khi khởi động thành công, Entry scene bị unload; điều này không hủy SessionManager vì nó đã ở GameObject riêng được DontDestroyOnLoad. EntryLauncher, BootVisuals và UI bootstrap bị hủy cùng scene. Không chỉ tắt BootVisuals làm trạng thái cuối.
 - Singleton gắn với một scene (không phải session) do scene đó sở hữu và phải gỡ khi rời scene.
 - Chi tiết và quy tắc tái sử dụng cho các game khác nằm trong `PuzzlePortfolio/AGENTS.md`, mục "Session và singleton".
 

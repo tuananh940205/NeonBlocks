@@ -10,12 +10,12 @@ Trạng thái: code và test đã viết và đã biên dịch kiểm tra cú ph
 | `ConfigManager` | Class thuần C#, `IDisposable` | `AddressableManager` | Session (token `Session:Config`) | Như trên; giữ TextAsset đến khi session kết thúc |
 | `SceneFlowManager` | Class thuần C#, `IDisposable` | `AddressableManager` (Signal được resolve từ ServiceLocator khi phát/gỡ listener, không giữ tham chiếu) | Session | Như trên; mỗi lần đổi scene tạo `SceneAssetScope` mới |
 | `SceneAssetScope` | Object thuần C#, không singleton | `AddressableManager` | `SceneFlowManager` (một scope cho mỗi scene) | Từ lúc tải scene đến khi rời scene |
-| `EntryLauncher` | MonoBehaviour (glue) | `SessionManager` lấy qua ServiceLocator; đặt cùng GameObject với SessionManager | Entry scene | Chỉ chạy trong scene Entry (build index 0); không giữ tài nguyên |
+| `EntryLauncher` | MonoBehaviour (glue) | `SessionManager` lấy qua ServiceLocator; GameObject riêng | Entry scene | Chỉ chạy trong scene Entry (build index 0); bị hủy khi Entry unload |
 | `SessionManager` | MonoBehaviour (bài 1) | — | Entry scene | `DontDestroyOnLoad`; chỉ hủy khi Restart Game hoặc thoát Play Mode |
 
 Thứ tự đăng ký tại `EntryLauncher.Start`: `AddressableManager` → `ConfigManager` → `SceneFlowManager` (Signal không đăng ký thủ công; được tạo lazy khi resolve). Khi session kết thúc, `SessionManager` dispose theo thứ tự ngược: `SceneFlowManager` → `ConfigManager` → `AddressableManager`.
 
-Thứ tự khởi động: tải `GameConfig` và parse xong mới chuyển sang `MainMenu`.
+Thứ tự khởi động hiện tại: tải `GameConfig` và parse xong mới chuyển sang `MainMenu`. Từ bài 9, sau khi MainMenu đã tải thành công và được đặt active, Entry được unload; chỉ SessionManager/manager session đã DontDestroyOnLoad còn sống.
 
 Thứ tự rời scene (do `SceneFlowManager` điều phối): `SceneStopSignal` → `SceneDisposeSignal` → giải phóng `SceneAssetScope` (unload scene và handle). Bước pool sẽ thêm ở bài 9.
 
@@ -58,14 +58,14 @@ Nếu scene đã có object `GameplayView` (từ phiên bản trước): chuyể
 Không đặt sẵn gameplay trong scene; bài 9 trở đi mới có nội dung thật.
 
 ## 5. Cấu hình Entry.unity
-Scene `Entry.unity` có `BootVisuals` (camera, light, canvas khởi động) và `Session`. Ẩn `BootVisuals` được thực hiện bằng Signal, không kéo tham chiếu giữa các object.
+Scene `Entry.unity` có `BootVisuals` (camera, light, canvas khởi động), `Session` và `EntryLauncher`. Sau khi tải scene đầu thành công, bài 9 sẽ unload toàn bộ Entry; không coi việc chỉ ẩn BootVisuals là trạng thái cuối.
 
-1. Chọn object **BootVisuals** (gốc chứa Main Camera, Global Light 2D, Canvas và EventSystem nếu có). Add Component **BootVisualsView** (`NeonBlocks.App.BootVisualsView`). Không cần gán field nào.
-2. Chọn object **Session** (có **SessionManager** từ bài 1). Add Component **EntryLauncher** (`NeonBlocks.EntryLauncher`) nếu chưa có. Không cần gán field nào: EntryLauncher không còn field Boot Visuals.
-3. Nếu Inspector của `Session` còn dòng **Boot Visuals** (từ phiên bản trước), bỏ qua; Unity sẽ bỏ field này khi lưu scene.
+1. Chọn object **Session**: chỉ giữ **SessionManager**; không thêm component nào khác và không đặt nó dưới BootVisuals.
+2. Tạo object root riêng **EntryLauncher**, add component **EntryLauncher** (`NeonBlocks.EntryLauncher`). Không cần gán field nào.
+3. Chọn object **BootVisuals** (gốc chứa Main Camera, Global Light 2D, Canvas và EventSystem nếu có). `BootVisualsView` chỉ là tương thích tạm với bản bài 3; bài 9 sẽ bỏ/không dùng nó vì unload Entry sẽ tự hủy toàn bộ object này.
 4. Không đặt MainMenu hay Gameplay vào Entry; hai scene đó tải bằng Addressables.
 
-Thứ tự khởi động: `EntryLauncher` có DefaultExecutionOrder = -100, nên Start của nó đăng ký `BootVisualsHideSignal` trước khi `BootVisualsView` resolve signal trong Start của nó.
+Thứ tự khởi động: `SessionManager.Awake` nhận owner trước, sau đó `EntryLauncher.Start` đăng ký manager và tải config/scene đầu. Bài 9 thêm bước đặt MainMenu active rồi unload Entry đúng một lần.
 
 ## 6. Build Settings
 1. **File → Build Profiles** → **Scene List**.
@@ -83,7 +83,7 @@ Số lượng này đếm từ mã nguồn; chưa chạy trong Unity.
 
 ### 7.2 Play Mode
 1. Mở `Entry.unity`, bấm **Play**.
-2. Kỳ vọng: BootVisuals bị tắt (BootVisualsView nhận BootVisualsHideSignal) sau khi MainMenu tải; Hierarchy có `MainMenu` được tải thêm; Console không có lỗi đỏ.
+2. Trước bài 9: BootVisuals có thể chỉ bị tắt theo implementation hiện có. Sau bài 9: Hierarchy không còn scene `Entry` sau khi MainMenu tải; chỉ GameObject DontDestroyOnLoad chứa SessionManager còn sống, Console không có lỗi đỏ.
 3. Bấm **Start** trong MainMenu → Gameplay hiện lên, MainMenu biến mất.
 4. Bấm **Back** trong Gameplay → MainMenu hiện lại.
 5. Bấm **Stop**, rồi **Play** lần hai: không có `Already registered`, `not registered` hoặc `SessionManager đã tồn tại`.

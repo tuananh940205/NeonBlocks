@@ -15,7 +15,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 | 5 | Xoay khối và wall kick | Đã triển khai, chờ xác minh | SRS CW/CCW, bảng kick JLSTZ/I, O giữ state và 6 EditMode tests; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công (0 lỗi). Còn thiếu: chạy `SrsRotationTests` trong Unity Test Runner (xem docs/lessons/BAI_5.md). |
 | 6 | Nguồn khối và preview | Đã triển khai, chờ xác minh | 7-bag có seed, RNG injection, preview 5 và 4 EditMode tests; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công (0 lỗi). Còn thiếu: chạy `SevenBagPieceSourceTests` trong Unity Test Runner (xem docs/lessons/BAI_6.md). |
 | 7 | Game loop và gravity | Đã triển khai, chờ xác minh | State/tick/gravity/drop/lock delay/reset cap và 4 EditMode tests; build thành công (0 lỗi). Còn thiếu: chạy `GameLoopTests` trong Unity Test Runner (xem docs/lessons/BAI_7.md). |
-| 8 | Xóa hàng, tính điểm và kết thúc | Chưa bắt đầu | Chưa có |
+| 8 | Xóa hàng, tính điểm và kết thúc | Đã triển khai, chờ xác minh | Người dùng xác nhận đã hoàn thành phần triển khai; chưa có playtest. Mốc playtest placeholder desktop được chuyển lên bài 9; còn cần ghi kết quả Test Runner/Play Mode thực tế. |
 | 9 | BoardView, pool và ghost piece | Chưa bắt đầu | Chưa có |
 | 10 | Điều khiển bàn phím và cảm ứng | Chưa bắt đầu | Chưa có |
 | 11 | Hold và hoàn thiện HUD | Chưa bắt đầu | Chưa có |
@@ -151,3 +151,8 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **File:** `Scripts/Gameplay/GameSessionState.cs`, `GameLoop.cs`; `Tests/EditMode/GameLoopTests.cs` (4); `docs/lessons/BAI_7.md`.
 - **Chưa xác minh:** chạy `GameLoopTests` trong Unity EditMode Test Runner.
 - **Sửa 2026-11-05 (EntryLauncher/SessionManager):** `EntryLauncher` bỏ `RequireComponent` và `GetComponent`, lấy session qua `ServiceLocator.Resolve<SessionManager>()`; chỉ chạy khi `gameObject.scene.buildIndex == 0` và cùng GameObject với session đang sở hữu. Đã biên dịch lại Runtime và test.
+
+### Điều chỉnh lộ trình playtest — 2026-11-05
+- Theo yêu cầu người dùng sau khi hoàn thành bài 8: đưa renderer placeholder, bridge gameplay và điều khiển bàn phím vào bài 9 để playtest desktop bắt đầu ngay sau bài này. Bài 10 chuyển trọng tâm sang cảm ứng Android/Device Simulator và polish input; keyboard bài 9 vẫn là regression bắt buộc.
+- Entry đổi thành bootstrap tạm. Sau khi config và MainMenu tải thành công, MainMenu được active rồi Entry unload; SessionManager/manager session đã DontDestroyOnLoad sống tiếp. Nếu tải đầu tiên lỗi thì Entry không unload. Tài liệu đã đồng bộ ở LESSON_PLAN, PROJECT_CONTEXT, BAI_3 và AGENTS.
+- Đây là thay đổi lộ trình/tài liệu; chưa sửa runtime hiện có để unload Entry và chưa có kết quả Play Mode mới.
