@@ -75,7 +75,7 @@ namespace NeonBlocks.Tests
         }
 
         /// <summary>
-        /// Lấy các kiểu của NeonBlocks.Config và NeonBlocks.Config.Dto, bỏ qua kiểu do trình biên dịch sinh ra (tên chứa '&lt;').
+        /// Lấy các kiểu data/domain và DTO của NeonBlocks.Config, bỏ qua Manager có state runtime và kiểu do trình biên dịch sinh ra.
         /// </summary>
         /// <returns>Danh sách kiểu cấu hình cần kiểm tra.</returns>
         private static Type[] ConfigTypes()
@@ -83,6 +83,7 @@ namespace NeonBlocks.Tests
             return typeof(GameConfig).Assembly.GetTypes()
                 .Where(t => t.Namespace != null
                     && t.Namespace.StartsWith("NeonBlocks.Config", StringComparison.Ordinal)
+                    && !t.Name.EndsWith("Manager", StringComparison.Ordinal)
                     && !t.IsEnum
                     && !t.Name.Contains("<"))
                 .ToArray();

@@ -42,13 +42,25 @@ namespace NeonBlocks
             if (ServiceLocator.Instance.IsRegistered(typeof(SessionManager)))
             {
                 Debug.LogWarning("SessionManager đã tồn tại; instance mới bị hủy.");
-                Destroy(gameObject);
+                if (Application.isPlaying)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    DestroyImmediate(gameObject);
+                }
                 return false;
             }
 
             isOwner = true;
             ServiceLocator.Instance.RegisterSingleton(this);
-            DontDestroyOnLoad(gameObject);
+
+            if (Application.isPlaying)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+
             return true;
         }
 

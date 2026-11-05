@@ -1,6 +1,6 @@
 # NeonBlocks — Tiến độ
 
-Cập nhật: 2026-11-03. Bài 1 đã triển khai code, chờ xác minh trong Unity Editor; chưa triển khai gameplay.
+Cập nhật: 2026-11-05. Bài 1–4 đã triển khai code, đều còn chờ xác minh trong Unity Editor.
 
 ## Trạng thái
 Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn thành / Bị chặn.
@@ -11,7 +11,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 | 1 | Nền tảng dự án và Entry scene | Đã triển khai, chờ xác minh | Code + asmdef + 17 EditMode test đã viết; Core/Runtime biên dịch OK bằng Roslyn của Unity (ngoài Editor). Addressables 2.10.3 đã cài trong project. Còn thiếu: gắn `SessionManager` và Canvas vào `Entry.unity`, chạy Test Runner và Play Mode (xem docs/lessons/BAI_1.md) |
 | 2 | Dữ liệu JSON và cấu hình luật chơi | Đã triển khai, chờ xác minh | Code + 34 EditMode test đã viết (`GameConfigParserTests` 23, `GameConfigRulesTests` 4, `PieceDefinitionTests` 7); Runtime biên dịch OK bằng Roslyn của Unity. Còn thiếu: chạy Test Runner, đặt Addressables key `GameConfig` (xem docs/lessons/BAI_2.md) |
 | 3 | Manager xuyên suốt game, Addressables và vòng đời scene | Đã triển khai, chờ xác minh | Code + 22 EditMode test mới (tổng 73). Runtime và test biên dịch OK bằng Roslyn của Unity; Addressables biên dịch từ source 2.10.3. Còn thiếu: Test Runner, Play Mode Entry→MainMenu→Gameplay→MainMenu, tạo MainMenu/Gameplay scene và Addressables Settings (xem docs/lessons/BAI_3.md) |
-| 4 | BoardModel và khối đang rơi | Chưa bắt đầu | Chưa có |
+| 4 | BoardModel và khối đang rơi | Đã triển khai, chờ xác minh | `BoardModel`/`ActivePiece` thuần C# và 7 EditMode tests; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công (0 lỗi). Còn thiếu: chạy `BoardModelTests` trong Unity Test Runner (xem docs/lessons/BAI_4.md). |
 | 5 | Xoay khối và wall kick | Chưa bắt đầu | Chưa có |
 | 6 | Nguồn khối và preview | Chưa bắt đầu | Chưa có |
 | 7 | Game loop và gravity | Chưa bắt đầu | Chưa có |
@@ -115,4 +115,17 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **Sửa 2026-11-05 (signal):** không class nào giữ tham chiếu tới Signal. Signal được resolve tại thời điểm dùng. Bộ Core: `ServiceLocator.Resolve<T>()` tạo lazy lớp signal ở lần đầu (trước đây nhánh này là code chết); đã bỏ `TryResolve`. `EntryLauncher` không đăng ký signal thủ công. Đã biên dịch lại Runtime và test.
 - **Sửa 2026-11-05 (scene keys):** tên scene (`Entry`, `MainMenu`, `Gameplay`) chuyển khỏi hằng số trong class vào mục `scenes` của GameConfig, qua `SceneKeysDto` và `SceneKeys`. `EntryLauncher`, `MainMenuCanvas`, `GameplayCanvas`, `SessionManager.RestartGame` đọc từ `ConfigManager.Config.Scenes`. `RestartGame` đọc tên Entry trước `ResetSession`. Hằng số `GameConfigParser.AddressKey` được giữ vì cần trước khi config tải. Thêm 2 test parser (scene rỗng, scene trùng). Đã biên dịch lại Runtime và test.
 - **Sửa 2026-11-05 (gọi signal trực tiếp):** bỏ kiểm tra null cho signal (luôn có instance nhờ lazy `Resolve`) trong `MainMenuCanvas`, `GameplayCanvas`, `BootVisualsView` và constructor `SceneFlowManager`; gọi `Resolve<T>().AddListener/RemoveListener/Dispatch` trực tiếp. Chỉ giữ kiểm tra null cho nút Inspector. Đã biên dịch lại Runtime và test.
+
+### Bài 4
+- **Ngày và phạm vi:** 2026-11-05. Thêm gameplay thuần C# gồm `BoardModel` và `ActivePiece`; không thêm view, input, xoay, random bag, gravity, clear hàng hay scoring thuộc bài sau.
+- **File đã thêm:** `Assets/_Project/Scripts/Gameplay/ActivePiece.cs`, `BoardModel.cs`; `Assets/_Project/Tests/EditMode/BoardModelTests.cs` (7 test); `docs/lessons/BAI_4.md`.
+- **Quyết định thiết kế:** `BoardModel` sở hữu `bool[,]` settled cells, còn `ActivePiece` bất biến giữ `PieceDefinition` cùng origin. Mọi candidate phải `CanFit` trước khi commit. Bảng bao gồm y = 0 đến `TotalHeight - 1`, do đó lock trong hàng ẩn là hợp lệ. Origin spawn được truyền vào API để game loop sau này lấy từ `GameConfig.SpawnOrigin` mà model không phụ thuộc ConfigManager/Unity.
+- **Kiểm tra thật đã chạy:** `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 lỗi; có 10 warning conflict `System.Memory/System.Buffers` từ reference Unity hiện có.
+- **Chưa xác minh:** 7 test `BoardModelTests` trong Unity Test Runner. Không cần setup Unity Editor, component, asset hay Addressables trong bài này.
+- **Điều kiện đánh dấu hoàn thành:** toàn bộ `BoardModelTests` pass trong Unity EditMode Test Runner.
+
+### Sửa sau Test Runner (2026-11-05)
+- **Bằng chứng nhận được:** Unity EditMode Test Runner có 15 test fail: `GameConfigRulesTests` (1), `SceneFlowManagerTests` (5), `ServiceLocatorTests` (1) và `SessionManagerTests` (8). `AddressableManagerTests`, `BoardModelTests`, `ConfigManagerTests`, `GameConfigParserTests`, `PieceDefinitionTests` và `SafeAreaCalculatorTests` hiển thị pass.
+- **Đã sửa:** `SessionManager.TryBeginSession()` chỉ gọi `DontDestroyOnLoad` khi đang Play Mode, tránh `InvalidOperationException` trong EditMode; `ServiceLocator.Resolve<T>()` chỉ đăng ký lazy Signal một lần, tránh log `Already registered`; `GameConfigRulesTests` loại các lớp hậu tố `Manager` có state runtime khỏi kiểm tra readonly của data/domain/DTO.
+- **Kiểm tra sau sửa:** `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 lỗi; chưa chạy lại Unity Test Runner nên không xác nhận các test này đã pass.
 - **Sửa 2026-11-05 (EntryLauncher/SessionManager):** `EntryLauncher` bỏ `RequireComponent` và `GetComponent`, lấy session qua `ServiceLocator.Resolve<SessionManager>()`; chỉ chạy khi `gameObject.scene.buildIndex == 0` và cùng GameObject với session đang sở hữu. Đã biên dịch lại Runtime và test.

@@ -70,7 +70,6 @@ public class ServiceLocator {
 
       if (typeof(BaseSignal).IsAssignableFrom(typeof(T))) {
          var signal = Activator.CreateInstance<T>();
-         singletons[typeof(T)] = signal;
          RegisterSingleton(typeof(T), signal);
          return signal;
       }
