@@ -16,6 +16,7 @@ namespace NeonBlocks.Config
 
         /// <summary>Kích thước bảng gồm hàng hiển thị và hàng ẩn.</summary>
         public BoardSettings Board { get; }
+        public PopupKeys Ui { get; }
 
         /// <summary>Ô góc đáy trái của khung 4×4 khi khối spawn, theo hệ tọa độ bảng (y lên trên).</summary>
         public GridPoint SpawnOrigin { get; }
@@ -67,8 +68,9 @@ namespace NeonBlocks.Config
             IEnumerable<LevelData> levels,
             ScoringRules scoring,
             TimingRules timing,
-            IEnumerable<PieceDefinition> pieces)
+            IEnumerable<PieceDefinition> pieces, PopupKeys ui)
         {
+            Ui = ui ?? throw new ConfigValidationException("ui bị thiếu.");
             Board = board ?? throw new ConfigValidationException("board bị thiếu.");
             Scoring = scoring ?? throw new ConfigValidationException("scoring bị thiếu.");
             Timing = timing ?? throw new ConfigValidationException("timing bị thiếu.");

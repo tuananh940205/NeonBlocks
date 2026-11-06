@@ -10,6 +10,7 @@ namespace NeonBlocks.Config.Dto
     {
         /// <summary>Số khối trong hàng đợi Next.</summary>
         public readonly int nextQueueSize;
+        public readonly PopupKeysDto ui;
 
         /// <summary>Level bắt đầu.</summary>
         public readonly int startLevel;
@@ -62,7 +63,7 @@ namespace NeonBlocks.Config.Dto
             LevelDto[] levels,
             ScoringDto scoring,
             TimingDto timing,
-            PieceDto[] pieces)
+            PieceDto[] pieces, PopupKeysDto ui)
         {
             this.nextQueueSize = nextQueueSize;
             this.startLevel = startLevel;
@@ -74,6 +75,7 @@ namespace NeonBlocks.Config.Dto
             this.scoring = scoring;
             this.timing = timing;
             this.pieces = pieces;
+            this.ui = ui;
         }
     }
 }

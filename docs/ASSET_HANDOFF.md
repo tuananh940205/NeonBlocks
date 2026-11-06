@@ -163,3 +163,48 @@ Use case: stylized-concept. Standalone production PNG game UI asset for NeonBloc
 ```text
 Use case: stylized-concept. Standalone production PNG game UI asset for NeonBlocks lesson 11 HUD: ONE empty rounded-square preview panel reusable for HOLD and each NEXT tetromino. Dark midnight navy near-flat glass interior, thin polished neon rim cyan on upper/left sides transitioning electric violet on lower/right sides. Match premium cyan-purple arcade touch controls. Orthographic straight-on, exact square, restrained corner radius about 8 percent, symmetrical outline. EMPTY interior with absolutely no icons, pieces, grid, text, numbers, labels or decorations; runtime Unity renders pieces and text above this panel. Large quiet dark center. Narrow clean neon glow. CRITICAL tightly fitted canvas, full panel including glow occupies 98-100 percent of width and height, no excess outer transparent padding. Actual transparent alpha outside rounded panel only, opaque navy inside. Single panel, not a mockup, no sheet, no background or watermark.
 ```
+
+## Bài 12 — Asset đã duyệt và import (2026-11-06)
+
+Đã tạo bằng built-in image_gen, xem ảnh trực quan và xác nhận file PNG RGBA. Người dùng đã duyệt và yêu cầu đưa trực tiếp vào project; ba PNG đã được copy vào đúng Art path và Unity đã import. Dựng prefab/scene theo checklist BAI_12.md. Canvas sát phần ảnh/glow; không có dải padding transparent rộng. Kế hoạch code: docs/lessons/BAI_12_PLAN.md.
+
+### NB-UI-009 — PopupPanel
+- **Mục đích:** Nền chung Pause/Settings/GameOver.
+- **Nguồn:** `art-source/NeonBlocks/NB-UI-009-PopupPanel-v1.png`.
+- **Đích đã copy/import:** `Assets/_Project/Art/UI/Popups/NB-UI-009-PopupPanel.png`.
+- **Kích thước / alpha:** 1122 x 1402 px, RGBA.
+- **Sprite sheet:** không; một asset riêng. Pivot Center, Preserve Aspect.
+- **Import đề xuất:** Sprite (2D and UI), Single, Full Rect, Bilinear, Clamp, sRGB/alpha bật, max texture 2048, Normal Quality. Sprite dependency của prefab, không Addressable riêng. Panel chưa chốt 9-slice; không stretch méo.
+- **Trạng thái:** Đã được người dùng duyệt và Unity import; chờ gắn prefab qua Lesson12Setup hoặc setup tay theo BAI_12.md.
+- **Prompt gốc:**
+```text
+Use case stylized-concept. Single production UI PNG for NeonBlocks: EMPTY portrait popup panel, aspect 4:5, straight front view. Deep midnight navy opaque interior, thin cyan neon rim at top/left blending to violet at bottom/right, softly rounded corners 6 percent. Minimal polished glass, quiet uniform dark center for readable runtime text and buttons. No text, symbols, dividers, buttons or decorations. Reusable Pause, Settings and GameOver modal background. CRITICAL tight canvas to visible outer rim including narrow glow, panel occupies 98-100 percent each dimension. No wide transparent margin, no huge haze. Actual transparency only outside rounded panel. No perspective, no shadow backdrop or scene.
+```
+
+### NB-UI-010 — Settings
+- **Mục đích:** Icon Settings ở Menu và popup.
+- **Nguồn:** `art-source/NeonBlocks/NB-UI-010-Settings-v1.png`.
+- **Đích đã copy/import:** `Assets/_Project/Art/UI/Icons/NB-UI-010-Settings.png`.
+- **Kích thước / alpha:** 1254 x 1254 px, RGBA.
+- **Sprite sheet:** không; một asset riêng. Pivot Center, Preserve Aspect.
+- **Import đề xuất:** Sprite (2D and UI), Single, Full Rect, Bilinear, Clamp, sRGB/alpha bật, max texture 2048, Normal Quality. Sprite dependency của prefab, không Addressable riêng. Panel chưa chốt 9-slice; không stretch méo.
+- **Trạng thái:** Đã được người dùng duyệt và Unity import; chờ gắn prefab qua Lesson12Setup hoặc setup tay theo BAI_12.md.
+- **Prompt gốc:**
+```text
+Use case stylized-concept. One standalone Settings cogwheel game UI icon for NeonBlocks. Single symmetrical eight-tooth gear, clearly open transparent circular hole in center, thick icy white/cyan luminous gear body, small violet accent along lower right edge, narrow restrained neon glow. Clean readable at small mobile size, straight-on flat silhouette, no button plate, no text, no screws or other objects. Actual transparent background and transparent center hole. CRITICAL tightly cropped canvas to gear and thin glow, icon occupies 98-100 percent width and height, no broad transparent border, no broad glow haze. Square canvas.
+```
+
+### NB-UI-011 — HighScore
+- **Mục đích:** Cúp high score ở Menu/GameOver.
+- **Nguồn:** `art-source/NeonBlocks/NB-UI-011-HighScore-v1.png`.
+- **Đích đã copy/import:** `Assets/_Project/Art/UI/Icons/NB-UI-011-HighScore.png`.
+- **Kích thước / alpha:** 1312 x 1199 px, RGBA.
+- **Sprite sheet:** không; một asset riêng. Pivot Center, Preserve Aspect.
+- **Import đề xuất:** Sprite (2D and UI), Single, Full Rect, Bilinear, Clamp, sRGB/alpha bật, max texture 2048, Normal Quality. Sprite dependency của prefab, không Addressable riêng. Panel chưa chốt 9-slice; không stretch méo.
+- **Trạng thái:** Đã được người dùng duyệt và Unity import; chờ gắn prefab qua Lesson12Setup hoặc setup tay theo BAI_12.md.
+- **Prompt gốc:**
+```text
+Use case stylized-concept. Single standalone high score trophy icon for NeonBlocks neon arcade UI. Simple elegant front-facing trophy cup with two handles, short stem and rectangular foot, strong immediately readable silhouette. White icy cyan luminous surface with cyan edges and subtle violet lower accents, minimal glossy detail, narrow clean glow matching neon cyan purple UI. No text, numbers, star, laurel, confetti or background plate. Actual transparent background including handle holes. CRITICAL tightly fitted rectangular canvas to trophy including narrow glow, trophy fills 98-100 percent width AND height; no square padding, no excess outer transparent border, no wide haze. One icon only.
+```
+
+Tái sử dụng background/button plate/Pause từ bộ art hiện có; kiểm tra trạng thái duyệt trước khi tích hợp bản chưa được duyệt. Chữ, số, modal dimmer và slider/toggle dùng Unity UI/TMP; không tạo logo/nhạc/SFX bài 13.

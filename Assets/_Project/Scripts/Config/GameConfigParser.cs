@@ -48,6 +48,7 @@ namespace NeonBlocks.Config
         /// <returns>GameConfig tương ứng.</returns>
         private static GameConfig Map(GameConfigDto dto)
         {
+            PopupKeysDto ui = Require(dto.ui, "ui");
             BoardDto boardDto = Require(dto.board, "board");
             GridPointDto spawnDto = Require(dto.spawn, "spawn");
             SceneKeysDto sceneDto = Require(dto.scenes, "scenes");
@@ -72,7 +73,7 @@ namespace NeonBlocks.Config
                 levels,
                 scoring,
                 timing,
-                pieces);
+                pieces, new PopupKeys(ui.mainMenu, ui.pause, ui.settings, ui.gameOver));
         }
 
         /// <summary>

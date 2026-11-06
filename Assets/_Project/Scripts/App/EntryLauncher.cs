@@ -4,6 +4,9 @@ using NeonBlocks.Assets;
 using NeonBlocks.App;
 using NeonBlocks.Config;
 using NeonBlocks.Scene;
+using NeonBlocks.Save;
+using NeonBlocks.Popups;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -58,6 +61,9 @@ namespace NeonBlocks
                 session.RegisterSingleton(sceneFlow);
                 session.RegisterSingleton(pools);
 
+                session.RegisterSingleton(new PopupManager());
+                var save = session.RegisterSingleton(new LocalSaveManager(new FileSaveStorage(Path.Combine(Application.persistentDataPath, "neonblocks-save.json"))));
+                await save.LoadAsync();
                 await config.LoadAsync(lifetime.Token);
                 await sceneFlow.GoToAsync(config.Config.Scenes.MainMenu, lifetime.Token);
 

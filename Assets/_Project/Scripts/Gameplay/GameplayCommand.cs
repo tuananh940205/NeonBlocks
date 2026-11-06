@@ -11,6 +11,8 @@ namespace NeonBlocks.Gameplay
         HardDrop,
         TogglePause,
         Restart,
-        Hold
+        Hold,
+        ModalResume,
+        ModalRestart
     }
 }

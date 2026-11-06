@@ -6,7 +6,8 @@
     "Unity.UI",
     "Unity.TextMeshPro",
     "UnityEditor.TestRunner",
-    "UnityEngine.TestRunner"
+    "UnityEngine.TestRunner",
+    "Unity.Addressables.Editor"
   ],
   "includePlatforms": [
     "Editor"

@@ -19,7 +19,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 | 9 | BoardView, pool và ghost piece | Chưa bắt đầu | Chưa có |
 | 10 | Điều khiển bàn phím và cảm ứng | Đã triển khai, chờ xác minh | Touch button/Signal, DAS/ARR, 4 EditMode tests và asset handoff đã có; còn Unity Test Runner, Play Mode và Android device. |
 | 11 | Hold và hoàn thiện HUD | Đã triển khai, chờ xác minh | HoldTests 9/9 pass trong Unity; PlayMode smoke Hold/HUD/restart pass; 2 asset đã duyệt/import/gắn Gameplay; sáu workflow diagrams. Toàn bộ EditMode 112/114 pass, còn 2 lỗi SessionManagerTests cũ và kiểm tra touch Android. Xem docs/lessons/BAI_11.md. |
-| 12 | Menu, popup và lưu dữ liệu | Chưa bắt đầu | Chưa có |
+| 12 | Menu, popup và lưu dữ liệu | Đã triển khai, chờ xác minh | Runtime save/version và popup lifecycle; 3 asset đã import; 13/13 test mới pass, toàn suite 125/127 pass (2 lỗi SessionManager cũ). Chờ chạy menu setup prefab/scene và PlayMode/click/touch theo checklist docs/lessons/BAI_12.md. |
 | 13 | Mỹ thuật neon và âm thanh | Chưa bắt đầu | Chưa có |
 | 14 | Polish và hướng dẫn chơi | Chưa bắt đầu | Chưa có |
 | 15 | Kiểm thử và bản Android | Chưa bắt đầu | Chưa có |
@@ -207,3 +207,19 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **Tài liệu/diagram:** docs/lessons/BAI_11.md và BAI_11_WORKFLOWS.md gồm sáu sơ đồ Mermaid cho Hold, input/Signal, HUD, restart/lifecycle, import, validation.
 - **Evidence:** docs/evidence/lesson11-editmode.xml, lesson11-playmode.txt, lesson11-setup.txt.
 - **Còn cần:** chạm thật Android/Device Simulator và xử lý hai lỗi test cũ để chốt toàn bộ regression. Không khẳng định cả suite pass. Board frame v1 và calibration giữ theo bài 9.
+
+### Bài 12 — Menu, popup, lưu dữ liệu (2026-11-06)
+- Asset NB-UI-009/010/011 được người dùng duyệt, copy vào Art/UI/Popups và Art/UI/Icons, Unity import Sprite Single/FullRect/Bilinear/Clamp/alpha/sRGB.
+- Thêm LocalSaveManager, FileSaveStorage/ISaveStorage, SaveData/Dto/Result/Status; JSON version 1 cho best score, music/sfx volume, mute. Ghi temp/replace; file lỗi hoặc version không hỗ trợ giữ nguyên và báo WriteBlocked.
+- Thêm PopupManager/PopupSlot; typed UiRequest, SaveChanged, GameplayModal signals; PopupCanvas và PopupHost theo scene/scope.
+- GameConfig JSON/DTO/domain/parser thêm nhóm ui keys; Entry đăng ký manager và load save trước scene đầu. Presenter hỗ trợ modal gate, ModalResume/ModalRestart; giữ Hold và keyboard gameplay cũ.
+- Editor: Lesson12AssetImporter, Lesson12Setup (menu dựng bốn prefab Addressable và scene host), Lesson12TestRun.
+- Kiểm tra thật: test project build 0 error/12 warning; Editor build 0 error/17 warning. Unity 6000.3.25f1 TestRunner 127 test, 125 pass/2 fail; 9 LocalSaveManagerTests và 4 PopupManagerTests mới đều pass. Hai lỗi SessionManagerTests giống baseline bài 11, không sửa ngoài phạm vi.
+- Evidence: docs/evidence/lesson12-editmode.xml. Còn cần chạy menu setup prefab/scene và kiểm tra vòng chơi qua nút thật/Android; không khẳng định đã PlayMode bài 12.
+- Bàn giao: docs/lessons/BAI_12.md có checklist chi tiết ô tick; BAI_12_WORKFLOWS.md có sáu sơ đồ. Chưa chạy menu cấu hình scene để người dùng tự setup/đánh dấu theo yêu cầu.
+
+### Sửa stuck MainMenu — 2026-11-06
+- Nguyên nhân xác minh: UnityAddressableBackend.LoadSceneAsync dùng LoadSceneMode.Single. MainMenu load hủy EntryLauncher trước khi task load hoàn tất, token bootstrap bị cancel; SceneFlowManager.CurrentScope không được gán, PopupHost chờ mãi và task cleanup cố unload scene cuối.
+- Sửa đúng backend sang Additive; SceneFlowManager giữ quyền active/stop/dispose/release scene theo flow hiện có. Không sửa prefab/scene hoặc các thay đổi người dùng đã stage.
+- Kiểm tra thật trong Unity 6000.3.25f1: Play từ Entry, panel MainMenu hiện; click START vào Gameplay; click Pause rồi HOME quay lại MainMenu có panel. Thoát Play trở về Entry.
+- Còn cảnh báo EventSystem/AudioListener trùng trong khoảng hai scene Additive cùng tồn tại; không khẳng định đã xử lý cảnh báo transition này trong bản sửa stuck.

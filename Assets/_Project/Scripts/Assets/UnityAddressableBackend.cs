@@ -36,7 +36,9 @@ namespace NeonBlocks.Assets
         /// <returns>Kết quả chứa SceneInstance dạng boxed và handle scene.</returns>
         public Task<AddressableResult> LoadSceneAsync(string key, CancellationToken ct)
         {
-            AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(key, LoadSceneMode.Single, true);
+            // Single sẽ hủy Entry/scene cũ trước khi SceneFlowManager nhận scope, gây cancel bootstrap và kẹt PopupHost.
+            // SceneFlowManager tự active scene mới rồi stop/dispose/release scope cũ; backend chỉ tải Additive.
+            AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(key, LoadSceneMode.Additive, true);
             return ToResultTask(handle, key, scene => scene);
         }
 

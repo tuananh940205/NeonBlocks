@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NeonBlocks.Config;
 using NeonBlocks.Gameplay;
 using NeonBlocks.Scene;
+using NeonBlocks.Popups;
 using UnityEngine;
 
 namespace NeonBlocks.Views
@@ -14,11 +15,13 @@ namespace NeonBlocks.Views
         private GameplayRepeatInput repeatInput;
         private readonly List<GameplayCommand> repeatedCommands = new List<GameplayCommand>();
         private bool isStopping;
+        private bool modalBlocked;
 
         /// <summary>Đăng ký nhận lệnh input và thông báo dừng scene để chặn tick trước khi scope được giải phóng.</summary>
         private void OnEnable()
         {
             ServiceLocator.Instance.Resolve<GameplayCommandSignal>().AddListener(OnCommand);
+            ServiceLocator.Instance.Resolve<GameplayModalSignal>().AddListener(OnModal);
             ServiceLocator.Instance.Resolve<GameplaySnapshotRequestSignal>().AddListener(OnSnapshotRequested);
             ServiceLocator.Instance.Resolve<GameplayHeldCommandSignal>().AddListener(OnHeldInput);
             ServiceLocator.Instance.Resolve<SceneStopSignal>().AddListener(OnSceneStopping);
@@ -28,6 +31,7 @@ namespace NeonBlocks.Views
         private void OnDisable()
         {
             ServiceLocator.Instance.Resolve<GameplayCommandSignal>().RemoveListener(OnCommand);
+            ServiceLocator.Instance.Resolve<GameplayModalSignal>().RemoveListener(OnModal);
             ServiceLocator.Instance.Resolve<GameplaySnapshotRequestSignal>().RemoveListener(OnSnapshotRequested);
             ServiceLocator.Instance.Resolve<GameplayHeldCommandSignal>().RemoveListener(OnHeldInput);
             ServiceLocator.Instance.Resolve<SceneStopSignal>().RemoveListener(OnSceneStopping);
@@ -48,7 +52,7 @@ namespace NeonBlocks.Views
             }
 
             loop.Tick(Time.deltaTime);
-            if (loop.State == GameSessionState.Playing)
+            if (!modalBlocked && loop.State == GameSessionState.Playing)
             {
                 repeatedCommands.Clear();
                 repeatInput.CollectRepeats(Time.deltaTime, repeatedCommands);
@@ -81,6 +85,15 @@ namespace NeonBlocks.Views
                 return;
             }
 
+            if (command == GameplayCommand.ModalResume && loop.State == GameSessionState.Paused)
+            { loop.Resume(); repeatInput.Clear(); PublishSnapshot(); return; }
+            if (command == GameplayCommand.ModalRestart && (loop.State == GameSessionState.Paused || loop.State == GameSessionState.GameOver))
+            { StartNewGame(); return; }
+            if (modalBlocked && command != GameplayCommand.Restart)
+            {
+                // Keyboard hoặc touch phía sau modal không được đóng Settings hay tác động khối.
+                return;
+            }
             if (command == GameplayCommand.Restart)
             {
                 if (loop.State == GameSessionState.GameOver)
@@ -120,9 +133,16 @@ namespace NeonBlocks.Views
                 return;
             }
 
-            if (loop.State != GameSessionState.Playing || !repeatInput.Begin(input.Command)) return;
+            if (modalBlocked || loop.State != GameSessionState.Playing || !repeatInput.Begin(input.Command)) return;
             ExecutePlayingCommand(ToGameplayCommand(input.Command));
             PublishSnapshot();
+        }
+
+        /// <summary>Khóa command lặp ngay khi mở modal và xóa input giữ để không rơi/dịch sau resume.</summary>
+        private void OnModal(bool blocked)
+        {
+            modalBlocked = blocked;
+            repeatInput?.Clear();
         }
 
         /// <summary>Phát lại state cho HUD vừa bật; không cho view khác giữ tham chiếu presenter.</summary>
