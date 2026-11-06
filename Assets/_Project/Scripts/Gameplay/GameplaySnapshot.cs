@@ -11,6 +11,7 @@ namespace NeonBlocks.Gameplay
         public BoardSettings Settings { get; }
         /// <summary>Ô đã khóa trên board.</summary>
         public IReadOnlyList<GridPoint> SettledCells { get; }
+        public IReadOnlyList<SettledTile> SettledTiles { get; }
         /// <summary>Ô của piece đang rơi.</summary>
         public IReadOnlyList<GridPoint> ActiveCells { get; }
         /// <summary>Ô của vị trí hard drop dự đoán, không thay đổi model.</summary>
@@ -33,7 +34,7 @@ namespace NeonBlocks.Gameplay
         public int Level { get; }
 
         /// <summary>Tạo snapshot và sao chép các danh sách để view không thể sửa state của game.</summary>
-        public GameplaySnapshot(BoardSettings settings, IEnumerable<GridPoint> settledCells, IEnumerable<GridPoint> activeCells, IEnumerable<GridPoint> ghostCells, string activePieceId, IEnumerable<string> nextPieceIds, GameSessionState state, int score, int lines, int level, string heldPieceId = null, bool canHold = false)
+        public GameplaySnapshot(BoardSettings settings, IEnumerable<GridPoint> settledCells, IEnumerable<GridPoint> activeCells, IEnumerable<GridPoint> ghostCells, string activePieceId, IEnumerable<string> nextPieceIds, GameSessionState state, int score, int lines, int level, string heldPieceId = null, bool canHold = false, IEnumerable<SettledTile> settledTiles = null)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             SettledCells = Array.AsReadOnly(new List<GridPoint>(settledCells ?? throw new ArgumentNullException(nameof(settledCells))).ToArray());
@@ -47,6 +48,7 @@ namespace NeonBlocks.Gameplay
             Level = level;
             HeldPieceId = heldPieceId;
             CanHold = canHold;
+            SettledTiles = Array.AsReadOnly(new List<SettledTile>(settledTiles ?? new SettledTile[0]).ToArray());
         }
     }
 }

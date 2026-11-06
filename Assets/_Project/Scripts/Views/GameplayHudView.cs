@@ -19,6 +19,7 @@ namespace NeonBlocks.Views
         [SerializeField] private RectTransform holdRoot;
         [SerializeField] private RectTransform[] nextRoots;
         [SerializeField] private Sprite cellSprite;
+        [SerializeField] private CellTheme theme;
         private readonly List<Image[]> previewCells = new List<Image[]>();
         private bool isStopping;
 
@@ -115,12 +116,13 @@ namespace NeonBlocks.Views
             }
             float unit = Mathf.Min(root.rect.width, root.rect.height) * 0.8f / PieceDefinition.BoxSize;
             float centerX = (minX + maxX) * 0.5f, centerY = (minY + maxY) * 0.5f;
-            Color color = PieceColor(pieceId); color.a = alpha;
+            Color color = theme == null ? PieceColor(pieceId) : Color.white; color.a = alpha;
             for (int i = 0; i < images.Length; i++)
             {
                 Image image = images[i];
                 image.gameObject.SetActive(true);
                 image.color = color;
+                image.sprite = theme == null ? cellSprite : theme.GetCell(pieceId);
                 RectTransform rect = image.rectTransform;
                 rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
                 rect.sizeDelta = Vector2.one * (unit * 0.94f);

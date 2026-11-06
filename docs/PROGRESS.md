@@ -223,3 +223,13 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - Sửa đúng backend sang Additive; SceneFlowManager giữ quyền active/stop/dispose/release scene theo flow hiện có. Không sửa prefab/scene hoặc các thay đổi người dùng đã stage.
 - Kiểm tra thật trong Unity 6000.3.25f1: Play từ Entry, panel MainMenu hiện; click START vào Gameplay; click Pause rồi HOME quay lại MainMenu có panel. Thoát Play trở về Entry.
 - Còn cảnh báo EventSystem/AudioListener trùng trong khoảng hai scene Additive cùng tồn tại; không khẳng định đã xử lý cảnh báo transition này trong bản sửa stuck.
+
+### Bài 13 — Mỹ thuật neon và âm thanh (2026-11-06)
+- Người dùng duyệt 9 PNG và 7 WAV; đã import đúng Art/Gameplay/Cells, Art/UI/Backgrounds và Audio/Music/SFX, giữ nguồn art-source.
+- BoardModel giữ PieceId trong grid chuẩn, snapshot SettledTile; BoardView/Hold/Next dùng CellTheme. Grid logic thay raster calibration, pool Image, clear fade nhẹ160ms.
+- AudioManager session thuần C#, AudioBank Addressable parent dưới SessionManager; hai music source crossfade400ms, tám voices, feedback một lần theo session/sequence, priority và rotate throttle. Settings preview/Back rollback, Apply giữ luồng save bài12.
+- GameConfig thêm audioBank; Entry chờ save/config rồi tạo bank. Source gain hoạt động ngay; AudioMixer tùy chọn chưa tạo tự động, đã có field và checklist.
+- Lesson13Setup menu đã chạy trong Unity6000.3.25f1, tạo importer/theme/atlas/bank, lưu hai scene và SafeGameplayLayout. Đã xác nhận theme GUID thật trong scene sau khi mở/lưu.
+- Unity EditMode136tests:134pass/2fail baseline SessionManager;9Lesson13Tests pass. Build tests0error/12warning; Editor0error/17warning.
+- Smoke Entry→MainMenu→Gameplay→Pause→Settings slider preview→Back→Home kiểm tra bank/sprite/gain và singleton; bằng chứng docs/evidence/lesson13-playmode.txt. Cảnh báo EventSystem/AudioListener trùng tạm trong overlap Additive bài12 còn tồn tại; sau chuyển scene smoke xác nhận mỗi loại một instance.
+- Docs BAI_13.md có checklist Editor/mixer/thiết bị; BAI_13_WORKFLOWS.md gồm sáu diagram. Chờ nghiệm thu nghe, cell kích thước nhỏ, màn hình dài/notch và Android thật; không tuyên bố nghiệm thu toàn bộ bài.

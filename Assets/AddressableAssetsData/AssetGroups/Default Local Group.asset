@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1acfec5f917cb847a2117045a22bb6b
+    m_Address: AudioBank
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: aa30ca105aa01a94eaa4358bd99d230d
     m_Address: MainMenuPanel
     m_ReadOnly: 0

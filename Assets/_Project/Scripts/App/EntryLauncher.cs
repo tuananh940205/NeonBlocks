@@ -65,6 +65,8 @@ namespace NeonBlocks
                 var save = session.RegisterSingleton(new LocalSaveManager(new FileSaveStorage(Path.Combine(Application.persistentDataPath, "neonblocks-save.json"))));
                 await save.LoadAsync();
                 await config.LoadAsync(lifetime.Token);
+                var audio = session.RegisterSingleton(new NeonBlocks.Audio.AudioManager(assets));
+                await audio.InitializeAsync(config.Config.AudioBankKey, session.transform, lifetime.Token);
                 await sceneFlow.GoToAsync(config.Config.Scenes.MainMenu, lifetime.Token);
 
                 ServiceLocator.Instance.Resolve<BootVisualsHideSignal>().Dispatch();

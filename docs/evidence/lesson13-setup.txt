@@ -1,0 +1,2 @@
+Configured approved sprites, atlas, audio bank, Addressables and scene theme via Unity API.
+2026-11-06T10:28:14.6084765Z

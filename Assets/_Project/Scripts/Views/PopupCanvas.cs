@@ -35,15 +35,33 @@ namespace NeonBlocks.Views
         {
             if (!Application.isPlaying) { return; }
             Bind(false);
+            if (kind == PopupKind.Settings)
+            {
+                SaveData data = ServiceLocator.Instance.Resolve<LocalSaveManager>().Data;
+                ServiceLocator.Instance.Resolve<NeonBlocks.Audio.AudioPreviewSignal>().Dispatch(new NeonBlocks.Audio.AudioSettings(data.MusicVolume, data.SfxVolume, data.Muted));
+            }
             ServiceLocator.Instance.Resolve<GameplaySnapshotSignal>().RemoveListener(OnSnapshot);
             ServiceLocator.Instance.Resolve<SaveChangedSignal>().RemoveListener(Render);
         }
         /// <summary>Nối các nút thuộc chính Canvas này bằng AddListener/RemoveListener.</summary>
         private void Bind(bool add)
         {
+            if (musicSlider != null) { if (add) { musicSlider.onValueChanged.AddListener(PreviewVolume); } else { musicSlider.onValueChanged.RemoveListener(PreviewVolume); } }
+            if (sfxSlider != null) { if (add) { sfxSlider.onValueChanged.AddListener(PreviewVolume); } else { sfxSlider.onValueChanged.RemoveListener(PreviewVolume); } }
+            if (muteToggle != null) { if (add) { muteToggle.onValueChanged.AddListener(PreviewMute); } else { muteToggle.onValueChanged.RemoveListener(PreviewMute); } }
             Listen(startButton, StartGame, add); Listen(settingsButton, Settings, add);
             Listen(backButton, Back, add); Listen(resumeButton, Resume, add);
             Listen(restartButton, Restart, add); Listen(homeButton, Home, add); Listen(applyButton, Apply, add);
+        }
+        /// <summary>Preview âm lượng ngay khi kéo, không ghi file.</summary>
+        private void PreviewVolume(float value) => PreviewAudio();
+        /// <summary>Preview mute nhưng giữ nguyên hai slider.</summary>
+        private void PreviewMute(bool value) => PreviewAudio();
+        /// <summary>Phát payload từ control của chính Canvas.</summary>
+        private void PreviewAudio()
+        {
+            if (kind != PopupKind.Settings) { return; }
+            ServiceLocator.Instance.Resolve<NeonBlocks.Audio.AudioPreviewSignal>().Dispatch(new NeonBlocks.Audio.AudioSettings(musicSlider.value, sfxSlider.value, muteToggle.isOn));
         }
         /// <summary>Đăng ký một callback thuộc Canvas.</summary>
         private static void Listen(Button button, UnityEngine.Events.UnityAction action, bool add)

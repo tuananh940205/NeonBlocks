@@ -73,7 +73,7 @@ namespace NeonBlocks.Config
                 levels,
                 scoring,
                 timing,
-                pieces, new PopupKeys(ui.mainMenu, ui.pause, ui.settings, ui.gameOver));
+                pieces, new PopupKeys(ui.mainMenu, ui.pause, ui.settings, ui.gameOver), dto.audioBank);
         }
 
         /// <summary>

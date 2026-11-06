@@ -1,0 +1,13 @@
+2026-11-06T10:34:21.7544547Z
+PASS One AudioBank parented under SessionManager
+PASS Two music tracks and eight bounded SFX voices
+PASS One AudioListener and EventSystem
+PASS Locked cells retain piece IDs
+PASS Board cells use approved sprites
+PASS Hold and Next use theme sprites
+PASS Pause preserves gameplay state
+PASS Settings slider preview mutes sources immediately
+PASS Back restores saved gain and remains paused
+PASS Home keeps exactly one session AudioBank
+PASS Menu track resumes after crossfade
+PASS PlayMode smoke passed; perceptual listening and Android remain manual.

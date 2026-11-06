@@ -1639,7 +1639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.AspectRatioFitter
   m_AspectMode: 4
-  m_AspectRatio: 0.666666
+  m_AspectRatio: 0.56279904
 --- !u!114 &885236428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1660,7 +1660,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2d3f50943f199eb47acb464b8ef2445e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40040797d4f27574faf14c5ade21296c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1769,6 +1769,7 @@ GameObject:
   - component: {fileID: 1267328649}
   - component: {fileID: 1267328648}
   - component: {fileID: 1267328647}
+  - component: {fileID: 1267328650}
   m_Layer: 5
   m_Name: Playtest
   m_TagString: Untagged
@@ -1813,9 +1814,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: NeonBlocks.Runtime::NeonBlocks.Views.BoardView
   boardRoot: {fileID: 2145550588}
   hudText: {fileID: 0}
-  horizontalInsetFraction: 0.115
+  theme: {fileID: 11400000, guid: 440150a5f371c1d479f60e3be5ec3bad, type: 2}
   cellGapPixels: 2
-  verticalBottomInsetFraction: 0.07
 --- !u!114 &1267328648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1840,6 +1840,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5760f82137331da42940eac3cd04d7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NeonBlocks.Runtime::NeonBlocks.Views.GameplayPresenter
+--- !u!114 &1267328650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267328645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd0ac6529e6110843a4ea5cdf9dfaf7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NeonBlocks.Runtime::NeonBlocks.Views.SafeGameplayLayout
 --- !u!1 &1272350388
 GameObject:
   m_ObjectHideFlags: 0
@@ -2932,7 +2944,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -3763,6 +3775,7 @@ MonoBehaviour:
   - {fileID: 1860330647}
   - {fileID: 840230534}
   cellSprite: {fileID: 0}
+  theme: {fileID: 11400000, guid: 440150a5f371c1d479f60e3be5ec3bad, type: 2}
 --- !u!1 &1854859194
 GameObject:
   m_ObjectHideFlags: 0
@@ -4052,14 +4065,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.03, g: 0.05, b: 0.11, a: 0.96}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4f7882f2634247344a1606e04498b0dc, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

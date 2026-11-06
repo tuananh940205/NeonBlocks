@@ -19,6 +19,9 @@ namespace NeonBlocks.Gameplay
         private int lockResetCount;
         private PieceDefinition heldPiece;
         private bool holdUsed;
+        private readonly Queue<GameplayFeedback> feedback = new Queue<GameplayFeedback>();
+        private readonly string feedbackSession = Guid.NewGuid().ToString();
+        private long feedbackSequence;
 
         /// <summary>Trạng thái hiện tại của lượt game.</summary>
         public GameSessionState State { get; private set; }
@@ -56,7 +59,7 @@ namespace NeonBlocks.Gameplay
         public bool BeginNextPiece()
         {
             if (State != GameSessionState.Ready) return false;
-            if (!board.TrySpawn(source.TakeNext(), spawnOrigin)) { State = GameSessionState.GameOver; return false; }
+            if (!board.TrySpawn(source.TakeNext(), spawnOrigin)) { State = GameSessionState.GameOver; Emit(FeedbackKind.GameOver); return false; }
             gravityElapsed = 0f; lockElapsed = 0f; lockResetCount = 0; holdUsed = false; State = GameSessionState.Playing; return true;
         }
 
@@ -79,6 +82,7 @@ namespace NeonBlocks.Gameplay
             {
                 // Spawn không fit là top-out, không giữ lại active piece cũ để tiếp tục chơi.
                 State = GameSessionState.GameOver;
+                Emit(FeedbackKind.GameOver);
             }
             return true;
         }
@@ -111,9 +115,9 @@ namespace NeonBlocks.Gameplay
         /// <summary>Thử dịch phải và reset lock delay nếu đây là thao tác hợp lệ khi đang chạm đất.</summary>
         public bool TryMoveRight() { return TryGroundedAction(board.TryMoveRight); }
         /// <summary>Thử xoay CW và reset lock delay nếu đây là thao tác hợp lệ khi đang chạm đất.</summary>
-        public bool TryRotateClockwise() { return TryGroundedAction(board.TryRotateClockwise); }
+        public bool TryRotateClockwise() { return RotateWithFeedback(board.TryRotateClockwise); }
         /// <summary>Thử xoay CCW và reset lock delay nếu đây là thao tác hợp lệ khi đang chạm đất.</summary>
-        public bool TryRotateCounterClockwise() { return TryGroundedAction(board.TryRotateCounterClockwise); }
+        public bool TryRotateCounterClockwise() { return RotateWithFeedback(board.TryRotateCounterClockwise); }
         /// <summary>Soft drop một ô nếu có thể; cộng điểm chỉ khi khối thực sự rơi.</summary>
         public bool SoftDrop()
         {
@@ -141,8 +145,25 @@ namespace NeonBlocks.Gameplay
             }
 
             score.AddHardDrop(cells);
-            return LockCurrentPiece();
+            return LockCurrentPiece(true, cells);
         }
+
+        /// <summary>Lấy event một lần; snapshot không lưu event để không replay.</summary>
+        public bool TryTakeFeedback(out GameplayFeedback value)
+        {
+            if (feedback.Count == 0) { value = null; return false; }
+            value = feedback.Dequeue(); return true;
+        }
+        /// <summary>Phát feedback chỉ khi xoay hợp lệ và orientation thực sự đổi.</summary>
+        private bool RotateWithFeedback(Func<bool> action)
+        {
+            PieceOrientation before = board.ActivePiece?.Orientation ?? PieceOrientation.Spawn;
+            bool success = TryGroundedAction(action);
+            if (success && board.ActivePiece.Orientation != before) { Emit(FeedbackKind.Rotate); }
+            return success;
+        }
+        /// <summary>Đánh số event theo ván.</summary>
+        private void Emit(FeedbackKind kind, int value = 0) { feedback.Enqueue(new GameplayFeedback(feedbackSession, ++feedbackSequence, kind, value)); }
 
         /// <summary>Kiểm tra active piece có chạm đáy hoặc settled cell ngay dưới hay không.</summary>
         private bool IsGrounded() { return board.ActivePiece != null && !board.CanFit(board.ActivePiece.Translate(0, -1)); }
@@ -156,7 +177,7 @@ namespace NeonBlocks.Gameplay
             return true;
         }
         /// <summary>Khóa active piece, clear hàng, tính điểm, kiểm tra top-out rồi spawn khối tiếp theo theo đúng thứ tự luật.</summary>
-        private bool LockCurrentPiece()
+        private bool LockCurrentPiece(bool hardDrop = false, int distance = 0)
         {
             if (State != GameSessionState.Playing || !board.TryLockActivePiece())
             {
@@ -165,6 +186,7 @@ namespace NeonBlocks.Gameplay
 
             int cleared = board.ClearFullRows();
             score.ApplyLineClear(cleared);
+            Emit(cleared > 0 ? FeedbackKind.Clear : hardDrop ? FeedbackKind.Drop : FeedbackKind.Lock, cleared > 0 ? cleared : distance);
             gravityElapsed = 0f;
             lockElapsed = 0f;
             lockResetCount = 0;
@@ -172,6 +194,7 @@ namespace NeonBlocks.Gameplay
             if (board.HasSettledCellsInHiddenRows())
             {
                 State = GameSessionState.GameOver;
+                Emit(FeedbackKind.GameOver);
                 return true;
             }
 

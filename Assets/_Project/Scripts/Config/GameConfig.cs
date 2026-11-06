@@ -17,6 +17,7 @@ namespace NeonBlocks.Config
         /// <summary>Kích thước bảng gồm hàng hiển thị và hàng ẩn.</summary>
         public BoardSettings Board { get; }
         public PopupKeys Ui { get; }
+        public string AudioBankKey { get; }
 
         /// <summary>Ô góc đáy trái của khung 4×4 khi khối spawn, theo hệ tọa độ bảng (y lên trên).</summary>
         public GridPoint SpawnOrigin { get; }
@@ -68,8 +69,10 @@ namespace NeonBlocks.Config
             IEnumerable<LevelData> levels,
             ScoringRules scoring,
             TimingRules timing,
-            IEnumerable<PieceDefinition> pieces, PopupKeys ui)
+            IEnumerable<PieceDefinition> pieces, PopupKeys ui, string audioBank = "AudioBank")
         {
+            if (string.IsNullOrWhiteSpace(audioBank)) { throw new ConfigValidationException("audioBank bị thiếu."); }
+            AudioBankKey = audioBank;
             Ui = ui ?? throw new ConfigValidationException("ui bị thiếu.");
             Board = board ?? throw new ConfigValidationException("board bị thiếu.");
             Scoring = scoring ?? throw new ConfigValidationException("scoring bị thiếu.");

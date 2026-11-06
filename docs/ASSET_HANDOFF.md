@@ -208,3 +208,41 @@ Use case stylized-concept. Single standalone high score trophy icon for NeonBloc
 ```
 
 Tái sử dụng background/button plate/Pause từ bộ art hiện có; kiểm tra trạng thái duyệt trước khi tích hợp bản chưa được duyệt. Chữ, số, modal dimmer và slider/toggle dùng Unity UI/TMP; không tạo logo/nhạc/SFX bài 13.
+
+## Bài 13 — Art/audio draft để review (2026-11-06)
+
+Tạo theo LESSON_PLAN Bài 13. **Chờ duyệt, chưa import hoặc thay asset runtime.** Review UI/UX/technical: docs/lessons/BAI_13_REVIEW.md. Nguồn: art-source/NeonBlocks/Lesson13/. PNG tạo bằng built-in image_gen; WAV sáng tác/tổng hợp oscillator, không sample bên ngoài. Prompt và source tái tạo nằm trong Sources/. Không khẳng định độc quyền đầu ra AI; font và asset cũ giữ license gốc.
+
+| Mã | Nguồn (tương đối trong Lesson13) | Đích đề xuất sau duyệt | Thông số / mục đích |
+| --- | --- | --- | --- |
+| NB-GAME-002-I | Art/NB-GAME-002-CellI-v1.png | Assets/_Project/Art/Gameplay/Cells/NB-GAME-002-CellI.png | 1254x1254 RGBA; một ô I, ký hiệu vạch dọc; không phải full tetromino |
+| NB-GAME-002-O | Art/NB-GAME-002-CellO-v1.png | Assets/_Project/Art/Gameplay/Cells/NB-GAME-002-CellO.png | 1254x1254 RGBA; một ô O, ký hiệu vuông rỗng; không phải full tetromino |
+| NB-GAME-002-T | Art/NB-GAME-002-CellT-v1.png | Assets/_Project/Art/Gameplay/Cells/NB-GAME-002-CellT.png | 1254x1254 RGBA; một ô T, ký hiệu tam giác; không phải full tetromino |
+| NB-GAME-002-J | Art/NB-GAME-002-CellJ-v1.png | Assets/_Project/Art/Gameplay/Cells/NB-GAME-002-CellJ.png | 1254x1254 RGBA; một ô J, ký hiệu tròn; không phải full tetromino |
+| NB-GAME-002-L | Art/NB-GAME-002-CellL-v1.png | Assets/_Project/Art/Gameplay/Cells/NB-GAME-002-CellL.png | 1254x1254 RGBA; một ô L, ký hiệu thoi; không phải full tetromino |
+| NB-GAME-002-S | Art/NB-GAME-002-CellS-v1.png | Assets/_Project/Art/Gameplay/Cells/NB-GAME-002-CellS.png | 1254x1254 RGBA; một ô S, ký hiệu dấu cộng; không phải full tetromino |
+| NB-GAME-002-Z | Art/NB-GAME-002-CellZ-v1.png | Assets/_Project/Art/Gameplay/Cells/NB-GAME-002-CellZ.png | 1254x1254 RGBA; một ô Z, ký hiệu dấu X; không phải full tetromino |
+| NB-GAME-003 | Art/NB-GAME-003-GhostCell-v1.png | Assets/_Project/Art/Gameplay/Cells/NB-GAME-003-GhostCell.png | 1254x1254 RGBA, tâm trong suốt, viền rỗng |
+| NB-UI-012 | Art/NB-UI-012-QuietBackground-v1.png | Assets/_Project/Art/UI/Backgrounds/NB-UI-012-QuietBackground.png | 941x1672 RGB, nền tối portrait |
+| NB-SFX-001 | Audio/NB-SFX-001-Lock-v1.wav | Assets/_Project/Audio/SFX/NB-SFX-001-Lock.wav | PCM mono 44.1kHz/16-bit, .160s |
+| NB-SFX-002 | Audio/NB-SFX-002-Rotate-v1.wav | Assets/_Project/Audio/SFX/NB-SFX-002-Rotate.wav | PCM mono 44.1kHz/16-bit, .105s |
+| NB-SFX-003 | Audio/NB-SFX-003-Drop-v1.wav | Assets/_Project/Audio/SFX/NB-SFX-003-Drop.wav | PCM mono 44.1kHz/16-bit, .280s |
+| NB-SFX-004 | Audio/NB-SFX-004-Clear-v1.wav | Assets/_Project/Audio/SFX/NB-SFX-004-Clear.wav | PCM mono 44.1kHz/16-bit, .650s |
+| NB-SFX-005 | Audio/NB-SFX-005-GameOver-v1.wav | Assets/_Project/Audio/SFX/NB-SFX-005-GameOver.wav | PCM mono 44.1kHz/16-bit, 1.150s |
+| NB-MUS-001 | Audio/NB-MUS-001-MenuLoop-v1.wav | Assets/_Project/Audio/Music/NB-MUS-001-MenuLoop.wav | PCM stereo 44.1kHz/16-bit, 20s, loop candidate |
+| NB-MUS-002 | Audio/NB-MUS-002-GameplayLoop-v1.wav | Assets/_Project/Audio/Music/NB-MUS-002-GameplayLoop.wav | PCM stereo 44.1kHz/16-bit, 32s, loop candidate |
+
+- **Sprite sheet:** không; tám sprite cell/ghost riêng. Import Single/FullRect/Bilinear/Clamp/pivot Center/alpha/mipmap off, source giữ nguyên; đề xuất bản tích hợp256px sau QA.
+- **Canvas/alpha:** sát phần artwork/glow, không thêm margin lớn. Đã xem output và lấy mẫu alpha; ghost center=0, tile face gần opaque, background RGB opaque. image-validation.json ghi kích thước/pixel format/mẫu alpha.
+- **Atlas:** bảy cell và ghost sau khi ổn định, padding4px, rotation/tight packing off; nền lớn ngoài atlas; không đánh Addressable riêng cho sprite dependency.
+- **Audio import:** SFX Decompress On Load, PCM/ADPCM sau nghe; nhạc loop stereo, Vorbis/Streaming trên Android cần kiểm tra codec/seam; AudioBank prefab dependency thay vì Addressable từng clip.
+- **Audio validation:** 0 sample clipping; peak/RMS/thời lượng trong Audio/audio-validation.json; loop boundary delta ~0.00043/~0.00052, chưa nghiệm thu nghe chủ quan hoặc Unity/Android.
+- **Cần duyệt:** màu, thống nhất bevel/ký hiệu tile ở24/32/48px; ghost trên nền/board; nhạc và SFX trên loa/tai nghe. Không tuyên bố chuẩn hóa loudness hoặc mọi pixel alpha đã được kiểm tra.
+- **Tái sử dụng:** control/popup/icon hiện có, tên game và text bằng TMP. Lưới 10x20 chuẩn, palette, SpriteAtlas, AudioMixer/AudioBank/font artifact được dựng bằng Unity sau duyệt, không thêm raster grid gây lệch logic.
+- **Trạng thái:** đủ 9 PNG + 7 WAV bản nháp; chưa triển khai code bài13, chưa đánh dấu nghiệm thu.
+
+### Cập nhật tích hợp bài 13 — 2026-11-06
+- Người dùng đã duyệt9PNG+7WAV. Đã copy vào các đường dẫn đích ở bảng trên, Unity import và gán bằng Lesson13Setup.
+- Đã tạo CellTheme, GameplayCells atlas và AudioBank Addressable; scene giữ theme sau khi lưu. Source art-source giữ nguyên.
+- Mixer chưa tạo; source-volume fallback và field mixer có sẵn, hướng dẫn tùy chọn tại BAI_13.md.
+- Chờ nghiệm thu nghe trên loa/tai nghe, kích thước tile nhỏ và Android/safe area thực tế.

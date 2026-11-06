@@ -10,7 +10,7 @@ namespace NeonBlocks.Gameplay
     /// </summary>
     public sealed class BoardModel
     {
-        private readonly bool[,] settledCells;
+        private readonly string[,] settledCells;
         private ActivePiece activePiece;
 
         /// <summary>Cấu hình kích thước bảng bất biến.</summary>
@@ -29,7 +29,7 @@ namespace NeonBlocks.Gameplay
         public BoardModel(BoardSettings settings)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            settledCells = new bool[Settings.Width, Settings.TotalHeight];
+            settledCells = new string[Settings.Width, Settings.TotalHeight];
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace NeonBlocks.Gameplay
             for (int i = 0; i < activePiece.Definition.Cells.Count; i++)
             {
                 GridPoint cell = activePiece.GetCell(i);
-                settledCells[cell.X, cell.Y] = true;
+                settledCells[cell.X, cell.Y] = activePiece.Definition.Id;
             }
 
             activePiece = null;
@@ -160,7 +160,7 @@ namespace NeonBlocks.Gameplay
             for (int i = 0; i < piece.Definition.Cells.Count; i++)
             {
                 GridPoint cell = piece.GetCell(i);
-                if (!IsInsideBoard(cell) || settledCells[cell.X, cell.Y])
+                if (!IsInsideBoard(cell) || settledCells[cell.X, cell.Y] != null)
                 {
                     return false;
                 }
@@ -181,7 +181,7 @@ namespace NeonBlocks.Gameplay
                 throw new ArgumentOutOfRangeException(nameof(cell), $"Ô {cell} nằm ngoài bảng.");
             }
 
-            return settledCells[cell.X, cell.Y];
+            return settledCells[cell.X, cell.Y] != null;
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace NeonBlocks.Gameplay
             {
                 for (int y = 0; y < Settings.TotalHeight; y++)
                 {
-                    if (settledCells[x, y])
+                    if (settledCells[x, y] != null)
                     {
                         cells.Add(new GridPoint(x, y));
                     }
@@ -203,6 +203,14 @@ namespace NeonBlocks.Gameplay
             }
 
             return cells.AsReadOnly();
+        }
+
+        /// <summary>Sao chép danh tính ô đã khóa; giữ API tọa độ cũ tương thích collision và test.</summary>
+        public IReadOnlyList<SettledTile> GetSettledTiles()
+        {
+            var result = new List<SettledTile>();
+            foreach (GridPoint position in GetSettledCells()) { result.Add(new SettledTile(position, settledCells[position.X, position.Y])); }
+            return result.AsReadOnly();
         }
 
         /// <summary>Xóa đồng thời mọi hàng đầy rồi compact các hàng còn lại xuống đáy.</summary>
@@ -214,12 +222,12 @@ namespace NeonBlocks.Gameplay
             for (int readY = 0; readY < Settings.TotalHeight; readY++)
             {
                 bool full = true;
-                for (int x = 0; x < Settings.Width; x++) if (!settledCells[x, readY]) { full = false; break; }
+                for (int x = 0; x < Settings.Width; x++) if (settledCells[x, readY] == null) { full = false; break; }
                 if (full) { cleared++; continue; }
                 if (writeY != readY) for (int x = 0; x < Settings.Width; x++) settledCells[x, writeY] = settledCells[x, readY];
                 writeY++;
             }
-            for (int y = writeY; y < Settings.TotalHeight; y++) for (int x = 0; x < Settings.Width; x++) settledCells[x, y] = false;
+            for (int y = writeY; y < Settings.TotalHeight; y++) for (int x = 0; x < Settings.Width; x++) settledCells[x, y] = null;
             return cleared;
         }
 
@@ -227,7 +235,7 @@ namespace NeonBlocks.Gameplay
         /// <returns>True nếu còn ô settled trong vùng ẩn.</returns>
         public bool HasSettledCellsInHiddenRows()
         {
-            for (int y = Settings.VisibleHeight; y < Settings.TotalHeight; y++) for (int x = 0; x < Settings.Width; x++) if (settledCells[x, y]) return true;
+            for (int y = Settings.VisibleHeight; y < Settings.TotalHeight; y++) for (int x = 0; x < Settings.Width; x++) if (settledCells[x, y] != null) return true;
             return false;
         }
 

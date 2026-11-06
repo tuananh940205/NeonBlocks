@@ -256,5 +256,6 @@
     "pause": "PausePopup",
     "settings": "SettingsPopup",
     "gameOver": "GameOverPopup"
-  }
+  },
+  "audioBank": "AudioBank"
 }

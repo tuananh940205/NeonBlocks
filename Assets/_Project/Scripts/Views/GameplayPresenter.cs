@@ -219,7 +219,8 @@ namespace NeonBlocks.Views
                 nextPieceIds.Add(piece.Id);
             }
 
-            ServiceLocator.Instance.Resolve<GameplaySnapshotSignal>().Dispatch(new GameplaySnapshot(loop.Board.Settings, loop.Board.GetSettledCells(), activeCells, ghostCells, activePieceId, nextPieceIds, loop.State, loop.Score.Score, loop.Score.Lines, loop.Score.Level, loop.HeldPiece?.Id, loop.CanHold));
+            ServiceLocator.Instance.Resolve<GameplaySnapshotSignal>().Dispatch(new GameplaySnapshot(loop.Board.Settings, loop.Board.GetSettledCells(), activeCells, ghostCells, activePieceId, nextPieceIds, loop.State, loop.Score.Score, loop.Score.Lines, loop.Score.Level, loop.HeldPiece?.Id, loop.CanHold, loop.Board.GetSettledTiles()));
+            while (loop.TryTakeFeedback(out GameplayFeedback item)) { ServiceLocator.Instance.Resolve<GameplayFeedbackSignal>().Dispatch(item); }
         }
 
         /// <summary>Sao chép bốn ô của một active piece vào danh sách snapshot.</summary>
