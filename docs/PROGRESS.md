@@ -18,7 +18,7 @@ Chưa bắt đầu / Đang làm / Đã triển khai, chờ xác minh / Hoàn th�
 | 8 | Xóa hàng, tính điểm và kết thúc | Đã triển khai, chờ xác minh | Người dùng xác nhận đã hoàn thành phần triển khai; chưa có playtest. Mốc playtest placeholder desktop được chuyển lên bài 9; còn cần ghi kết quả Test Runner/Play Mode thực tế. |
 | 9 | BoardView, pool và ghost piece | Chưa bắt đầu | Chưa có |
 | 10 | Điều khiển bàn phím và cảm ứng | Đã triển khai, chờ xác minh | Touch button/Signal, DAS/ARR, 4 EditMode tests và asset handoff đã có; còn Unity Test Runner, Play Mode và Android device. |
-| 11 | Hold và hoàn thiện HUD | Chưa bắt đầu | Chưa có |
+| 11 | Hold và hoàn thiện HUD | Đã triển khai, chờ xác minh | HoldTests 9/9 pass trong Unity; PlayMode smoke Hold/HUD/restart pass; 2 asset đã duyệt/import/gắn Gameplay; sáu workflow diagrams. Toàn bộ EditMode 112/114 pass, còn 2 lỗi SessionManagerTests cũ và kiểm tra touch Android. Xem docs/lessons/BAI_11.md. |
 | 12 | Menu, popup và lưu dữ liệu | Chưa bắt đầu | Chưa có |
 | 13 | Mỹ thuật neon và âm thanh | Chưa bắt đầu | Chưa có |
 | 14 | Polish và hướng dẫn chơi | Chưa bắt đầu | Chưa có |
@@ -196,3 +196,14 @@ Khi triển khai, thêm mục “Bài N” gồm:
 - **Code:** thêm `GameplayRepeatInput` (DAS/ARR), `GameplayHeldInput`/Signal và `GameplayTouchButton`; `GameplayKeyboardInput` phát press/release cho input giữ, Presenter áp dụng repeat khi Playing và clear khi pause/game over/scene stop.
 - **Test:** thêm 4 `GameplayRepeatInputTests`; `dotnet build NeonBlocks.Tests.EditMode.csproj --no-restore` thành công, 0 error, 12 warning dependency Unity hiện hữu.
 - **Cần người dùng xác minh:** setup `TouchControls` theo `docs/lessons/BAI_10.md`; chạy Unity Test Runner và Play Mode desktop/touch hoặc Android device. Chưa có kết quả device Android.
+
+### Bài 11 — Hold và HUD
+- **Ngày/phạm vi:** 2026-11-05 theo ngày phiên làm việc. Triển khai đúng Hold/HUD; không làm bài 12.
+- **Logic/input:** GameLoop.TryHold, HeldPiece/CanHold; BoardModel.TryReplaceActivePiece; thêm Hold cuối enum command/touch để giữ giá trị cũ; keyboard C/Left Shift; snapshot có HeldPieceId/CanHold và Signal riêng yêu cầu phát lại snapshot.
+- **View:** GameplayHudView dùng TMP và preview shape thật; GameplayCanvas quản lý listener nút Hold/Restart, khóa tương tác theo snapshot và lifecycle; Presenter phát state đồng bộ sau input/restart.
+- **Asset/setup:** người dùng duyệt NB-UI-007/008; đã import vào đúng Art/UI/Controls/Touch và Art/UI/Gameplay, giữ nguồn art-source. Chạy Lesson11Setup trong Unity, gán field child UI và lưu Gameplay bằng Editor API; thêm reference Unity.TextMeshPro.
+- **Kiểm tra thật:** Unity 6000.3.25f1 EditMode 114 tests: 112 pass, 2 fail; HoldTests mới 9/9 pass. PlayMode smoke Entry→MainMenu→Gameplay, Hold/second hold/lock/swap/pause/top-out/restart/HUD và một EventSystem/AudioListener pass. Build cuối tests 0 error/12 warning; editor 0 error/13 warning.
+- **Hai test chưa pass:** SessionManagerTests.DuplicateSession_IsNotOwner_AndDestroyingItKeepsOwner đọc duplicate đã DestroyImmediate; SessionManagerTests.ResetSession_DisposesSingletonsInReverseOrderAndUnregisters đăng ký ProbeService cùng type hai lần. Không sửa SessionManager hoặc test cũ trong phạm vi bài 11.
+- **Tài liệu/diagram:** docs/lessons/BAI_11.md và BAI_11_WORKFLOWS.md gồm sáu sơ đồ Mermaid cho Hold, input/Signal, HUD, restart/lifecycle, import, validation.
+- **Evidence:** docs/evidence/lesson11-editmode.xml, lesson11-playmode.txt, lesson11-setup.txt.
+- **Còn cần:** chạm thật Android/Device Simulator và xử lý hai lỗi test cũ để chốt toàn bộ regression. Không khẳng định cả suite pass. Board frame v1 và calibration giữ theo bài 9.

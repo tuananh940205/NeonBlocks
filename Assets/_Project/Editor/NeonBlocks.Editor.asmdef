@@ -1,0 +1,15 @@
+{
+  "name": "NeonBlocks.Editor",
+  "references": [
+    "NeonBlocks.Runtime",
+    "NeonBlocks.Core",
+    "Unity.UI",
+    "Unity.TextMeshPro",
+    "UnityEditor.TestRunner",
+    "UnityEngine.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": true
+}

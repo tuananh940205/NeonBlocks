@@ -60,6 +60,23 @@ namespace NeonBlocks.Gameplay
             return true;
         }
 
+        /// <summary>Thay active piece khi Hold; bỏ khối cũ mà không khóa ô hoặc cộng điểm, spawn lại ở hướng ban đầu.</summary>
+        public bool TryReplaceActivePiece(PieceDefinition definition, GridPoint origin)
+        {
+            if (definition == null)
+            {
+                // Dữ liệu sai phải báo rõ trước khi thay đổi board.
+                throw new ArgumentNullException(nameof(definition));
+            }
+            if (activePiece == null)
+            {
+                // Hold chỉ thay khối đang tồn tại.
+                return false;
+            }
+            activePiece = null;
+            return TrySpawn(definition, origin);
+        }
+
         /// <summary>
         /// Thử dịch khối đang rơi sang trái một ô; khi chạm biên hoặc ô đã khóa thì giữ nguyên trạng thái.
         /// </summary>

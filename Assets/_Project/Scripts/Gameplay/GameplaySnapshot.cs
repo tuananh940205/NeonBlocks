@@ -19,6 +19,10 @@ namespace NeonBlocks.Gameplay
         public string ActivePieceId { get; }
         /// <summary>Các mã piece kế tiếp để hiển thị Next.</summary>
         public IReadOnlyList<string> NextPieceIds { get; }
+        /// <summary>Mã khối Hold, null nếu ô đang rỗng.</summary>
+        public string HeldPieceId { get; }
+        /// <summary>Cho UI biết người chơi còn quyền Hold ở snapshot này.</summary>
+        public bool CanHold { get; }
         /// <summary>Trạng thái vòng chơi hiện tại.</summary>
         public GameSessionState State { get; }
         /// <summary>Điểm hiện tại.</summary>
@@ -29,7 +33,7 @@ namespace NeonBlocks.Gameplay
         public int Level { get; }
 
         /// <summary>Tạo snapshot và sao chép các danh sách để view không thể sửa state của game.</summary>
-        public GameplaySnapshot(BoardSettings settings, IEnumerable<GridPoint> settledCells, IEnumerable<GridPoint> activeCells, IEnumerable<GridPoint> ghostCells, string activePieceId, IEnumerable<string> nextPieceIds, GameSessionState state, int score, int lines, int level)
+        public GameplaySnapshot(BoardSettings settings, IEnumerable<GridPoint> settledCells, IEnumerable<GridPoint> activeCells, IEnumerable<GridPoint> ghostCells, string activePieceId, IEnumerable<string> nextPieceIds, GameSessionState state, int score, int lines, int level, string heldPieceId = null, bool canHold = false)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             SettledCells = Array.AsReadOnly(new List<GridPoint>(settledCells ?? throw new ArgumentNullException(nameof(settledCells))).ToArray());
@@ -41,6 +45,8 @@ namespace NeonBlocks.Gameplay
             Score = score;
             Lines = lines;
             Level = level;
+            HeldPieceId = heldPieceId;
+            CanHold = canHold;
         }
     }
 }

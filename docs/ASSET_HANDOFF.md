@@ -125,3 +125,41 @@ Asset được tạo hoặc nhận phải nằm tại `art-source/` cho đến k
 - **Kích thước / alpha:** 1254 x 1254 px, RGBA; bản v2 giảm glow rộng và khoảng trống bao ngoài.
 - **Import đề xuất:** Sprite (2D and UI), Single, Full Rect, Bilinear, Clamp.
 - **Trạng thái:** Chờ duyệt; chưa tích hợp Unity.
+
+## Bài 11 — Hold và HUD: đã duyệt và tích hợp
+
+Đã đọc AGENTS, CORE, ASSETS_AND_EDITOR, ASSET_HANDOFF và mục Bài 11 trong LESSON_PLAN. Chưa có docs/lessons/BAI_11.md tại thời điểm tạo. Người dùng đã duyệt hai asset và yêu cầu import/triển khai Bài 11. Đã import bằng Unity Editor API và gắn vào Gameplay.
+
+### NB-UI-007 — Touch Hold
+- **Mục đích:** nút Hold/swap, hai mũi tên ngang ngược chiều, đồng bộ button tròn cyan/tím hiện có.
+- **Nguồn:** `art-source/NeonBlocks/NB-UI-007-TouchHold-v1.png`.
+- **Đích sau duyệt:** `Assets/_Project/Art/UI/Controls/Touch/NB-UI-007-TouchHold.png`.
+- **Kích thước / alpha:** 1254 x 1254 px; PNG RGBA, alpha bên ngoài mặt nút; canvas sát viền glow, không có dải padding rộng.
+- **Sprite sheet:** không; một nút riêng, pivot Center.
+- **Import đề xuất:** Sprite (2D and UI), Single, Full Rect, Bilinear, Clamp, sRGB bật; Preserve Aspect. Trạng thái không được Hold có thể tint giảm sáng từ UI sau tích hợp.
+- **Trạng thái:** Người dùng đã duyệt; đã import đúng đích và gắn vào Gameplay qua menu Lesson 11.
+
+### NB-UI-008 — Hold/Next preview panel
+- **Mục đích:** panel vuông rỗng dùng cho Hold và từng phần tử Next; không chứa khối/chữ raster.
+- **Nguồn:** `art-source/NeonBlocks/NB-UI-008-PreviewPanel-v1.png`.
+- **Đích sau duyệt:** `Assets/_Project/Art/UI/Gameplay/NB-UI-008-PreviewPanel.png`.
+- **Kích thước / alpha:** 1254 x 1254 px; PNG RGBA, tâm navy đậm, góc ngoài trong suốt; canvas sát glow.
+- **Sprite sheet:** không; một panel riêng, pivot Center.
+- **Import đề xuất:** Sprite (2D and UI), Single, Full Rect, Bilinear, Clamp, sRGB bật; Preserve Aspect. Chưa xác nhận 9-slice border, không kéo méo.
+- **Bố cục đề xuất sau duyệt:** đặt preview khối trong vùng giữa 80% chiều rộng/cao; đặt label HOLD/NEXT bằng TextMeshPro ngoài hoặc trên panel theo layout thực tế.
+- **Trạng thái:** Người dùng đã duyệt; đã import đúng đích và gắn vào Gameplay qua menu Lesson 11.
+
+### Tái sử dụng và kiểm tra
+- Score/Level/Lines dùng lại NB-UI-002 nếu cần nền; nội dung động và label bằng TextMeshPro, tetromino bằng sprite cell hiện có. Không tạo chữ/số hoặc khối cố định trong ảnh.
+- Đã kiểm tra trực quan hai output và xác nhận kích thước/định dạng RGBA bằng đọc file; đã kiểm tra layout trong Unity và chạy PlayMode smoke Hold/HUD/restart thành công.
+- Công cụ: built-in image_gen; prompt gốc dưới đây để tái tạo.
+
+**Prompt NB-UI-007:**
+```text
+Use case: stylized-concept. Standalone production PNG game UI asset for NeonBlocks lesson 11: ONE circular HOLD / swap touch button. Match polished arcade controls: deep midnight navy glass face, cyan neon upper left rim smoothly transitioning violet lower right rim, subtle glass highlights. Center icon is two thick luminous icy-cyan horizontal arrows, upper arrow pointing RIGHT and lower arrow pointing LEFT, immediately legible swap/store action. No text or letters, no blocks. Face dark enough to make symbol clear. Front view perfectly circular button, not perspective. CRITICAL canvas tightly fits button including narrow clean glow, button occupies 98-100 percent canvas width and height. No wide transparent outer padding, no broad haze. Actual alpha transparent only outside circular button. Single asset only, no sheet, no background, no watermark.
+```
+
+**Prompt NB-UI-008:**
+```text
+Use case: stylized-concept. Standalone production PNG game UI asset for NeonBlocks lesson 11 HUD: ONE empty rounded-square preview panel reusable for HOLD and each NEXT tetromino. Dark midnight navy near-flat glass interior, thin polished neon rim cyan on upper/left sides transitioning electric violet on lower/right sides. Match premium cyan-purple arcade touch controls. Orthographic straight-on, exact square, restrained corner radius about 8 percent, symmetrical outline. EMPTY interior with absolutely no icons, pieces, grid, text, numbers, labels or decorations; runtime Unity renders pieces and text above this panel. Large quiet dark center. Narrow clean neon glow. CRITICAL tightly fitted canvas, full panel including glow occupies 98-100 percent of width and height, no excess outer transparent padding. Actual transparent alpha outside rounded panel only, opaque navy inside. Single panel, not a mockup, no sheet, no background or watermark.
+```

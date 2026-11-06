@@ -9,6 +9,7 @@ namespace NeonBlocks.Views
         RotateClockwise,
         RotateCounterClockwise,
         HardDrop,
-        TogglePause
+        TogglePause,
+        Hold
     }
 }

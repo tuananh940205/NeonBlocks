@@ -1,0 +1,15 @@
+2026-11-05T16:10:10.2550790Z
+PASS Initial state
+PASS One HUD view
+PASS Hold stores active, consumes next, disables Hold
+PASS Hold preview renders four cells
+PASS Second Hold rejected
+PASS Lock/spawn reopens Hold
+PASS Swap returns stored piece
+PASS Pause blocks Hold
+PASS Stack reaches GameOver
+PASS Restart resets model and queue
+PASS Restart clears Hold preview
+PASS HUD score resets
+PASS One EventSystem and AudioListener after transition
+PlayMode smoke passed.

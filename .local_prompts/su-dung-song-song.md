@@ -21,3 +21,8 @@ Asset hình ảnh được tạo/chỉnh ở chat khác. Khi cần asset, ghi y�
 
 Bạn phụ trách import setting, .meta, SpriteAtlas, prefab, scene, Addressables, test và build. Khi asset được bàn giao, tích hợp và kiểm tra thực tế. Không tự generate ảnh hoặc ghi đè ảnh đã duyệt.
 ```
+
+## Resume
+```
+Tiếp tục dự án NeonBlocks qua kết nối neonblocks_filesystem. Trước khi làm, đọc AGENTS.md và các tài liệu liên quan theo router; không mặc định thư mục đang mở là dự án đích. Với asset, đọc ASSETS_AND_EDITOR.md và ASSET_HANDOFF.md, giảm tối đa transparent bao ngoài và lưu vào art-source/ để tôi duyệt.
+```

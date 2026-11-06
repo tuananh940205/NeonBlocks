@@ -10,6 +10,7 @@ namespace NeonBlocks.Gameplay
         RotateCounterClockwise,
         HardDrop,
         TogglePause,
-        Restart
+        Restart,
+        Hold
     }
 }

@@ -19,6 +19,7 @@ namespace NeonBlocks.Views
         private void OnEnable()
         {
             ServiceLocator.Instance.Resolve<GameplayCommandSignal>().AddListener(OnCommand);
+            ServiceLocator.Instance.Resolve<GameplaySnapshotRequestSignal>().AddListener(OnSnapshotRequested);
             ServiceLocator.Instance.Resolve<GameplayHeldCommandSignal>().AddListener(OnHeldInput);
             ServiceLocator.Instance.Resolve<SceneStopSignal>().AddListener(OnSceneStopping);
         }
@@ -27,6 +28,7 @@ namespace NeonBlocks.Views
         private void OnDisable()
         {
             ServiceLocator.Instance.Resolve<GameplayCommandSignal>().RemoveListener(OnCommand);
+            ServiceLocator.Instance.Resolve<GameplaySnapshotRequestSignal>().RemoveListener(OnSnapshotRequested);
             ServiceLocator.Instance.Resolve<GameplayHeldCommandSignal>().RemoveListener(OnHeldInput);
             ServiceLocator.Instance.Resolve<SceneStopSignal>().RemoveListener(OnSceneStopping);
         }
@@ -123,6 +125,16 @@ namespace NeonBlocks.Views
             PublishSnapshot();
         }
 
+        /// <summary>Phát lại state cho HUD vừa bật; không cho view khác giữ tham chiếu presenter.</summary>
+        private void OnSnapshotRequested()
+        {
+            if (loop != null && !isStopping)
+            {
+                // Bỏ qua yêu cầu trước khi config/loop sẵn sàng hoặc lúc scene đang rời.
+                PublishSnapshot();
+            }
+        }
+
         /// <summary>Thực hiện một lệnh đã được lọc ở trạng thái Playing.</summary>
         private void ExecutePlayingCommand(GameplayCommand command)
         {
@@ -133,6 +145,7 @@ namespace NeonBlocks.Views
                 case GameplayCommand.SoftDrop: loop.SoftDrop(); break;
                 case GameplayCommand.RotateClockwise: loop.TryRotateClockwise(); break;
                 case GameplayCommand.RotateCounterClockwise: loop.TryRotateCounterClockwise(); break;
+                case GameplayCommand.Hold: loop.TryHold(); break;
                 case GameplayCommand.HardDrop: loop.HardDrop(); break;
             }
         }
@@ -186,7 +199,7 @@ namespace NeonBlocks.Views
                 nextPieceIds.Add(piece.Id);
             }
 
-            ServiceLocator.Instance.Resolve<GameplaySnapshotSignal>().Dispatch(new GameplaySnapshot(loop.Board.Settings, loop.Board.GetSettledCells(), activeCells, ghostCells, activePieceId, nextPieceIds, loop.State, loop.Score.Score, loop.Score.Lines, loop.Score.Level));
+            ServiceLocator.Instance.Resolve<GameplaySnapshotSignal>().Dispatch(new GameplaySnapshot(loop.Board.Settings, loop.Board.GetSettledCells(), activeCells, ghostCells, activePieceId, nextPieceIds, loop.State, loop.Score.Score, loop.Score.Lines, loop.Score.Level, loop.HeldPiece?.Id, loop.CanHold));
         }
 
         /// <summary>Sao chép bốn ô của một active piece vào danh sách snapshot.</summary>

@@ -4,7 +4,7 @@ using NeonBlocks.Config;
 
 namespace NeonBlocks.Gameplay
 {
-    /// <summary>Điều phối tick deterministic, gravity và lock delay cho BoardModel; không chứa Unity time, input hay scoring.</summary>
+    /// <summary>Điều phối tick deterministic, gravity, lock delay, Hold và GameScore cho BoardModel; không phụ thuộc Unity time hoặc input.</summary>
     public sealed class GameLoop
     {
         private readonly BoardModel board;
@@ -17,6 +17,8 @@ namespace NeonBlocks.Gameplay
         private float gravityElapsed;
         private float lockElapsed;
         private int lockResetCount;
+        private PieceDefinition heldPiece;
+        private bool holdUsed;
 
         /// <summary>Trạng thái hiện tại của lượt game.</summary>
         public GameSessionState State { get; private set; }
@@ -28,6 +30,11 @@ namespace NeonBlocks.Gameplay
         public GameScore Score => score;
         /// <summary>Snapshot chỉ đọc của hàng đợi các khối sẽ xuất hiện tiếp theo.</summary>
         public IReadOnlyList<PieceDefinition> NextPieces => source.NextPieces;
+
+        /// <summary>Định nghĩa khối đang được giữ, null khi chưa dùng Hold.</summary>
+        public PieceDefinition HeldPiece => heldPiece;
+        /// <summary>Quyền Hold chỉ mở khi Playing và chưa Hold trong lượt hiện tại.</summary>
+        public bool CanHold => State == GameSessionState.Playing && board.HasActivePiece && !holdUsed;
 
         /// <summary>Tạo game loop với dependency thuần C# và timing của level hiện tại.</summary>
         public GameLoop(BoardModel board, SevenBagPieceSource source, GameScore score, GridPoint spawnOrigin, float gravitySeconds, float lockDelaySeconds, int maxLockResets)
@@ -50,7 +57,30 @@ namespace NeonBlocks.Gameplay
         {
             if (State != GameSessionState.Ready) return false;
             if (!board.TrySpawn(source.TakeNext(), spawnOrigin)) { State = GameSessionState.GameOver; return false; }
-            gravityElapsed = 0f; lockElapsed = 0f; lockResetCount = 0; State = GameSessionState.Playing; return true;
+            gravityElapsed = 0f; lockElapsed = 0f; lockResetCount = 0; holdUsed = false; State = GameSessionState.Playing; return true;
+        }
+
+        /// <summary>Giữ hoặc đổi khối đúng một lần mỗi lượt; spawn fail kết thúc ván, không khóa hay ghi điểm khối bỏ ra.</summary>
+        public bool TryHold()
+        {
+            if (!CanHold)
+            {
+                // Không thay đổi board, queue hoặc timer khi hết quyền Hold hay đang pause.
+                return false;
+            }
+            PieceDefinition outgoing = board.ActivePiece.Definition;
+            PieceDefinition incoming = heldPiece ?? source.TakeNext();
+            heldPiece = outgoing;
+            holdUsed = true;
+            gravityElapsed = 0f;
+            lockElapsed = 0f;
+            lockResetCount = 0;
+            if (!board.TryReplaceActivePiece(incoming, spawnOrigin))
+            {
+                // Spawn không fit là top-out, không giữ lại active piece cũ để tiếp tục chơi.
+                State = GameSessionState.GameOver;
+            }
+            return true;
         }
 
         /// <summary>Tiến thời gian deterministic; delta lớn được xử lý qua nhiều gravity step, Pause không tích lũy thời gian.</summary>

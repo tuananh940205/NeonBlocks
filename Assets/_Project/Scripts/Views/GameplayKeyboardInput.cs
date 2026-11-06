@@ -17,6 +17,7 @@ namespace NeonBlocks.Views
         private InputAction hardDrop;
         private InputAction togglePause;
         private InputAction restart;
+        private InputAction hold;
         private bool isStopping;
 
         /// <summary>Tạo các binding keyboard một lần trước khi component nhận input.</summary>
@@ -29,6 +30,7 @@ namespace NeonBlocks.Views
             rotateCounterClockwise = CreateAction("RotateCounterClockwise", GameplayCommand.RotateCounterClockwise, "<Keyboard>/z");
             hardDrop = CreateAction("HardDrop", GameplayCommand.HardDrop, "<Keyboard>/space");
             togglePause = CreateAction("TogglePause", GameplayCommand.TogglePause, "<Keyboard>/p", "<Keyboard>/escape");
+            hold = CreateAction("Hold", GameplayCommand.Hold, "<Keyboard>/c", "<Keyboard>/leftShift");
             restart = CreateAction("Restart", GameplayCommand.Restart, "<Keyboard>/r");
         }
 
@@ -51,7 +53,7 @@ namespace NeonBlocks.Views
         private void OnDestroy()
         {
             DisposeAction(moveLeft); DisposeAction(moveRight); DisposeAction(softDrop); DisposeAction(rotateClockwise);
-            DisposeAction(rotateCounterClockwise); DisposeAction(hardDrop); DisposeAction(togglePause); DisposeAction(restart);
+            DisposeAction(rotateCounterClockwise); DisposeAction(hardDrop); DisposeAction(togglePause); DisposeAction(restart); DisposeAction(hold);
         }
 
         /// <summary>Tắt input ngay khi SceneStopSignal chỉ đến scene sở hữu component này.</summary>
@@ -116,7 +118,7 @@ namespace NeonBlocks.Views
         {
             SetActionEnabled(moveLeft, enabled); SetActionEnabled(moveRight, enabled); SetActionEnabled(softDrop, enabled);
             SetActionEnabled(rotateClockwise, enabled); SetActionEnabled(rotateCounterClockwise, enabled); SetActionEnabled(hardDrop, enabled);
-            SetActionEnabled(togglePause, enabled); SetActionEnabled(restart, enabled);
+            SetActionEnabled(togglePause, enabled); SetActionEnabled(restart, enabled); SetActionEnabled(hold, enabled);
         }
 
         /// <summary>Đổi trạng thái một action không null mà không gọi Enable/Disable lặp vô ích.</summary>

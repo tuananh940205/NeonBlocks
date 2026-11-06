@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="114" result="Failed(Child)" total="114" passed="112" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-05 16:07:11Z" end-time="2026-11-05 16:07:12Z" duration="0.4933204">
+  <test-suite type="TestSuite" id="1000" name="NeonBlocks" fullname="NeonBlocks" runstate="Runnable" testcasecount="115" result="Failed" site="Child" start-time="2026-11-05 16:07:11Z" end-time="2026-11-05 16:07:12Z" duration="0.493320" total="114" passed="112" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1131" name="NeonBlocks.Tests.EditMode.dll" fullname="D:/Repositories/PuzzlePortfolio/NeonBlocks/Library/ScriptAssemblies/NeonBlocks.Tests.EditMode.dll" runstate="Runnable" testcasecount="114" result="Failed" site="Child" start-time="2026-11-05 16:07:11Z" end-time="2026-11-05 16:07:12Z" duration="0.477956" total="114" passed="112" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4556" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1132" name="NeonBlocks" fullname="NeonBlocks" runstate="Runnable" testcasecount="114" result="Failed" site="Child" start-time="2026-11-05 16:07:11Z" end-time="2026-11-05 16:07:12Z" duration="0.476273" total="114" passed="112" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1133" name="Tests" fullname="NeonBlocks.Tests" runstate="Runnable" testcasecount="114" result="Failed" site="Child" start-time="2026-11-05 16:07:11Z" end-time="2026-11-05 16:07:12Z" duration="0.475575" total="114" passed="112" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1002" name="AddressableManagerTests" fullname="NeonBlocks.Tests.AddressableManagerTests" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-11-05 16:07:11Z" end-time="2026-11-05 16:07:12Z" duration="0.265063" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1008" name="Cancel_WhileLoading_ThrowsOperationCanceled_AndReleasesLateResult" fullname="NeonBlocks.Tests.AddressableManagerTests.Cancel_WhileLoading_ThrowsOperationCanceled_AndReleasesLateResult" methodname="Cancel_WhileLoading_ThrowsOperationCanceled_AndReleasesLateResult" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="1929199970" result="Passed" start-time="2026-11-05 16:07:11Z" end-time="2026-11-05 16:07:11Z" duration="0.042787" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1014" name="Dispose_ReleasesEverything_AndRejectsNewRequests" fullname="NeonBlocks.Tests.AddressableManagerTests.Dispose_ReleasesEverything_AndRejectsNewRequests" methodname="Dispose_ReleasesEverything_AndRejectsNewRequests" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="1674902954" result="Passed" start-time="2026-11-05 16:07:11Z" end-time="2026-11-05 16:07:12Z" duration="0.017030" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1010" name="Instantiate_ReleaseInstance_ReleasesOnce" fullname="NeonBlocks.Tests.AddressableManagerTests.Instantiate_ReleaseInstance_ReleasesOnce" methodname="Instantiate_ReleaseInstance_ReleasesOnce" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="1963460483" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.016293" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1017" name="Instantiate_SamePrefab_ReusesCachedHandleAndCreatesDistinctInstances" fullname="NeonBlocks.Tests.AddressableManagerTests.Instantiate_SamePrefab_ReusesCachedHandleAndCreatesDistinctInstances" methodname="Instantiate_SamePrefab_ReusesCachedHandleAndCreatesDistinctInstances" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="143786783" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.017447" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="LoadAsset_ConcurrentSameKeyAndType_SharesOneRequest" fullname="NeonBlocks.Tests.AddressableManagerTests.LoadAsset_ConcurrentSameKeyAndType_SharesOneRequest" methodname="LoadAsset_ConcurrentSameKeyAndType_SharesOneRequest" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="621856980" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.014695" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1006" name="LoadAsset_EmptyKey_ThrowsAddressableLoadException" fullname="NeonBlocks.Tests.AddressableManagerTests.LoadAsset_EmptyKey_ThrowsAddressableLoadException" methodname="LoadAsset_EmptyKey_ThrowsAddressableLoadException" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="413342038" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.016342" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="LoadAsset_FailingKey_ThrowsAddressableLoadException_AndTracksNothing" fullname="NeonBlocks.Tests.AddressableManagerTests.LoadAsset_FailingKey_ThrowsAddressableLoadException_AndTracksNothing" methodname="LoadAsset_FailingKey_ThrowsAddressableLoadException_AndTracksNothing" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="1710952016" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.010322" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1003" name="LoadAsset_ReturnsAssetAndTracksOneHandle" fullname="NeonBlocks.Tests.AddressableManagerTests.LoadAsset_ReturnsAssetAndTracksOneHandle" methodname="LoadAsset_ReturnsAssetAndTracksOneHandle" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="1230278398" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.015958" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1015" name="LoadAsset_SameKeyAndType_ReusesOneSuccessHandle" fullname="NeonBlocks.Tests.AddressableManagerTests.LoadAsset_SameKeyAndType_ReusesOneSuccessHandle" methodname="LoadAsset_SameKeyAndType_ReusesOneSuccessHandle" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="584948039" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.013548" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="LoadAsset_WrongType_ReleasesHandleAndThrows" fullname="NeonBlocks.Tests.AddressableManagerTests.LoadAsset_WrongType_ReleasesHandleAndThrows" methodname="LoadAsset_WrongType_ReleasesHandleAndThrows" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="1882876586" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.017667" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1012" name="LoadScene_ReleaseSceneAsync_UnloadsOnce" fullname="NeonBlocks.Tests.AddressableManagerTests.LoadScene_ReleaseSceneAsync_UnloadsOnce" methodname="LoadScene_ReleaseSceneAsync_UnloadsOnce" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="503466657" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.016073" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1009" name="OwnerReleasedWhileLoading_LateResultIsReleasedAndCancelled" fullname="NeonBlocks.Tests.AddressableManagerTests.OwnerReleasedWhileLoading_LateResultIsReleasedAndCancelled" methodname="OwnerReleasedWhileLoading_LateResultIsReleasedAndCancelled" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="1779802435" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.011501" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1011" name="ReleaseOwner_AfterInstanceAlreadyReleased_DoesNotReleaseInstanceAgain" fullname="NeonBlocks.Tests.AddressableManagerTests.ReleaseOwner_AfterInstanceAlreadyReleased_DoesNotReleaseInstanceAgain" methodname="ReleaseOwner_AfterInstanceAlreadyReleased_DoesNotReleaseInstanceAgain" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="1416352787" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.010976" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="ReleaseOwner_CalledTwice_ReleasesHandleOnce" fullname="NeonBlocks.Tests.AddressableManagerTests.ReleaseOwner_CalledTwice_ReleasesHandleOnce" methodname="ReleaseOwner_CalledTwice_ReleasesHandleOnce" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="435724974" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.012670" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1013" name="ReleaseOwner_ReleasesOnlyThatOwner" fullname="NeonBlocks.Tests.AddressableManagerTests.ReleaseOwner_ReleasesOnlyThatOwner" methodname="ReleaseOwner_ReleasesOnlyThatOwner" classname="NeonBlocks.Tests.AddressableManagerTests" runstate="Runnable" seed="171074227" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.012146" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1018" name="BoardModelTests" fullname="NeonBlocks.Tests.BoardModelTests" classname="NeonBlocks.Tests.BoardModelTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.011873" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1020" name="FallAtBottom_DoesNotMutateActivePiece" fullname="NeonBlocks.Tests.BoardModelTests.FallAtBottom_DoesNotMutateActivePiece" methodname="FallAtBottom_DoesNotMutateActivePiece" classname="NeonBlocks.Tests.BoardModelTests" runstate="Runnable" seed="1371904668" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.006317" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1021" name="HiddenRows_AcceptAndKeepLockedCells" fullname="NeonBlocks.Tests.BoardModelTests.HiddenRows_AcceptAndKeepLockedCells" methodname="HiddenRows_AcceptAndKeepLockedCells" classname="NeonBlocks.Tests.BoardModelTests" runstate="Runnable" seed="1551373374" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000503" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1024" name="LockActivePiece_SettlesCellsAndClearsActivePiece" fullname="NeonBlocks.Tests.BoardModelTests.LockActivePiece_SettlesCellsAndClearsActivePiece" methodname="LockActivePiece_SettlesCellsAndClearsActivePiece" classname="NeonBlocks.Tests.BoardModelTests" runstate="Runnable" seed="300444624" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000150" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1019" name="MoveAtHorizontalEdges_DoesNotMutateActivePiece" fullname="NeonBlocks.Tests.BoardModelTests.MoveAtHorizontalEdges_DoesNotMutateActivePiece" methodname="MoveAtHorizontalEdges_DoesNotMutateActivePiece" classname="NeonBlocks.Tests.BoardModelTests" runstate="Runnable" seed="164959255" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000212" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1023" name="SpawnBlockedBySettledCell_ReturnsFalseWithoutMutation" fullname="NeonBlocks.Tests.BoardModelTests.SpawnBlockedBySettledCell_ReturnsFalseWithoutMutation" methodname="SpawnBlockedBySettledCell_ReturnsFalseWithoutMutation" classname="NeonBlocks.Tests.BoardModelTests" runstate="Runnable" seed="619597258" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000140" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1022" name="SpawnOutsideHiddenRows_ReturnsFalseWithoutActivePiece" fullname="NeonBlocks.Tests.BoardModelTests.SpawnOutsideHiddenRows_ReturnsFalseWithoutActivePiece" methodname="SpawnOutsideHiddenRows_ReturnsFalseWithoutActivePiece" classname="NeonBlocks.Tests.BoardModelTests" runstate="Runnable" seed="1576955041" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000086" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1025" name="SpawnWhileActive_ReturnsFalseAndKeepsCurrentPiece" fullname="NeonBlocks.Tests.BoardModelTests.SpawnWhileActive_ReturnsFalseAndKeepsCurrentPiece" methodname="SpawnWhileActive_ReturnsFalseAndKeepsCurrentPiece" classname="NeonBlocks.Tests.BoardModelTests" runstate="Runnable" seed="1883059407" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000121" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1026" name="ConfigManagerTests" fullname="NeonBlocks.Tests.ConfigManagerTests" classname="NeonBlocks.Tests.ConfigManagerTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.063154" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1028" name="Config_BeforeLoad_Throws" fullname="NeonBlocks.Tests.ConfigManagerTests.Config_BeforeLoad_Throws" methodname="Config_BeforeLoad_Throws" classname="NeonBlocks.Tests.ConfigManagerTests" runstate="Runnable" seed="1231785599" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.004921" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1031" name="Dispose_ReleasesTextAssetOnceAndClearsConfig" fullname="NeonBlocks.Tests.ConfigManagerTests.Dispose_ReleasesTextAssetOnceAndClearsConfig" methodname="Dispose_ReleasesTextAssetOnceAndClearsConfig" classname="NeonBlocks.Tests.ConfigManagerTests" runstate="Runnable" seed="62708402" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.038734" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1029" name="LoadAsync_MalformedJson_ThrowsJsonException" fullname="NeonBlocks.Tests.ConfigManagerTests.LoadAsync_MalformedJson_ThrowsJsonException" methodname="LoadAsync_MalformedJson_ThrowsJsonException" classname="NeonBlocks.Tests.ConfigManagerTests" runstate="Runnable" seed="345356927" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.007585" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1030" name="LoadAsync_MissingAsset_ThrowsAddressableLoadException" fullname="NeonBlocks.Tests.ConfigManagerTests.LoadAsync_MissingAsset_ThrowsAddressableLoadException" methodname="LoadAsync_MissingAsset_ThrowsAddressableLoadException" classname="NeonBlocks.Tests.ConfigManagerTests" runstate="Runnable" seed="1709854930" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001844" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1027" name="LoadAsync_ValidJson_ParsesAndIsReady" fullname="NeonBlocks.Tests.ConfigManagerTests.LoadAsync_ValidJson_ParsesAndIsReady" methodname="LoadAsync_ValidJson_ParsesAndIsReady" classname="NeonBlocks.Tests.ConfigManagerTests" runstate="Runnable" seed="570057354" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.006061" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1032" name="GameConfigParserTests" fullname="NeonBlocks.Tests.GameConfigParserTests" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" testcasecount="25" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.029105" total="25" passed="25" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1035" name="Parse_BlankString_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_BlankString_Throws" methodname="Parse_BlankString_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="601715254" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000467" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1041" name="Parse_CellOutsideBox_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_CellOutsideBox_Throws" methodname="Parse_CellOutsideBox_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="204550335" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.003565" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1043" name="Parse_DisconnectedPiece_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_DisconnectedPiece_Throws" methodname="Parse_DisconnectedPiece_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="497957447" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001006" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1040" name="Parse_DuplicateCellInPiece_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_DuplicateCellInPiece_Throws" methodname="Parse_DuplicateCellInPiece_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="391059231" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000884" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1038" name="Parse_DuplicatePieceId_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_DuplicatePieceId_Throws" methodname="Parse_DuplicatePieceId_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="2121478090" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000936" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1057" name="Parse_DuplicateSceneKeys_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_DuplicateSceneKeys_Throws" methodname="Parse_DuplicateSceneKeys_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="2064962297" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000707" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1056" name="Parse_EmptySceneKey_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_EmptySceneKey_Throws" methodname="Parse_EmptySceneKey_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="558236521" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000614" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1052" name="Parse_LevelsNotStartingAtStartLevel_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_LevelsNotStartingAtStartLevel_Throws" methodname="Parse_LevelsNotStartingAtStartLevel_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="524153063" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000800" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1048" name="Parse_LineClearWithThreeEntries_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_LineClearWithThreeEntries_Throws" methodname="Parse_LineClearWithThreeEntries_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="1670587468" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000658" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1034" name="Parse_MalformedJson_ThrowsJsonException" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_MalformedJson_ThrowsJsonException" methodname="Parse_MalformedJson_ThrowsJsonException" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="2080470280" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.003909" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1036" name="Parse_MissingPieces_ThrowsNamingField" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_MissingPieces_ThrowsNamingField" methodname="Parse_MissingPieces_ThrowsNamingField" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="1582026089" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001805" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1045" name="Parse_NegativeBoardWidth_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_NegativeBoardWidth_Throws" methodname="Parse_NegativeBoardWidth_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="1591906795" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000839" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1054" name="Parse_NegativeDas_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_NegativeDas_Throws" methodname="Parse_NegativeDas_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="970601983" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001116" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1046" name="Parse_NegativeHiddenRows_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_NegativeHiddenRows_Throws" methodname="Parse_NegativeHiddenRows_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="2007832296" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000604" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1049" name="Parse_NegativeLineClearPoints_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_NegativeLineClearPoints_Throws" methodname="Parse_NegativeLineClearPoints_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="42845380" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000647" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1050" name="Parse_NegativeSoftDropPoints_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_NegativeSoftDropPoints_Throws" methodname="Parse_NegativeSoftDropPoints_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="234356061" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000608" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1053" name="Parse_NonPositiveLockDelay_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_NonPositiveLockDelay_Throws" methodname="Parse_NonPositiveLockDelay_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="1253543103" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000585" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1042" name="Parse_PieceWithThreeCells_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_PieceWithThreeCells_Throws" methodname="Parse_PieceWithThreeCells_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="1748370832" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000739" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1033" name="Parse_ProjectConfigFile_MapsAllSections" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_ProjectConfigFile_MapsAllSections" methodname="Parse_ProjectConfigFile_MapsAllSections" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="1590974150" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001395" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1044" name="Parse_RotationCenterOutsideBox_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_RotationCenterOutsideBox_Throws" methodname="Parse_RotationCenterOutsideBox_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="1009818666" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000674" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1037" name="Parse_SixPieces_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_SixPieces_Throws" methodname="Parse_SixPieces_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="871733811" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000597" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1047" name="Parse_SpawnOutsideBoard_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_SpawnOutsideBoard_Throws" methodname="Parse_SpawnOutsideBoard_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="2084998" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000784" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1039" name="Parse_UnknownPieceId_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_UnknownPieceId_Throws" methodname="Parse_UnknownPieceId_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="1475057848" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000679" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1051" name="Parse_ZeroGravity_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_ZeroGravity_Throws" methodname="Parse_ZeroGravity_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="315561112" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000592" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1055" name="Parse_ZeroLinesPerLevel_Throws" fullname="NeonBlocks.Tests.GameConfigParserTests.Parse_ZeroLinesPerLevel_Throws" methodname="Parse_ZeroLinesPerLevel_Throws" classname="NeonBlocks.Tests.GameConfigParserTests" runstate="Runnable" seed="2007666360" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000847" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1058" name="GameConfigRulesTests" fullname="NeonBlocks.Tests.GameConfigRulesTests" classname="NeonBlocks.Tests.GameConfigRulesTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.003688" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1060" name="ConfigTypes_HaveNoUnityObjectReferences" fullname="NeonBlocks.Tests.GameConfigRulesTests.ConfigTypes_HaveNoUnityObjectReferences" methodname="ConfigTypes_HaveNoUnityObjectReferences" classname="NeonBlocks.Tests.GameConfigRulesTests" runstate="Runnable" seed="667548540" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001062" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1059" name="ConfigTypes_HaveOnlyReadonlyInstanceFields" fullname="NeonBlocks.Tests.GameConfigRulesTests.ConfigTypes_HaveOnlyReadonlyInstanceFields" methodname="ConfigTypes_HaveOnlyReadonlyInstanceFields" classname="NeonBlocks.Tests.GameConfigRulesTests" runstate="Runnable" seed="176830351" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000354" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1062" name="GetLevel_BelowStartLevel_Throws" fullname="NeonBlocks.Tests.GameConfigRulesTests.GetLevel_BelowStartLevel_Throws" methodname="GetLevel_BelowStartLevel_Throws" classname="NeonBlocks.Tests.GameConfigRulesTests" runstate="Runnable" seed="471672405" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000564" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1061" name="GetLevel_BeyondTable_ReturnsLastLevel" fullname="NeonBlocks.Tests.GameConfigRulesTests.GetLevel_BeyondTable_ReturnsLastLevel" methodname="GetLevel_BeyondTable_ReturnsLastLevel" classname="NeonBlocks.Tests.GameConfigRulesTests" runstate="Runnable" seed="1322907709" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000421" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1063" name="GameLoopTests" fullname="NeonBlocks.Tests.GameLoopTests" classname="NeonBlocks.Tests.GameLoopTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.005018" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1067" name="GroundedMove_ResetsLockDelayOnlyToCap" fullname="NeonBlocks.Tests.GameLoopTests.GroundedMove_ResetsLockDelayOnlyToCap" methodname="GroundedMove_ResetsLockDelayOnlyToCap" classname="NeonBlocks.Tests.GameLoopTests" runstate="Runnable" seed="843695679" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001979" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1066" name="HardDrop_LocksOnceAndSpawnsNextPiece" fullname="NeonBlocks.Tests.GameLoopTests.HardDrop_LocksOnceAndSpawnsNextPiece" methodname="HardDrop_LocksOnceAndSpawnsNextPiece" classname="NeonBlocks.Tests.GameLoopTests" runstate="Runnable" seed="1091105989" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000857" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1065" name="Pause_StopsTickUntilResume" fullname="NeonBlocks.Tests.GameLoopTests.Pause_StopsTickUntilResume" methodname="Pause_StopsTickUntilResume" classname="NeonBlocks.Tests.GameLoopTests" runstate="Runnable" seed="1252684774" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000485" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1064" name="Tick_LargeDelta_AppliesMultipleGravitySteps" fullname="NeonBlocks.Tests.GameLoopTests.Tick_LargeDelta_AppliesMultipleGravitySteps" methodname="Tick_LargeDelta_AppliesMultipleGravitySteps" classname="NeonBlocks.Tests.GameLoopTests" runstate="Runnable" seed="1782603200" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000377" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1068" name="GameplayRepeatInputTests" fullname="NeonBlocks.Tests.GameplayRepeatInputTests" classname="NeonBlocks.Tests.GameplayRepeatInputTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.002820" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1069" name="Begin_SameHeldCommandTwice_OnlyFirstPressIsAccepted" fullname="NeonBlocks.Tests.GameplayRepeatInputTests.Begin_SameHeldCommandTwice_OnlyFirstPressIsAccepted" methodname="Begin_SameHeldCommandTwice_OnlyFirstPressIsAccepted" classname="NeonBlocks.Tests.GameplayRepeatInputTests" runstate="Runnable" seed="247085063" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000335" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1071" name="CollectRepeats_AfterArr_AddsNextHorizontalCommand" fullname="NeonBlocks.Tests.GameplayRepeatInputTests.CollectRepeats_AfterArr_AddsNextHorizontalCommand" methodname="CollectRepeats_AfterArr_AddsNextHorizontalCommand" classname="NeonBlocks.Tests.GameplayRepeatInputTests" runstate="Runnable" seed="217322611" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000823" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1070" name="CollectRepeats_AfterDas_AddsOneHorizontalCommand" fullname="NeonBlocks.Tests.GameplayRepeatInputTests.CollectRepeats_AfterDas_AddsOneHorizontalCommand" methodname="CollectRepeats_AfterDas_AddsOneHorizontalCommand" classname="NeonBlocks.Tests.GameplayRepeatInputTests" runstate="Runnable" seed="1422344024" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000505" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1072" name="End_CancelsPendingRepeat" fullname="NeonBlocks.Tests.GameplayRepeatInputTests.End_CancelsPendingRepeat" methodname="End_CancelsPendingRepeat" classname="NeonBlocks.Tests.GameplayRepeatInputTests" runstate="Runnable" seed="264076976" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000186" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1073" name="HoldTests" fullname="NeonBlocks.Tests.HoldTests" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.012449" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1079" name="FirstHold_BlockedSpawn_EndsGame" fullname="NeonBlocks.Tests.HoldTests.FirstHold_BlockedSpawn_EndsGame" methodname="FirstHold_BlockedSpawn_EndsGame" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" seed="25263154" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001553" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1074" name="FirstHold_StoresActiveAndConsumesOneNext" fullname="NeonBlocks.Tests.HoldTests.FirstHold_StoresActiveAndConsumesOneNext" methodname="FirstHold_StoresActiveAndConsumesOneNext" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" seed="98075152" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000828" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1078" name="Hold_ResetsGravityTimer" fullname="NeonBlocks.Tests.HoldTests.Hold_ResetsGravityTimer" methodname="Hold_ResetsGravityTimer" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" seed="1606642595" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000448" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1076" name="LockThenSwap_PreservesQueueAndResetsSpawn" fullname="NeonBlocks.Tests.HoldTests.LockThenSwap_PreservesQueueAndResetsSpawn" methodname="LockThenSwap_PreservesQueueAndResetsSpawn" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" seed="820298014" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.002602" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1081" name="NewGame_ResetsHoldScoreAndQueue" fullname="NeonBlocks.Tests.HoldTests.NewGame_ResetsHoldScoreAndQueue" methodname="NewGame_ResetsHoldScoreAndQueue" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" seed="1878435230" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001927" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1077" name="NonPlaying_HoldIsRejected" fullname="NeonBlocks.Tests.HoldTests.NonPlaying_HoldIsRejected" methodname="NonPlaying_HoldIsRejected" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" seed="473298543" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000480" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1075" name="SecondHold_DoesNotMutate" fullname="NeonBlocks.Tests.HoldTests.SecondHold_DoesNotMutate" methodname="SecondHold_DoesNotMutate" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" seed="1009888966" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000592" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1082" name="Snapshot_PreservesHoldAndCopiesNext" fullname="NeonBlocks.Tests.HoldTests.Snapshot_PreservesHoldAndCopiesNext" methodname="Snapshot_PreservesHoldAndCopiesNext" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" seed="1138217769" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001445" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1080" name="Swap_BlockedSpawn_EndsGame" fullname="NeonBlocks.Tests.HoldTests.Swap_BlockedSpawn_EndsGame" methodname="Swap_BlockedSpawn_EndsGame" classname="NeonBlocks.Tests.HoldTests" runstate="Runnable" seed="1028167312" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000941" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1083" name="PieceDefinitionTests" fullname="NeonBlocks.Tests.PieceDefinitionTests" classname="NeonBlocks.Tests.PieceDefinitionTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.004085" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1086" name="CellOutsideBox_Throws" fullname="NeonBlocks.Tests.PieceDefinitionTests.CellOutsideBox_Throws" methodname="CellOutsideBox_Throws" classname="NeonBlocks.Tests.PieceDefinitionTests" runstate="Runnable" seed="1110883696" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000449" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1088" name="DisconnectedCells_Throws" fullname="NeonBlocks.Tests.PieceDefinitionTests.DisconnectedCells_Throws" methodname="DisconnectedCells_Throws" classname="NeonBlocks.Tests.PieceDefinitionTests" runstate="Runnable" seed="562379858" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000202" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1085" name="DuplicateCell_Throws" fullname="NeonBlocks.Tests.PieceDefinitionTests.DuplicateCell_Throws" methodname="DuplicateCell_Throws" classname="NeonBlocks.Tests.PieceDefinitionTests" runstate="Runnable" seed="566520620" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000171" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1087" name="NegativeCell_Throws" fullname="NeonBlocks.Tests.PieceDefinitionTests.NegativeCell_Throws" methodname="NegativeCell_Throws" classname="NeonBlocks.Tests.PieceDefinitionTests" runstate="Runnable" seed="1259673262" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000164" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1090" name="RotationCenterOutsideBox_Throws" fullname="NeonBlocks.Tests.PieceDefinitionTests.RotationCenterOutsideBox_Throws" methodname="RotationCenterOutsideBox_Throws" classname="NeonBlocks.Tests.PieceDefinitionTests" runstate="Runnable" seed="1264799500" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000255" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1084" name="ValidIPiece_IsCreated" fullname="NeonBlocks.Tests.PieceDefinitionTests.ValidIPiece_IsCreated" methodname="ValidIPiece_IsCreated" classname="NeonBlocks.Tests.PieceDefinitionTests" runstate="Runnable" seed="1916662535" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000770" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1089" name="WrongCellCount_Throws" fullname="NeonBlocks.Tests.PieceDefinitionTests.WrongCellCount_Throws" methodname="WrongCellCount_Throws" classname="NeonBlocks.Tests.PieceDefinitionTests" runstate="Runnable" seed="1176826107" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000219" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1091" name="SafeAreaCalculatorTests" fullname="NeonBlocks.Tests.SafeAreaCalculatorTests" classname="NeonBlocks.Tests.SafeAreaCalculatorTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.002085" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1096" name="EmptyOrOutOfScreenSafeArea_ReturnsFalse" fullname="NeonBlocks.Tests.SafeAreaCalculatorTests.EmptyOrOutOfScreenSafeArea_ReturnsFalse" methodname="EmptyOrOutOfScreenSafeArea_ReturnsFalse" classname="NeonBlocks.Tests.SafeAreaCalculatorTests" runstate="Runnable" seed="1786454525" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000310" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1092" name="FullScreenSafeArea_ReturnsFullAnchors" fullname="NeonBlocks.Tests.SafeAreaCalculatorTests.FullScreenSafeArea_ReturnsFullAnchors" methodname="FullScreenSafeArea_ReturnsFullAnchors" classname="NeonBlocks.Tests.SafeAreaCalculatorTests" runstate="Runnable" seed="1044089170" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000120" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1093" name="NotchAtTop_ReducesAnchorMaxY" fullname="NeonBlocks.Tests.SafeAreaCalculatorTests.NotchAtTop_ReducesAnchorMaxY" methodname="NotchAtTop_ReducesAnchorMaxY" classname="NeonBlocks.Tests.SafeAreaCalculatorTests" runstate="Runnable" seed="1604901158" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000083" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1094" name="SafeAreaLargerThanScreen_ClampsToUnitRange" fullname="NeonBlocks.Tests.SafeAreaCalculatorTests.SafeAreaLargerThanScreen_ClampsToUnitRange" methodname="SafeAreaLargerThanScreen_ClampsToUnitRange" classname="NeonBlocks.Tests.SafeAreaCalculatorTests" runstate="Runnable" seed="927357191" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000088" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1095" name="ZeroScreenSize_ReturnsFalseWithFullAnchors" fullname="NeonBlocks.Tests.SafeAreaCalculatorTests.ZeroScreenSize_ReturnsFalseWithFullAnchors" methodname="ZeroScreenSize_ReturnsFalseWithFullAnchors" classname="NeonBlocks.Tests.SafeAreaCalculatorTests" runstate="Runnable" seed="1378014174" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000288" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1097" name="SceneFlowManagerTests" fullname="NeonBlocks.Tests.SceneFlowManagerTests" classname="NeonBlocks.Tests.SceneFlowManagerTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.046237" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1102" name="Dispose_ExitsCurrentScene" fullname="NeonBlocks.Tests.SceneFlowManagerTests.Dispose_ExitsCurrentScene" methodname="Dispose_ExitsCurrentScene" classname="NeonBlocks.Tests.SceneFlowManagerTests" runstate="Runnable" seed="1438034892" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.011664" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1098" name="GoTo_FirstScene_LoadsAndBecomesCurrent" fullname="NeonBlocks.Tests.SceneFlowManagerTests.GoTo_FirstScene_LoadsAndBecomesCurrent" methodname="GoTo_FirstScene_LoadsAndBecomesCurrent" classname="NeonBlocks.Tests.SceneFlowManagerTests" runstate="Runnable" seed="1525953827" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.003420" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1100" name="GoTo_LoadFails_ThrowsAndLeavesNoCurrentScene" fullname="NeonBlocks.Tests.SceneFlowManagerTests.GoTo_LoadFails_ThrowsAndLeavesNoCurrentScene" methodname="GoTo_LoadFails_ThrowsAndLeavesNoCurrentScene" classname="NeonBlocks.Tests.SceneFlowManagerTests" runstate="Runnable" seed="1147407152" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.002420" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1099" name="GoTo_NextScene_ExitsPreviousInRequiredOrder" fullname="NeonBlocks.Tests.SceneFlowManagerTests.GoTo_NextScene_ExitsPreviousInRequiredOrder" methodname="GoTo_NextScene_ExitsPreviousInRequiredOrder" classname="NeonBlocks.Tests.SceneFlowManagerTests" runstate="Runnable" seed="1948274774" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001620" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1101" name="NewRequest_CancelsInFlightTransition" fullname="NeonBlocks.Tests.SceneFlowManagerTests.NewRequest_CancelsInFlightTransition" methodname="NewRequest_CancelsInFlightTransition" classname="NeonBlocks.Tests.SceneFlowManagerTests" runstate="Runnable" seed="240174525" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.025774" asserts="0">
+              <properties>
+                <property name="Timeout" value="5000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1103" name="ServiceLocatorTests" fullname="NeonBlocks.Tests.ServiceLocatorTests" classname="NeonBlocks.Tests.ServiceLocatorTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.005880" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1106" name="RegisterDuplicateType_KeepsFirstInstance" fullname="NeonBlocks.Tests.ServiceLocatorTests.RegisterDuplicateType_KeepsFirstInstance" methodname="RegisterDuplicateType_KeepsFirstInstance" classname="NeonBlocks.Tests.ServiceLocatorTests" runstate="Runnable" seed="805381364" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.003626" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Already registered NeonBlocks.Tests.ProbeService
+]]></output>
+            </test-case>
+            <test-case id="1104" name="RegisterThenResolve_ReturnsSameInstance" fullname="NeonBlocks.Tests.ServiceLocatorTests.RegisterThenResolve_ReturnsSameInstance" methodname="RegisterThenResolve_ReturnsSameInstance" classname="NeonBlocks.Tests.ServiceLocatorTests" runstate="Runnable" seed="1724516596" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000136" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1108" name="Resolve_SignalType_CreatesInstanceLazilyAndReturnsSameInstance" fullname="NeonBlocks.Tests.ServiceLocatorTests.Resolve_SignalType_CreatesInstanceLazilyAndReturnsSameInstance" methodname="Resolve_SignalType_CreatesInstanceLazilyAndReturnsSameInstance" classname="NeonBlocks.Tests.ServiceLocatorTests" runstate="Runnable" seed="897535333" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000113" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1109" name="Resolve_UnregisteredNonSignal_LogsErrorAndReturnsNull" fullname="NeonBlocks.Tests.ServiceLocatorTests.Resolve_UnregisteredNonSignal_LogsErrorAndReturnsNull" methodname="Resolve_UnregisteredNonSignal_LogsErrorAndReturnsNull" classname="NeonBlocks.Tests.ServiceLocatorTests" runstate="Runnable" seed="1407619092" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000555" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Type NeonBlocks.Tests.ProbeService not registered
+]]></output>
+            </test-case>
+            <test-case id="1107" name="UnregisterAll_ClearsAllRegistrations" fullname="NeonBlocks.Tests.ServiceLocatorTests.UnregisterAll_ClearsAllRegistrations" methodname="UnregisterAll_ClearsAllRegistrations" classname="NeonBlocks.Tests.ServiceLocatorTests" runstate="Runnable" seed="1299649126" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000110" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1105" name="UnregisterSingleton_RemovesRegistration" fullname="NeonBlocks.Tests.ServiceLocatorTests.UnregisterSingleton_RemovesRegistration" methodname="UnregisterSingleton_RemovesRegistration" classname="NeonBlocks.Tests.ServiceLocatorTests" runstate="Runnable" seed="1135796441" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000336" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1110" name="SessionManagerTests" fullname="NeonBlocks.Tests.SessionManagerTests" classname="NeonBlocks.Tests.SessionManagerTests" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.008432" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1116" name="AfterReset_NewSessionBecomesOwnerAgain" fullname="NeonBlocks.Tests.SessionManagerTests.AfterReset_NewSessionBecomesOwnerAgain" methodname="AfterReset_NewSessionBecomesOwnerAgain" classname="NeonBlocks.Tests.SessionManagerTests" runstate="Runnable" seed="1226769525" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000860" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1117" name="DuplicateSession_IsNotOwner_AndDestroyingItKeepsOwner" fullname="NeonBlocks.Tests.SessionManagerTests.DuplicateSession_IsNotOwner_AndDestroyingItKeepsOwner" methodname="DuplicateSession_IsNotOwner_AndDestroyingItKeepsOwner" classname="NeonBlocks.Tests.SessionManagerTests" runstate="Runnable" seed="685815001" result="Failed" label="Error" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.002446" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[UnityEngine.MissingReferenceException : The object of type 'NeonBlocks.SessionManager' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object.]]></message>
+                <stack-trace><![CDATA[  at UnityEngine.Object+MarshalledUnityObject.TryThrowEditorNullExceptionObject (UnityEngine.Object unityObj, System.String parameterName) [0x0006a] in <4188a0f79dff4b4191dbeaff03bfe462>:0 
+  at UnityEngine.Bindings.ThrowHelper.ThrowNullReferenceException (System.Object obj) [0x00010] in <4188a0f79dff4b4191dbeaff03bfe462>:0 
+  at UnityEngine.Component.get_gameObject () [0x00006] in <4188a0f79dff4b4191dbeaff03bfe462>:0 
+  at NeonBlocks.Tests.SessionManagerTests.DuplicateSession_IsNotOwner_AndDestroyingItKeepsOwner () [0x00042] in D:\Repositories\PuzzlePortfolio\NeonBlocks\Assets\_Project\Tests\EditMode\SessionManagerTests.cs:161 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <d49d4cb128564ee1b54a84338c98d353>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[SessionManager đã tồn tại; instance mới bị hủy.
+]]></output>
+            </test-case>
+            <test-case id="1111" name="FirstSession_BecomesOwnerAndRegistersSelf" fullname="NeonBlocks.Tests.SessionManagerTests.FirstSession_BecomesOwnerAndRegistersSelf" methodname="FirstSession_BecomesOwnerAndRegistersSelf" classname="NeonBlocks.Tests.SessionManagerTests" runstate="Runnable" seed="1517824368" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000203" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1113" name="RegisterSingleton_DuplicateType_Throws" fullname="NeonBlocks.Tests.SessionManagerTests.RegisterSingleton_DuplicateType_Throws" methodname="RegisterSingleton_DuplicateType_Throws" classname="NeonBlocks.Tests.SessionManagerTests" runstate="Runnable" seed="1417641441" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000772" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1114" name="RegisterSingleton_Null_Throws" fullname="NeonBlocks.Tests.SessionManagerTests.RegisterSingleton_Null_Throws" methodname="RegisterSingleton_Null_Throws" classname="NeonBlocks.Tests.SessionManagerTests" runstate="Runnable" seed="1110623370" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000275" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1118" name="RegisterSingleton_OnNonOwner_Throws" fullname="NeonBlocks.Tests.SessionManagerTests.RegisterSingleton_OnNonOwner_Throws" methodname="RegisterSingleton_OnNonOwner_Throws" classname="NeonBlocks.Tests.SessionManagerTests" runstate="Runnable" seed="1171323463" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000804" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[SessionManager đã tồn tại; instance mới bị hủy.
+]]></output>
+            </test-case>
+            <test-case id="1115" name="ResetSession_CalledTwice_DisposesOnce" fullname="NeonBlocks.Tests.SessionManagerTests.ResetSession_CalledTwice_DisposesOnce" methodname="ResetSession_CalledTwice_DisposesOnce" classname="NeonBlocks.Tests.SessionManagerTests" runstate="Runnable" seed="2067027000" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000288" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1112" name="ResetSession_DisposesSingletonsInReverseOrderAndUnregisters" fullname="NeonBlocks.Tests.SessionManagerTests.ResetSession_DisposesSingletonsInReverseOrderAndUnregisters" methodname="ResetSession_DisposesSingletonsInReverseOrderAndUnregisters" classname="NeonBlocks.Tests.SessionManagerTests" runstate="Runnable" seed="99294565" result="Failed" label="Error" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000907" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.InvalidOperationException : Singleton NeonBlocks.Tests.ProbeService đã được đăng ký.]]></message>
+                <stack-trace><![CDATA[  at NeonBlocks.SessionManager.RegisterSingleton[T] (T instance) [0x0007b] in D:\Repositories\PuzzlePortfolio\NeonBlocks\Assets\_Project\Scripts\App\SessionManager.cs:99 
+  at NeonBlocks.Tests.SessionManagerTests.ResetSession_DisposesSingletonsInReverseOrderAndUnregisters () [0x00024] in D:\Repositories\PuzzlePortfolio\NeonBlocks\Assets\_Project\Tests\EditMode\SessionManagerTests.cs:81 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <d49d4cb128564ee1b54a84338c98d353>:0 ]]></stack-trace>
+              </failure>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1119" name="SevenBagPieceSourceTests" fullname="NeonBlocks.Tests.SevenBagPieceSourceTests" classname="NeonBlocks.Tests.SevenBagPieceSourceTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.007734" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1120" name="EachBag_ContainsEveryConfiguredPieceExactlyOnce" fullname="NeonBlocks.Tests.SevenBagPieceSourceTests.EachBag_ContainsEveryConfiguredPieceExactlyOnce" methodname="EachBag_ContainsEveryConfiguredPieceExactlyOnce" classname="NeonBlocks.Tests.SevenBagPieceSourceTests" runstate="Runnable" seed="1315451463" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.001682" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1123" name="InjectedRandom_DeterminesFisherYatesOrder" fullname="NeonBlocks.Tests.SevenBagPieceSourceTests.InjectedRandom_DeterminesFisherYatesOrder" methodname="InjectedRandom_DeterminesFisherYatesOrder" classname="NeonBlocks.Tests.SevenBagPieceSourceTests" runstate="Runnable" seed="1215103253" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000244" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1121" name="SameSeed_ProducesSamePieceSequence" fullname="NeonBlocks.Tests.SevenBagPieceSourceTests.SameSeed_ProducesSamePieceSequence" methodname="SameSeed_ProducesSamePieceSequence" classname="NeonBlocks.Tests.SevenBagPieceSourceTests" runstate="Runnable" seed="628415446" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000196" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1122" name="TakeNext_ShiftsAndRefillsPreview" fullname="NeonBlocks.Tests.SevenBagPieceSourceTests.TakeNext_ShiftsAndRefillsPreview" methodname="TakeNext_ShiftsAndRefillsPreview" classname="NeonBlocks.Tests.SevenBagPieceSourceTests" runstate="Runnable" seed="1046131556" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000718" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1124" name="SrsRotationTests" fullname="NeonBlocks.Tests.SrsRotationTests" classname="NeonBlocks.Tests.SrsRotationTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.005524" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1130" name="AllKicksBlocked_KeepsActivePieceUnchanged" fullname="NeonBlocks.Tests.SrsRotationTests.AllKicksBlocked_KeepsActivePieceUnchanged" methodname="AllKicksBlocked_KeepsActivePieceUnchanged" classname="NeonBlocks.Tests.SrsRotationTests" runstate="Runnable" seed="1222088350" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000629" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1125" name="ClockwiseRotation_CyclesAllOrientationsAndReturnsToSpawnShape" fullname="NeonBlocks.Tests.SrsRotationTests.ClockwiseRotation_CyclesAllOrientationsAndReturnsToSpawnShape" methodname="ClockwiseRotation_CyclesAllOrientationsAndReturnsToSpawnShape" classname="NeonBlocks.Tests.SrsRotationTests" runstate="Runnable" seed="965703140" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000259" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1128" name="IKick_AtLeftWall_UsesITableOffset" fullname="NeonBlocks.Tests.SrsRotationTests.IKick_AtLeftWall_UsesITableOffset" methodname="IKick_AtLeftWall_UsesITableOffset" classname="NeonBlocks.Tests.SrsRotationTests" runstate="Runnable" seed="1441026705" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000321" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1127" name="JlstzKick_AtFloor_UsesUpwardOffset" fullname="NeonBlocks.Tests.SrsRotationTests.JlstzKick_AtFloor_UsesUpwardOffset" methodname="JlstzKick_AtFloor_UsesUpwardOffset" classname="NeonBlocks.Tests.SrsRotationTests" runstate="Runnable" seed="100419088" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000158" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1126" name="JlstzKick_AtLeftWall_UsesHorizontalOffset" fullname="NeonBlocks.Tests.SrsRotationTests.JlstzKick_AtLeftWall_UsesHorizontalOffset" methodname="JlstzKick_AtLeftWall_UsesHorizontalOffset" classname="NeonBlocks.Tests.SrsRotationTests" runstate="Runnable" seed="1720227785" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000197" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1129" name="OPiece_RotationKeepsState" fullname="NeonBlocks.Tests.SrsRotationTests.OPiece_RotationKeepsState" methodname="OPiece_RotationKeepsState" classname="NeonBlocks.Tests.SrsRotationTests" runstate="Runnable" seed="1231966120" result="Passed" start-time="2026-11-05 16:07:12Z" end-time="2026-11-05 16:07:12Z" duration="0.000178" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:/Users/anhtdt/AppData/LocalLow/DefaultCompany/NeonBlocks\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -94,6 +94,7 @@ namespace NeonBlocks.Views
             {
                 TouchControlAction.RotateClockwise => GameplayCommand.RotateClockwise,
                 TouchControlAction.RotateCounterClockwise => GameplayCommand.RotateCounterClockwise,
+                TouchControlAction.Hold => GameplayCommand.Hold,
                 TouchControlAction.HardDrop => GameplayCommand.HardDrop,
                 TouchControlAction.TogglePause => GameplayCommand.TogglePause,
                 _ => throw new System.InvalidOperationException($"Action '{action}' phải dùng held command.")
